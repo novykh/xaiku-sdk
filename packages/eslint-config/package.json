@@ -1,0 +1,27 @@
+{
+  "name": "@xaiku/eslint-config",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": false,
+  "files": [
+    "eslint.config.mjs",
+    "library.mjs",
+    "react.eslint.config.mjs",
+    "next.eslint.config.mjs"
+  ],
+  "scripts": {
+    "build": "echo 'not implemented'",
+    "lint": "echo 'not implemented'",
+    "clean": "rimraf lib dist es coverage node_modules",
+    "format": "echo 'not implemented'",
+    "prepublishOnly": "echo 'not implemented'"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@xaiku/prettier-config": "*",
+    "eslint": "^9.14.0",
+    "eslint-config-next": "^15.0.2",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.12.0"
+  }
+}

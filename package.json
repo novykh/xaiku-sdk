@@ -1,0 +1,21 @@
+{
+  "name": "xaiku-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "novykh <ioannis.klironomos@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "lint": "yarn workspaces run lint",
+    "clean": "yarn workspaces run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{js,mjs,md}\"",
+    "prepublishOnly": "yarn clean && yarn build"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  }
+}
