@@ -4,21 +4,22 @@
   "license": "MIT",
   "private": false,
   "files": [
-    "babel.config.mjs"
+    "babel.config.js"
   ],
   "scripts": {
     "build": "echo 'not implemented'",
     "lint": "echo 'not implemented'",
+    "test": "echo 'not implemented'",
     "clean": "rimraf lib dist es coverage node_modules",
     "format": "echo 'not implemented'",
     "prepublishOnly": "echo 'not implemented'"
   },
   "devDependencies": {
-    "@babel/cli": "^7.25.9",
+    "@babel/cli": "^7.26.4",
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
-    "@babel/preset-react": "^7.25.9",
+    "@babel/preset-react": "^7.26.3",
     "babel-loader": "^9.2.1",
     "babel-plugin-module-resolver": "^5.0.2"
   }

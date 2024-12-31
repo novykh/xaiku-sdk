@@ -1,0 +1,38 @@
+{
+  "name": "@xaiku/react",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": false,
+  "main": "dist/index.js",
+  "module": "dist/es6/index.js",
+  "jsnext:main": "dist/es6/index.js",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build:cjs": "babel src --out-dir dist --copy-files",
+    "build:es6": "BABEL_ENV=es6 babel src --out-dir dist/es6 --copy-files",
+    "build:umd": "NODE_ENV=production webpack",
+    "build": "yarn build:umd && yarn build:cjs && yarn build:es6",
+    "test": "jest",
+    "lint": "eslint './src/**/*.js'",
+    "clean": "rimraf lib dist es coverage node_modules",
+    "prepublishOnly": "yarn clean && yarn build",
+    "cp-xaiku": "cp -R ./dist ../xaiku/node_modules/@xaiku/react/",
+    "to-xaiku": "yarn build && yarn cp-xaiku"
+  },
+  "dependencies": {
+    "@xaiku/browser": "*"
+  },
+  "peerDependencies": {
+    "react": "17.x || 18.x || 19.x"
+  },
+  "devDependencies": {
+    "@xaiku/babel-config": "*",
+    "@xaiku/eslint-config": "*",
+    "@xaiku/prettier-config": "*",
+    "clean-webpack-plugin": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

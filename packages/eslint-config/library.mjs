@@ -1,6 +1,6 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import prettierRecommended from '@xaiku/prettier-config/eslint-plugin';
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import prettierRecommended from '@xaiku/prettier-config/eslint-plugin.mjs'
 
 export default [
   {
@@ -16,4 +16,4 @@ export default [
   },
   pluginJs.configs.recommended,
   prettierRecommended,
-];
+]

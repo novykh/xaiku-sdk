@@ -7,16 +7,16 @@ const thresholdsByMetric = {
 }
 
 const getRating = (value, thresholds) => {
-  if (!thresholds) return "unknown"
-  if (value > thresholds[1]) return "poor"
-  if (value > thresholds[0]) return "needs-improvement"
-  return "good"
+  if (!thresholds) return 'unknown'
+  if (value > thresholds[1]) return 'poor'
+  if (value > thresholds[0]) return 'needs-improvement'
+  return 'good'
 }
 
 const getId = key => `xaiku-${key}-${Date.now()}`
 
 const initialState = {
-  name: "",
+  name: '',
   id: null,
   value: null,
   rating: null,
@@ -39,15 +39,15 @@ export default (sdk, name, { session = initialState.session, reportAll = false }
   let metric = {
     init: (values = {}) => {
       metric.mutate({ ...initialState, session, name, id: getId(name), reported: false, ...values })
-      broadcast("init")
+      broadcast('init')
     },
     setAttributes: values => {
       metric.mutate(values)
-      broadcast("update")
+      broadcast('update')
     },
     setAttribute: (key, value) => {
-      metric[key] = typeof value === "function" ? value(metric[key]) : value
-      broadcast("update")
+      metric[key] = typeof value === 'function' ? value(metric[key]) : value
+      broadcast('update')
     },
     mutate: (values = {}) => {
       Object.keys(values).forEach(key => metric.setAttribute(key, values[key]))
@@ -59,7 +59,7 @@ export default (sdk, name, { session = initialState.session, reportAll = false }
       metric.rating = getRating(metric.value, thresholds)
       metric.reported = true
       sdk.trigger(name, metric)
-      broadcast("report")
+      broadcast('report')
     },
   }
 

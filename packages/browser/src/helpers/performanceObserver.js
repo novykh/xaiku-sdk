@@ -1,3 +1,5 @@
+import shared from '@xaiku/shared'
+console.log('>>>>>>>>>>>>>>>>>>>', shared)
 // Supported Entry Types
 // ===========
 // element
@@ -13,7 +15,7 @@
 // resource
 
 const attrByType = {
-  paint: "name",
+  paint: 'name',
 }
 
 const bufferedByType = {
@@ -37,7 +39,7 @@ const makePerformanceObserver = (entryType, trigger, options = {}) => {
 
     po.observe({
       type: entryType,
-      buffered: typeof bufferedByType[entryType] === "undefined" ? true : bufferedByType[entryType],
+      buffered: typeof bufferedByType[entryType] === 'undefined' ? true : bufferedByType[entryType],
       ...(options[entryType] || {}),
     })
 
@@ -51,6 +53,8 @@ export default (trigger, options) => {
   let all = {}
 
   const connect = key => {
+    if (!isWindow()) return
+
     if (key) {
       all[key] = makePerformanceObserver(key, trigger, options)
       return
@@ -62,6 +66,8 @@ export default (trigger, options) => {
   }
 
   const disconnect = key => {
+    if (!isWindow()) return
+
     if (key && all[key]) {
       all[key].disconnect()
       return

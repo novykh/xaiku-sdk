@@ -1,7 +1,7 @@
 export const getCookie = name => {
-  name = name + "="
+  name = name + '='
   const decodedCookie = decodeURIComponent(document.cookie)
-  const parts = decodedCookie.split(";")
+  const parts = decodedCookie.split(';')
 
   return parts.reduce((value, part) => {
     part = part.trim()
@@ -9,7 +9,7 @@ export const getCookie = name => {
     return value
       ? value
       : part.indexOf(name) === 0
-      ? part.substring(name.length, part.length)
-      : null
+        ? part.substring(name.length, part.length)
+        : null
   }, null)
 }

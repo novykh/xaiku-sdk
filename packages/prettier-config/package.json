@@ -5,17 +5,19 @@
   "private": false,
   "files": [
     "prettier.config.mjs",
-    "eslint-plugin.js"
+    "eslint-plugin.mjs"
   ],
   "scripts": {
     "build": "echo 'not implemented'",
     "lint": "echo 'not implemented'",
+    "test": "echo 'not implemented'",
     "clean": "rimraf lib dist es coverage node_modules",
     "format": "echo 'not implemented'",
     "prepublishOnly": "echo 'not implemented'"
   },
   "devDependencies": {
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1"
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.4.2"
   }
 }

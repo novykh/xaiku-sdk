@@ -1,22 +1,14 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import pluginReact from 'eslint-plugin-react';
-import prettierRecommended from '@xaiku/prettier-config/eslint-plugin';
+import nextPlugin from '@next/eslint-plugin-next'
+import reactConfig from './react.eslint.config.mjs'
 
 export default [
-  {files: ['**/*.{js,mjs,cjs,jsx}']},
   {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.commonjs,
-        ...globals.es6,
-        ...globals.jest,
-        ...globals.node,
-      },
+    plugins: { '@next/next': nextPlugin },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+      'no-html-link-for-pages': 'off',
     },
   },
-  pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  prettierRecommended,
-];
+  ...reactConfig,
+]

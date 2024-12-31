@@ -1,1 +1,1 @@
-Xaiku SDK
+Xaiku: SDK

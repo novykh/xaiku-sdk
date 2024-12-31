@@ -1,27 +1,27 @@
-import getFrameworks from "@/helpers/getFrameworks"
-import getGuid from "@/helpers/getGuid"
-import cls from "@/metrics/cls"
-import fcp from "@/metrics/fcp"
-import fid from "@/metrics/fid"
-import lcp from "@/metrics/lcp"
-import ttfb from "@/metrics/ttfb"
-import makeWindowContext from "./makeWindowContext"
-import metricObserver from "./metricObserver"
-import proxyHistory from "./proxyHistory"
-import proxyTimers from "./proxyTimers"
-import proxyFetch from "./proxyFetch"
-import proxyDOM from "./proxyDOM"
+import getFrameworks from '@/helpers/getFrameworks'
+import getGuid from '@/helpers/getGuid'
+import cls from '@/metrics/cls'
+import fcp from '@/metrics/fcp'
+import fid from '@/metrics/fid'
+import lcp from '@/metrics/lcp'
+import ttfb from '@/metrics/ttfb'
+import makeWindowContext from './makeWindowContext'
+import metricObserver from './metricObserver'
+import proxyHistory from './proxyHistory'
+import proxyTimers from './proxyTimers'
+import proxyFetch from './proxyFetch'
+import proxyDOM from './proxyDOM'
 
 export default sdk => {
   let session = {
     guid: getGuid(),
     frameworks: [],
-    userAgent: "",
+    userAgent: '',
     windowDimensions: [self.innerWidth, self.innerHeight],
   }
 
   const setAttribute = (key, value) => {
-    session[key] = typeof value === "function" ? value(session[key]) : value
+    session[key] = typeof value === 'function' ? value(session[key]) : value
   }
 
   const setAttributes = values => {
@@ -43,7 +43,7 @@ export default sdk => {
   // lcp(sdk, options)
   // ttfb(sdk, options)
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener('DOMContentLoaded', () => {
     setAttributes({
       frameworks: getFrameworks(),
       userAgent: navigator.userAgent,

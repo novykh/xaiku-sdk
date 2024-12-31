@@ -1,15 +1,15 @@
-import makeEventHandler from "./makeEventHandler"
+import makeEventHandler from './makeEventHandler'
 
-const counterSymbol = Symbol("XAIKU@counter")
+const counterSymbol = Symbol('XAIKU@counter')
 
-const hasSupport = () => self && "document" in self
+const hasSupport = () => self && 'document' in self
 
-const domInterfaces = ["EventTarget", "Node"]
+const domInterfaces = ['EventTarget', 'Node']
 
 export default (sdk, options) => {
   if (!hasSupport()) return
 
-  const eventHandler = makeEventHandler(sdk, "dom-event", options)
+  const eventHandler = makeEventHandler(sdk, 'dom-event', options)
 
   // After hooking into click and keypress events bubbled up to `document`, we also hook into user-handled
   // clicks & keypresses, by adding an event listener of our own to any element to which they add a listener. That
@@ -20,7 +20,7 @@ export default (sdk, options) => {
   domInterfaces.forEach(mainTarget => {
     const proto = self[mainTarget] && self[mainTarget].prototype
 
-    if (!proto || !proto.hasOwnProperty || !proto.hasOwnProperty("addEventListener")) return
+    if (!proto || !proto.hasOwnProperty || !proto.hasOwnProperty('addEventListener')) return
     if (sdk.canProxyFn(proto.addEventListener)) return
 
     proto.addEventListener[sdk.xaikuFnSymbol] = proto.addEventListener

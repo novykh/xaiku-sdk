@@ -3,16 +3,16 @@ const initialState = {
   decodedBodySize: 0,
   duration: 0,
   encodedBodySize: 0,
-  entryType: "navigation",
-  initiatorType: "navigation",
+  entryType: 'navigation',
+  initiatorType: 'navigation',
   name: null,
-  nextHopProtocol: "",
+  nextHopProtocol: '',
   redirectCount: 0,
-  renderBlockingStatus: "blocking",
+  renderBlockingStatus: 'blocking',
   serverTiming: [],
   startTime: 0,
   transferSize: 0,
-  type: "navigate",
+  type: 'navigate',
   workerStart: 0,
 }
 
@@ -22,12 +22,12 @@ const buildEntry = () => {
 
   const navigationEntry = {
     ...initialState,
-    type: type == 2 ? "back_forward" : type === 1 ? "reload" : "navigate",
+    type: type == 2 ? 'back_forward' : type === 1 ? 'reload' : 'navigate',
     name: self.location.url,
   }
 
   Object.keys(timing).forEach(key => {
-    if (key === "navigationStart") return
+    if (key === 'navigationStart') return
 
     navigationEntry[key] = Math.max(timing[key] - timing.navigationStart, 0)
   })
@@ -35,4 +35,4 @@ const buildEntry = () => {
   return navigationEntry
 }
 
-export default () => self.performance?.getEntriesByType?.("navigation")?.[0] || buildEntry()
+export default () => self.performance?.getEntriesByType?.('navigation')?.[0] || buildEntry()

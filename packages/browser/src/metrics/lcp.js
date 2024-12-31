@@ -1,11 +1,11 @@
-import getInitialNavEntry from "@/helpers/getInitialNavEntry"
-import makeMetric from "./metric"
+import getInitialNavEntry from '@/helpers/getInitialNavEntry'
+import makeMetric from './metric'
 
 // [LCP](https://web.dev/lcp/) - Largest Content
 
 export default (sdk, options = {}) => {
   const { windowContext } = options
-  const metric = makeMetric(sdk, "lcp", options)
+  const metric = makeMetric(sdk, 'lcp', options)
 
   const reportMetric = entries => {
     const navEntry = getInitialNavEntry()
@@ -18,10 +18,10 @@ export default (sdk, options = {}) => {
 
     if (value < windowContext.getFirstHiddenTime()) {
       metric.init({
-        type: "timeseries",
-        context: "browser.web_performance.web_vitals",
-        group: "web_performance",
-        title: "Web performance core metrics",
+        type: 'timeseries',
+        context: 'browser.web_performance.web_vitals',
+        group: 'web_performance',
+        title: 'Web performance core metrics',
         value,
         entries: [...entries, navEntry],
       })
@@ -31,9 +31,9 @@ export default (sdk, options = {}) => {
     metric.report({ force: true })
   }
 
-  sdk.on("largest-contentful-paint:list", reportMetric)
+  sdk.on('largest-contentful-paint:list', reportMetric)
 
-  const po = sdk.pos.get("largest-contentful-paint")
+  const po = sdk.pos.get('largest-contentful-paint')
 
   if (po) {
     const stopListening = () => {
@@ -45,18 +45,18 @@ export default (sdk, options = {}) => {
     // Stop listening after input. Note: while scrolling is an input that
     // stops LCP observation, it's unreliable since it can be programmatically
     // generated. See: https://github.com/GoogleChrome/web-vitals/issues/75
-    ;["keydown", "click"].forEach(type => {
+    ;['keydown', 'click'].forEach(type => {
       addEventListener(type, stopListening, { once: true, capture: true })
     })
 
-    sdk.on("hide", stopListening)
+    sdk.on('hide', stopListening)
 
-    sdk.on("BFCacheRestore", event => {
+    sdk.on('BFCacheRestore', event => {
       metric.init({
-        type: "timeseries",
-        context: "browser.web_performance.web_vitals",
-        group: "web_performance",
-        title: "Web performance core metrics",
+        type: 'timeseries',
+        context: 'browser.web_performance.web_vitals',
+        group: 'web_performance',
+        title: 'Web performance core metrics',
         value: performance.now() - event.timeStamp,
       })
 

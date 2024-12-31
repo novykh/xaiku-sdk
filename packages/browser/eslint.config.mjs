@@ -1,3 +1,1 @@
-import config from '@xaiku/eslint-config/library.mjs';
-
-export default [...config];
+export { default as default } from '@xaiku/eslint-config/library.mjs'

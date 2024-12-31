@@ -1,8 +1,8 @@
-const xaikuFn = Symbol("XAIKU@originalFn")
+const xaikuFn = Symbol('XAIKU@originalFn')
 const states = {
-  start: "start",
-  end: "end",
-  error: "error",
+  start: 'start',
+  end: 'end',
+  error: 'error',
 }
 const noop = () => {}
 

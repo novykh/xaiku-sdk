@@ -1,4 +1,3 @@
-
 import makeListeners from '@/helpers/listeners'
 import makePerformanceObserver from '@/helpers/performanceObserver'
 import makeFnProxy from '@/helpers/makeFnProxy'
@@ -27,7 +26,7 @@ export default (options = {}) => {
     ...listeners,
   }
 
-  instance.on("metric:report", metric => {
+  instance.on('metric:report', metric => {
     console.log({
       metric: metric.context,
       value: metric.value,
@@ -44,6 +43,6 @@ export default (options = {}) => {
 
   return {
     ...instance,
-    client
+    client,
   }
 }

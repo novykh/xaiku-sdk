@@ -1,9 +1,9 @@
-import makeMetric from "@/metrics/metric"
+import makeMetric from '@/metrics/metric'
 
 const hasSupport = () => {
   if (self?.chrome?.app?.runtime) return false
 
-  return "history" in self && !!self.history.pushState && !!self.history.replaceState
+  return 'history' in self && !!self.history.pushState && !!self.history.replaceState
 }
 
 const isValidUrl = input => {
@@ -18,13 +18,13 @@ const isValidUrl = input => {
 export default (sdk, options) => {
   if (!hasSupport()) return
 
-  const metric = makeMetric(sdk, "history", options)
+  const metric = makeMetric(sdk, 'history', options)
 
   metric.init({
-    type: "timeseries",
+    type: 'timeseries',
     context: `browser.navigation.history`,
-    group: "history",
-    title: "Web Navigation",
+    group: 'history',
+    title: 'Web Navigation',
     value: 1,
   })
 
@@ -32,7 +32,7 @@ export default (sdk, options) => {
 
   sdk.proxy(
     self,
-    "onpopstate",
+    'onpopstate',
     () => {
       const to = self.location.href
       // keep track of the current URL state, as we always receive only the updated state
@@ -40,13 +40,13 @@ export default (sdk, options) => {
       prevHref = to
 
       metric.setAttributes({
-        name: "onpopstate",
+        name: 'onpopstate',
         entries: [{ from, to }],
       })
 
       metric.report({ force: true })
     },
-    "history"
+    'history'
   )
 
   const onChange = (args, fnName) => {
@@ -66,5 +66,5 @@ export default (sdk, options) => {
     metric.report({ force: true })
   }
 
-  sdk.proxy(self.history, ["pushState", "replaceState"], onChange, "history")
+  sdk.proxy(self.history, ['pushState', 'replaceState'], onChange, 'history')
 }

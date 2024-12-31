@@ -1,4 +1,4 @@
-import makeMetric from "@/metrics/metric"
+import makeMetric from '@/metrics/metric'
 
 const isDifferentEvent = (previous, current) => {
   if (!previous) return true
@@ -14,7 +14,7 @@ const isDifferentEvent = (previous, current) => {
 let timerId = null
 let lastCapturedEvent = null
 
-export default (sdk, name = "event", { debounceMillis = 1000, ...options } = {}) => {
+export default (sdk, name = 'event', { debounceMillis = 1000, ...options } = {}) => {
   const metric = makeMetric(sdk, name, options)
 
   return event => {
@@ -28,10 +28,10 @@ export default (sdk, name = "event", { debounceMillis = 1000, ...options } = {})
     const eventName = event?.type || name
 
     metric.init({
-      type: "timeseries",
+      type: 'timeseries',
       context: `browser.dom.events`,
-      group: "dom",
-      title: "Web DOM Events",
+      group: 'dom',
+      title: 'Web DOM Events',
       name: eventName,
       value: 1,
     })

@@ -31,11 +31,11 @@
 // }
 
 export default sdk => {
-  sdk.proxy(self, ["setTimeout", "clearTimeout", "setInterval", "setImmediate", "clearImmediate"])
-  sdk.proxy(self, "setInterval")
+  sdk.proxy(self, ['setTimeout', 'clearTimeout', 'setInterval', 'setImmediate', 'clearImmediate'])
+  sdk.proxy(self, 'setInterval')
 
   const timerCallback = (args, fnName) => {
-    args[0] = sdk.proxyFn(args[0].name || "anonymous", args[0], undefined, fnName)
+    args[0] = sdk.proxyFn(args[0].name || 'anonymous', args[0], undefined, fnName)
   }
-  sdk.on("setTimeout-start", timerCallback)
+  sdk.on('setTimeout-start', timerCallback)
 }

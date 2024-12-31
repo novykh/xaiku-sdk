@@ -1,16 +1,16 @@
-import makeMetric from "./metric"
+import makeMetric from './metric'
 
 // [CLS](https://web.dev/cls/) - Cumulative Layout Shift
 
 export default (sdk, options = {}) => {
-  const metric = makeMetric(sdk, "cls", options)
+  const metric = makeMetric(sdk, 'cls', options)
 
-  sdk.on("layout-shift:list", entries => {
+  sdk.on('layout-shift:list', entries => {
     metric.init({
-      type: "timeseries",
-      context: "browser.web_performance.web_vitals",
-      group: "web_performance",
-      title: "Web performance core metrics",
+      type: 'timeseries',
+      context: 'browser.web_performance.web_vitals',
+      group: 'web_performance',
+      title: 'Web performance core metrics',
     })
 
     entries.forEach(entry => {
@@ -42,7 +42,7 @@ export default (sdk, options = {}) => {
     metric.report({ force: true })
   })
 
-  sdk.on("BFCacheRestore", () => {
+  sdk.on('BFCacheRestore', () => {
     metric.init({ value: 0 })
 
     metric.report({ force: true })

@@ -1,20 +1,20 @@
 const hasSupport = () => {
   if (self?.chrome?.app?.runtime) return false
 
-  return "fetch" in self
+  return 'fetch' in self
 }
 
 const getMethod = (fetchArgs = []) => {
-  if ("Request" in self && fetchArgs[0] instanceof Request && fetchArgs[0].method)
+  if ('Request' in self && fetchArgs[0] instanceof Request && fetchArgs[0].method)
     return String(fetchArgs[0].method).toUpperCase()
   if (fetchArgs[1] && fetchArgs[1].method) return String(fetchArgs[1].method).toUpperCase()
 
-  return "GET"
+  return 'GET'
 }
 
 const getUrl = fetchArgs => {
-  if (typeof fetchArgs[0] === "string") return fetchArgs[0]
-  if ("Request" in self && fetchArgs[0] instanceof Request) return fetchArgs[0].url
+  if (typeof fetchArgs[0] === 'string') return fetchArgs[0]
+  if ('Request' in self && fetchArgs[0] instanceof Request) return fetchArgs[0].url
 
   return String(fetchArgs[0])
 }
@@ -23,7 +23,7 @@ export default sdk => {
   if (!hasSupport()) return
   if (sdk.canProxyFn(fetch)) return
 
-  const eventContext = "fetch-"
+  const eventContext = 'fetch-'
 
   fetch[sdk.xaikuFnSymbol] = fetch
 
@@ -43,7 +43,7 @@ export default sdk => {
         {
           ...handlerData,
         },
-        "fetch",
+        'fetch',
         self
       )
 
@@ -57,7 +57,7 @@ export default sdk => {
               endTimestamp: Date.now(),
               response,
             },
-            "fetch",
+            'fetch',
             self
           )
 
@@ -71,7 +71,7 @@ export default sdk => {
               endTimestamp: Date.now(),
               error,
             },
-            "fetch",
+            'fetch',
             self
           )
 
@@ -80,5 +80,5 @@ export default sdk => {
     },
   })
 
-  if (self) self["fetch"] = proxied
+  if (self) self['fetch'] = proxied
 }
