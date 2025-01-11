@@ -1,4 +1,4 @@
-import getInitialNavEntry from '@/helpers/getInitialNavEntry'
+import { getInitialNavEntry } from '@xaiku/shared'
 import makeMetric from './metric'
 
 // [TTFB](https://web.dev/time-to-first-byte/) - Time to First Byte

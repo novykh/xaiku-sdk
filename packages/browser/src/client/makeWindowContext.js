@@ -1,5 +1,5 @@
-import withRenderGuard from '@/helpers/withRenderGuard'
-import makeEventHandler from '@/client/makeEventHandler'
+import { withRenderGuard } from '@xaiku/shared'
+import makeEventHandler from './makeEventHandler'
 
 export default sdk => {
   let backForwardCacheRestoreTime = -1

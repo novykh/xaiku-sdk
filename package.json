@@ -17,7 +17,6 @@
     "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
     "rimraf": "^6.0.1"
   }
 }

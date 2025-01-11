@@ -47,6 +47,7 @@ export default (url, { method = 'GET', headers = {}, ...options } = {}) => {
 
   const request = fetch(url, options)
 
+  // istanbul ignore next
   if (process.env.NODE_ENV === 'test' && !request) {
     const error = `fetch has not mocked for ${url}`
     console.error(error)

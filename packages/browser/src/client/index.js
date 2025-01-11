@@ -1,5 +1,4 @@
-import getFrameworks from '@/helpers/getFrameworks'
-import getGuid from '@/helpers/getGuid'
+import { getFrameworks, getGuid } from '@xaiku/shared'
 import cls from '@/metrics/cls'
 import fcp from '@/metrics/fcp'
 import fid from '@/metrics/fid'

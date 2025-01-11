@@ -1,5 +1,3 @@
-import shared from '@xaiku/shared'
-console.log('>>>>>>>>>>>>>>>>>>>', shared)
 // Supported Entry Types
 // ===========
 // element
@@ -53,8 +51,6 @@ export default (trigger, options) => {
   let all = {}
 
   const connect = key => {
-    if (!isWindow()) return
-
     if (key) {
       all[key] = makePerformanceObserver(key, trigger, options)
       return
@@ -66,8 +62,6 @@ export default (trigger, options) => {
   }
 
   const disconnect = key => {
-    if (!isWindow()) return
-
     if (key && all[key]) {
       all[key].disconnect()
       return

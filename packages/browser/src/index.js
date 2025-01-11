@@ -1,6 +1,4 @@
-import makeListeners from '@/helpers/listeners'
-import makePerformanceObserver from '@/helpers/performanceObserver'
-import makeFnProxy from '@/helpers/makeFnProxy'
+import { makeListeners, makePerformanceObserver, makeFnProxy, isBrowser } from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
@@ -9,6 +7,10 @@ const defaultOptions = {
 }
 
 export default (options = {}) => {
+  if (!isBrowser()) {
+    throw new Error('@xaiku/browser runs only on browsers and expects document to exist.')
+  }
+
   const { appName, version } = { ...defaultOptions, ...options }
 
   const listeners = makeListeners()

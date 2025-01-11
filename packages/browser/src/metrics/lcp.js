@@ -1,4 +1,4 @@
-import getInitialNavEntry from '@/helpers/getInitialNavEntry'
+import { getInitialNavEntry } from '@xaiku/shared'
 import makeMetric from './metric'
 
 // [LCP](https://web.dev/lcp/) - Largest Content

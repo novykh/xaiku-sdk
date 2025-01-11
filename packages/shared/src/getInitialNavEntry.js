@@ -18,12 +18,12 @@ const initialState = {
 
 const buildEntry = () => {
   const timing = self.performance.timing
-  const type = self.performance.navigation.type
+  const type = self.performance.navigation?.type
 
   const navigationEntry = {
     ...initialState,
     type: type == 2 ? 'back_forward' : type === 1 ? 'reload' : 'navigate',
-    name: self.location.url,
+    name: self.location.href,
   }
 
   Object.keys(timing).forEach(key => {
@@ -35,4 +35,4 @@ const buildEntry = () => {
   return navigationEntry
 }
 
-export default () => self.performance?.getEntriesByType?.('navigation')?.[0] || buildEntry()
+export default () => self.performance.getEntriesByType?.('navigation')?.[0] || buildEntry()

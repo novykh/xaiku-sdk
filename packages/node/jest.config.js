@@ -3,6 +3,8 @@ module.exports = {
   rootDir: process.cwd(),
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',
+  testEnvironment: 'node',
+  testEnvironmentOptions: { url: 'https://xaiku.com/' },
   moduleFileExtensions: ['js'],
   moduleDirectories: [
     '<rootDir>/node_modules',
@@ -13,7 +15,7 @@ module.exports = {
   testMatch: ['<rootDir>/**/*.test.js'],
   globals: {},
   testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
-
+  setupFilesAfterEnv: ['<rootDir>/jest/setup.js'],
   // On CI, we do not need the pretty CLI output, as it makes logs harder to parse
   ...(process.env.CI
     ? {

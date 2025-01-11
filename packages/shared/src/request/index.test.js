@@ -14,6 +14,17 @@ it('returns response data keys', async () => {
   expect(response.data).toEqual({ some_attributes: '12345' })
 })
 
+it('should handle native failures', async () => {
+  fetch.mockRejectOnce(new Error('Network Error'))
+
+  try {
+    await request('https://example.com')
+  } catch (e) {
+    expect(e.response.status).toBe(-1)
+    expect(e.message).toBe('Error')
+  }
+})
+
 it('has errors and creates xhrHandler', async () => {
   fetch.mockResponseOnce(new Error('fake error message'), { status: 422 })
   try {
