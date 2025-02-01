@@ -47,7 +47,7 @@ export default (sdk, options) => {
       },
     })
 
-    if (self) self[mainTarget].prototype = proxiedAddEventListener
+    if (self) self[mainTarget].prototype.addEventListener = proxiedAddEventListener
 
     const proxiedRemoveEventListener = new Proxy(proto.removeEventListener, {
       apply: (target, thisArg, args) => {
@@ -70,6 +70,6 @@ export default (sdk, options) => {
       },
     })
 
-    if (self) self[mainTarget].prototype = proxiedRemoveEventListener
+    if (self) self[mainTarget].prototype.removeEventListener = proxiedRemoveEventListener
   })
 }

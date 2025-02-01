@@ -4,7 +4,7 @@ import proxyFetch from './proxyFetch'
 
 export default sdk => {
   let session = {
-    guid: getGuid(),
+    guid: getGuid(sdk),
     frameworks: getFrameworks(),
   }
 

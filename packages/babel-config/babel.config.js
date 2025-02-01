@@ -17,7 +17,7 @@ module.exports = api => {
     ],
     plugins: [
       '@babel/plugin-transform-spread',
-      [
+      !isTest && [
         'module-resolver',
         {
           alias: {
@@ -26,11 +26,5 @@ module.exports = api => {
         },
       ],
     ].filter(Boolean),
-    env: {
-      test: {
-        presets: ['@babel/preset-env'],
-        plugins: ['@babel/plugin-transform-runtime'],
-      },
-    },
   }
 }

@@ -12,10 +12,14 @@ module.exports = {
     '<rootDir>/../../node_modules',
     '<rootDir>/jest',
   ],
+  moduleNameMapper: {
+    '@xaiku/(.*)': '<rootDir>/../$1/src',
+  },
   testMatch: ['<rootDir>/**/*.test.js'],
   globals: {},
   testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['<rootDir>/jest/setup.js'],
+  setupFiles: ['<rootDir>/jest/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest/setupForEach.js'],
   // On CI, we do not need the pretty CLI output, as it makes logs harder to parse
   ...(process.env.CI
     ? {

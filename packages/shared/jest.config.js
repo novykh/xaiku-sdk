@@ -12,6 +12,9 @@ module.exports = {
     '<rootDir>/../../node_modules',
     '<rootDir>/jest',
   ],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   testMatch: ['<rootDir>/**/*.test.js'],
   globals: {},
   testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],

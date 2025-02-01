@@ -13,7 +13,7 @@ import proxyDOM from './proxyDOM'
 
 export default sdk => {
   let session = {
-    guid: getGuid(),
+    guid: null,
     frameworks: [],
     userAgent: '',
     windowDimensions: [self.innerWidth, self.innerHeight],
@@ -44,6 +44,7 @@ export default sdk => {
 
   document.addEventListener('DOMContentLoaded', () => {
     setAttributes({
+      guid: getGuid(sdk),
       frameworks: getFrameworks(),
       userAgent: navigator.userAgent,
       windowDimensions: [self.innerWidth, self.innerHeight],

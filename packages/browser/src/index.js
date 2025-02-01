@@ -1,9 +1,20 @@
-import { makeListeners, makePerformanceObserver, makeFnProxy, isBrowser } from '@xaiku/shared'
+import {
+  makeListeners,
+  makePerformanceObserver,
+  makeFnProxy,
+  isBrowser,
+  parsePublicKey,
+  makeStorage,
+} from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
   appName: 'xaiku',
   version: 'N/A',
+  store: {
+    name: 'localStorage',
+    custom: null,
+  },
 }
 
 export default (options = {}) => {
@@ -11,7 +22,10 @@ export default (options = {}) => {
     throw new Error('@xaiku/browser runs only on browsers and expects document to exist.')
   }
 
-  const { appName, version } = { ...defaultOptions, ...options }
+  options = { ...defaultOptions, ...options }
+  const { appName, version, pkey } = options
+
+  const { apiEnv, apiUrl } = parsePublicKey(pkey)
 
   const listeners = makeListeners()
 
@@ -21,11 +35,14 @@ export default (options = {}) => {
   listeners.on('hide', pos.disconnect)
 
   let instance = {
+    getOptions: () => options,
     appName,
     version,
     pos,
     ...makeFnProxy(listeners.trigger),
     ...listeners,
+    apiEnv,
+    apiUrl,
   }
 
   instance.on('metric:report', metric => {
@@ -42,9 +59,11 @@ export default (options = {}) => {
   })
 
   const client = makeClient(instance)
+  const storage = makeStorage(instance)
 
   return {
     ...instance,
     client,
+    storage,
   }
 }
