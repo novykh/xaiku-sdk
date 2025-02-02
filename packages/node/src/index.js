@@ -4,6 +4,10 @@ import makeClient from './client'
 const defaultOptions = {
   appName: 'xaiku',
   version: 'N/A',
+  
+  store: {
+    name: "memory"
+  }
 }
 
 export default (options = {}) => {

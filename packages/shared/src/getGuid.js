@@ -8,34 +8,15 @@ const initGuid = () =>
     return v.toString(16)
   })
 
-const cookieName = 'xaikuguid'
-let guid = null
+const storeName = 'xaikuguid'
 
-const browserGetGuid = sdk => {
-  if (guid) return guid
+export default sdk => {
+  let guid = sdk.storage.get(storeName)
 
-  const cookie = makeBrowserCookie(sdk)
-
-  guid = cookie.get(cookieName)
-
-  if (guid) return guid
-
-  guid = initGuid()
-
-  cookie.set(cookieName, guid)
-
-  return guid
-}
-
-export default (sdk, req, res) => {
-  if (isBrowser()) return browserGetGuid(sdk)
-
-  if (req?.cookies?.[cookieName]) return req.cookies[cookieName]
-
-  guid = initGuid()
-  const secure = sdk.getOptions()?.store?.secure ?? true
-
-  if (res) res.cookie(cookieName, guid, { httpOnly: true, secure })
-
+  if (!uuid) {
+    guid = initGuid()
+    sdk.storage.set(storeName, guid)
+  }
+  
   return guid
 }
