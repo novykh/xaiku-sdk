@@ -44,7 +44,6 @@ export default sdk => {
 
   document.addEventListener('DOMContentLoaded', () => {
     setAttributes({
-      guid: getGuid(sdk),
       frameworks: getFrameworks(),
       userAgent: navigator.userAgent,
       windowDimensions: [self.innerWidth, self.innerHeight],
@@ -60,6 +59,8 @@ export default sdk => {
   }
 
   return {
+    setAttribute,
+    setAttributes,
     destroy,
   }
 }

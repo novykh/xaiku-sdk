@@ -1,6 +1,3 @@
-import isBrowser from '@/isBrowser'
-import makeBrowserCookie from '@/storage/cookie'
-
 const initGuid = () =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0,
@@ -8,15 +5,17 @@ const initGuid = () =>
     return v.toString(16)
   })
 
-const storeName = 'xaikuguid'
+const key = 'xaikuguid'
 
 export default sdk => {
-  let guid = sdk.storage.get(storeName)
+  let guid = sdk.getOptions().guid
+  if (guid) return guid
 
-  if (!uuid) {
+  guid = sdk.storage.get(key)
+  if (!guid) {
     guid = initGuid()
-    sdk.storage.set(storeName, guid)
+    sdk.storage.set(key, guid)
   }
-  
+
   return guid
 }

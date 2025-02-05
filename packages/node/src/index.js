@@ -1,44 +1,22 @@
-import { makeListeners, makeFnProxy } from '@xaiku/shared'
+import makeCoreSdk from '@xaiku/core'
+import { isNode } from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
-  appName: 'xaiku',
-  version: 'N/A',
-  
   store: {
-    name: "memory"
-  }
+    name: 'memory',
+    custom: null,
+  },
 }
 
 export default (options = {}) => {
-  const { appName, version } = { ...defaultOptions, ...options }
+  let instance = makeCoreSdk({ ...defaultOptions, ...options })
 
-  const listeners = makeListeners()
-
-  let instance = {
-    appName,
-    version,
-    ...makeFnProxy(listeners.trigger),
-    ...listeners,
+  if (!isNode()) {
+    throw new Error('@xaiku/node runs only on Node.js environments.')
   }
 
-  instance.on('metric:report', metric => {
-    console.log({
-      metric: metric.context,
-      value: metric.value,
-      group: metric.group,
-      instance: instance.appName,
-      name: metric.name,
-      title: metric.title,
-      labels: [{ _xaiku: true }, { _instance_version: instance.version }, ...(metric.labels || [])],
-      entries: metric.entries,
-    })
-  })
+  instance.client = makeClient(instance)
 
-  const client = makeClient(instance)
-
-  return {
-    ...instance,
-    client,
-  }
+  return instance
 }

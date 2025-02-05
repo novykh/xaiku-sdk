@@ -6,6 +6,7 @@ export default () => {
   let _localStorage = null
 
   const store = {
+    name: 'localStorage',
     supported: isBrowser() && !!window.localStorage,
     get: name => deserialize(_localStorage.getItem(name)),
     set: (name, value) => _localStorage.setItem(name, serialize(value)),

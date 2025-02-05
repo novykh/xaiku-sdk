@@ -17,9 +17,9 @@ export default sdk => {
   if (validateStore(custom)) return custom
 
   const makeStore = stores[name] || stores.cookie
-  const store = makeStore()
+  const store = makeStore(sdk)
 
   if (store.supported) return store
 
-  return stores.memory()
+  return stores.memory(sdk)
 }

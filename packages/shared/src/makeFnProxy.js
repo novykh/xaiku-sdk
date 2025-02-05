@@ -1,10 +1,11 @@
-const xaikuFn = Symbol('XAIKU@originalFn')
-const states = {
+import { noop } from '@/helpers'
+
+export const xaikuFn = Symbol('XAIKU@originalFn')
+export const states = {
   start: 'start',
   end: 'end',
   error: 'error',
 }
-const noop = () => {}
 
 export default trigger => {
   const canProxyFn = fn => {

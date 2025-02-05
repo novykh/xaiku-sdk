@@ -17,9 +17,7 @@
     "test": "jest",
     "lint": "eslint './src/**/*.js'",
     "clean": "rimraf lib dist es coverage node_modules",
-    "prepublishOnly": "yarn clean && yarn build",
-    "cp-xaiku": "cp -R ./dist ../xaiku/node_modules/@xaiku/shared/",
-    "to-xaiku": "yarn build && yarn cp-xaiku"
+    "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@xaiku/babel-config": "*",

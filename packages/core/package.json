@@ -1,5 +1,5 @@
 {
-  "name": "@xaiku/browser",
+  "name": "@xaiku/core",
   "version": "0.0.0",
   "license": "MIT",
   "private": false,
@@ -17,25 +17,12 @@
     "test": "jest",
     "lint": "eslint './src/**/*.js'",
     "clean": "rimraf lib dist es coverage node_modules",
-    "prepublishOnly": "yarn clean && yarn build",
-    "cp-xaiku": "cp -R ./dist ../xaiku/node_modules/@xaiku/browser/",
-    "to-xaiku": "yarn build && yarn cp-xaiku",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "prepublishOnly": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@xaiku/core": "*",
     "@xaiku/shared": "*"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^3.2.4",
-    "@storybook/addon-essentials": "^8.5.3",
-    "@storybook/addon-interactions": "^8.5.3",
-    "@storybook/addon-webpack5-compiler-swc": "^2.0.0",
-    "@storybook/blocks": "^8.5.3",
-    "@storybook/html": "^8.5.3",
-    "@storybook/html-webpack5": "^8.5.3",
-    "@storybook/test": "^8.5.3",
     "@xaiku/babel-config": "*",
     "@xaiku/eslint-config": "*",
     "@xaiku/prettier-config": "*",

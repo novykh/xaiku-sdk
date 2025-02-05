@@ -26,6 +26,7 @@ export default sdk => {
   }
 
   const store = {
+    name: 'cookie',
     supported: isBrowser(),
     get: name => {
       try {
