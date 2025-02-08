@@ -1,5 +1,11 @@
-import { makeListeners, makeFnProxy, parsePublicKey, makeStorage, getGuid } from '@xaiku/shared'
-import { noop } from '@/helpers'
+import {
+  makeListeners,
+  makeFnProxy,
+  parsePublicKey,
+  makeStorage,
+  getGuid,
+  noop,
+} from '@xaiku/shared'
 
 export const defaultOptions = {
   appName: 'xaiku',

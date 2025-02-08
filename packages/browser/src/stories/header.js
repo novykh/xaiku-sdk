@@ -1,7 +1,7 @@
-import { createButton } from './Button'
+import createButton from './button'
 import './header.css'
 
-export const createHeader = ({ user, onLogout, onLogin, onCreateAccount }) => {
+const createHeader = ({ user, onLogout, onLogin, onCreateAccount }) => {
   const header = document.createElement('header')
 
   const wrapper = document.createElement('div')
@@ -45,3 +45,5 @@ export const createHeader = ({ user, onLogout, onLogin, onCreateAccount }) => {
 
   return header
 }
+
+export default createHeader

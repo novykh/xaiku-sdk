@@ -1,12 +1,6 @@
 import './button.css'
 
-export const createButton = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  onClick,
-}) => {
+const createButton = ({ primary = false, size = 'medium', backgroundColor, label, onClick }) => {
   const btn = document.createElement('button')
   btn.type = 'button'
   btn.innerText = label
@@ -19,3 +13,5 @@ export const createButton = ({
 
   return btn
 }
+
+export default createButton

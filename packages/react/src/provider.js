@@ -1,6 +1,7 @@
-import React, { version, useMemo } from 'react'
+import React, { createContext, version, useMemo } from 'react'
 import browserSDK from '@xaiku/browser'
-import { XaikuContext } from './context'
+
+export const XaikuContext = createContext(null)
 
 const Provider = ({ children, pkey, sdk, ...rest }) => {
   const memoizedSdk = useMemo(

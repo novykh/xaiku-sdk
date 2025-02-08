@@ -7,33 +7,21 @@ import prettierRecommended from '@xaiku/prettier-config/eslint-plugin.mjs'
 
 export default [
   pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended,
   jsxA11y.flatConfigs.recommended,
   prettierRecommended,
+  pluginReact.configs.flat.recommended,
   {
-    rules: {
-      'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
-      'react/prop-types': 'off',
-    },
-  },
-  {
-    ignores: [
-      // Ignore dotfiles
-      '.*.js',
-      'node_modules/',
-      'dist/',
-    ],
-  },
-  { files: ['**/*.{js,mjs,cjs,jsx}'] },
-  {
+    files: ['**/*.{js,mjs,cjs,jsx}'],
     languageOptions: {
       parser: babelParser,
       parserOptions: {
+        requireConfigFile: false,
         ecmaFeatures: {
           jsx: true,
         },
       },
       globals: {
+        ...globals.serviceworker,
         ...globals.browser,
         ...globals.commonjs,
         ...globals.es6,
@@ -41,5 +29,15 @@ export default [
         ...globals.node,
       },
     },
+    rules: {
+      'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+      'react/prop-types': 'off',
+    },
+    ignores: [
+      // Ignore dotfiles
+      '.*.js',
+      'node_modules/',
+      'dist/',
+    ],
   },
 ]

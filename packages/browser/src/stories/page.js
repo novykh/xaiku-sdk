@@ -1,7 +1,7 @@
-import { createHeader } from './Header'
+import createHeader from './header'
 import './page.css'
 
-export const createPage = () => {
+const createPage = () => {
   const article = document.createElement('article')
   let user = null
   let header = null
@@ -92,3 +92,5 @@ export const createPage = () => {
 
   return article
 }
+
+export default createPage

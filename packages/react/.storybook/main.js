@@ -1,4 +1,4 @@
-import { join, dirname } from 'path'
+import { join, dirname, resolve } from 'path'
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -21,6 +21,14 @@ const config = {
   framework: {
     name: getAbsolutePath('@storybook/react-webpack5'),
     options: {},
+  },
+  webpackFinal: async config => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@xaiku/browser': resolve(__dirname, '../../browser/dist'),
+    }
+
+    return config
   },
 }
 export default config

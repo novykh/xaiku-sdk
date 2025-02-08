@@ -1,6 +1,5 @@
 import { fn } from '@storybook/test'
-
-import { createHeader } from './Header'
+import createHeader from './header'
 
 export default {
   title: 'Example/Header',
