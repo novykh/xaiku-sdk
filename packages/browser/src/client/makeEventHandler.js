@@ -6,6 +6,7 @@ const isDifferentEvent = (previous, current) => {
 
   try {
     if (previous.target !== current.target) return true
+    // eslint-disable-next-line no-empty, no-unused-vars
   } catch (e) {}
 
   return false

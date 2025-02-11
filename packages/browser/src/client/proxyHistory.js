@@ -10,6 +10,7 @@ const isValidUrl = input => {
   try {
     new URL(input)
     return true
+    // eslint-disable-next-line no-unused-vars
   } catch (e) {
     return false
   }

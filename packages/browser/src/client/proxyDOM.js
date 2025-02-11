@@ -20,6 +20,7 @@ export default (sdk, options) => {
   domInterfaces.forEach(mainTarget => {
     const proto = self[mainTarget] && self[mainTarget].prototype
 
+    // eslint-disable-next-line no-prototype-builtins
     if (!proto || !proto.hasOwnProperty || !proto.hasOwnProperty('addEventListener')) return
     if (sdk.canProxyFn(proto.addEventListener)) return
 
@@ -39,9 +40,8 @@ export default (sdk, options) => {
             target[counterSymbol][type] = 1
             target.apply(thisArg, [type, eventHandler, optionsOrUseCapture])
           }
-        } catch (e) {
-          // Do nothing
-        }
+          // eslint-disable-next-line no-empty, no-unused-vars
+        } catch (e) {}
 
         return target.apply(thisArg, [type, listener, optionsOrUseCapture])
       },
@@ -62,9 +62,8 @@ export default (sdk, options) => {
             delete target[counterSymbol]
             target.apply(thisArg, [type, eventHandler, optionsOrUseCapture])
           }
-        } catch (e) {
-          // Do nothing
-        }
+          // eslint-disable-next-line no-empty, no-unused-vars
+        } catch (e) {}
 
         return target.apply(thisArg, [type, listener, optionsOrUseCapture])
       },
