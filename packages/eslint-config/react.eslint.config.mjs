@@ -4,6 +4,7 @@ import pluginReact from 'eslint-plugin-react'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import babelParser from '@babel/eslint-parser'
 import prettierRecommended from '@xaiku/prettier-config/eslint-plugin.mjs'
+import nextPlugin from '@next/eslint-plugin-next'
 
 export default [
   pluginJs.configs.recommended,
@@ -13,13 +14,7 @@ export default [
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
     languageOptions: {
-      parser: babelParser,
-      parserOptions: {
-        requireConfigFile: false,
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
+      ecmaVersion: 2025,
       globals: {
         ...globals.serviceworker,
         ...globals.browser,
@@ -30,6 +25,7 @@ export default [
       },
     },
     rules: {
+      'react/display-name': 'off',
       'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
       'react/prop-types': 'off',
     },

@@ -16,7 +16,6 @@ module.exports = api => {
       '@babel/preset-react',
     ],
     plugins: [
-      '@babel/plugin-transform-spread',
       !isTest && [
         'module-resolver',
         {
