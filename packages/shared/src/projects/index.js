@@ -3,8 +3,8 @@ import memoryStore from '@/storage/memory'
 import fetchProjects from './fetchProjects'
 import selectVariant from './selectVariant'
 
-const projectsKey = 'xaikuprojects'
-const variantsKey = 'xaikuvariants'
+const projectsKey = '@xaiku/projects'
+const variantsKey = '@xaiku/variants'
 
 const checkSize = projects => {
   const stringified = JSON.stringify(projects)
@@ -53,8 +53,8 @@ export default async sdk => {
 
     if (variants) return variants
 
-    variants = projects.reduce((h, project) => {
-      h[project.uid] = selectVariant(project.variants, sdk.guid, project.uid)
+    variants = Object.keys(projects).reduce((h, uid) => {
+      h[uid] = selectVariant(projects[uid], sdk.guid, uid)
       return h
     }, {})
 

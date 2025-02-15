@@ -7,7 +7,10 @@ export default store => {
   try {
     if (store.supported) {
       store.set(key, val)
-      if (store.get(key) !== val) store.supported = false
+      if (store.get(key) !== val) {
+        store.supported = false
+        return false
+      }
       store.delete(key)
       return true
     }

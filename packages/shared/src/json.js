@@ -2,7 +2,7 @@ export const deserialize = (val, fallback = null) => {
   try {
     return val ? JSON.parse(val) : null
   } catch (e) {
-    return fallback
+    return fallback || val
   }
 }
 

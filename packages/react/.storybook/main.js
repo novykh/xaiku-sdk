@@ -26,6 +26,8 @@ const config = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@xaiku/browser': resolve(__dirname, '../../browser/dist'),
+      '@xaiku/shared': resolve(__dirname, '../../shared/dist'),
+      '@xaiku/core': resolve(__dirname, '../../core/dist'),
     }
 
     return config

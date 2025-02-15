@@ -3,7 +3,11 @@ import initXaiku, { XaikuProvider } from '..'
 import Button from './button'
 import './header.css'
 
-const sdk = initXaiku({ pkey: 'pk_test_123' })
+const sdk = initXaiku({
+  pkey: 'pk_IxIifMkJ4Ot8XNBs',
+  projectIds: ['66a7aa430d37c7d301230442', '667ad845393ebebbca17b2e8'],
+  dev: true,
+})
 
 const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
   <XaikuProvider sdk={sdk}>

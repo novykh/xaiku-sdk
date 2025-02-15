@@ -11,12 +11,12 @@ describe('init', () => {
   })
 
   it('initializes with default options', () => {
-    const sdk = init({ pkey: 'pk_test_123' })
+    const sdk = init({ pkey: 'pk_123' })
 
     expect(sdk.appName).toBe(defaultOptions.appName)
     expect(sdk.version).toBe(defaultOptions.version)
     expect(sdk.projectIds).toEqual([])
-    expect(sdk.getOptions()).toEqual({ ...defaultOptions, pkey: 'pk_test_123' })
+    expect(sdk.getOptions()).toEqual({ ...defaultOptions, pkey: 'pk_123' })
     expect(sdk.on).toBeDefined()
     expect(sdk.trigger).toBeDefined()
     expect(sdk.storage).toBeDefined()
@@ -29,17 +29,17 @@ describe('init', () => {
     expect(sdk.storage.name).toBe('memory')
     expect(sdk.trigger).toBeDefined()
     expect(sdk.token).toBe('123')
-    expect(sdk.apiEnv).toBe('development')
-    expect(sdk.apiUrl).toBe('http://localhost:3000/api/')
+    expect(sdk.apiUrl).toBe('https://xaiku.com/api/')
   })
 
   it('initializes with options', () => {
     let sdk = init({
-      pkey: 'pk_live_1234',
+      pkey: 'pk_1234',
       appName: 'foo',
       version: 'bar',
       projectIds: [1, 2, 3],
       store: { custom: { get: 1, set: 2, delete: 3 } },
+      dev: true,
     })
 
     expect(sdk.appName).toBe('foo')
@@ -56,11 +56,10 @@ describe('init', () => {
     // Invalid custom store actions
     expect(sdk.storage.name).toBe('memory')
     expect(sdk.token).toBe('1234')
-    expect(sdk.apiEnv).toBe('production')
-    expect(sdk.apiUrl).toBe('https://xaiku.com/api/')
+    expect(sdk.apiUrl).toBe('http://localhost:3000/api/')
 
     sdk = init({
-      pkey: 'pk_live_1234',
+      pkey: 'pk_1234',
       projectIds: 1,
       store: { name: 'sessionStorage' },
       proxyApiUrl: 'http://localhost:3001/api/',
@@ -76,7 +75,7 @@ describe('init', () => {
   it('listens on metric:report event', () => {
     const onReport = jest.fn()
 
-    const sdk = init({ pkey: 'pk_test_123', onReport })
+    const sdk = init({ pkey: 'pk_123', onReport })
 
     const metric = {
       context: 'test',

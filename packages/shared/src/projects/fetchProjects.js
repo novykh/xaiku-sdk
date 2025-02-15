@@ -7,7 +7,7 @@ export default async sdk => {
     const response = await request(url, {
       headers: {
         Accept: 'custom/json',
-        'X-public-key': sdk.pKey,
+        'X-public-key': sdk.pkey,
         'X-project-ids': sdk.projectIds.join(','),
       },
     })

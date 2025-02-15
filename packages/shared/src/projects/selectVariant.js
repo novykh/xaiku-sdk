@@ -11,7 +11,7 @@ const hashGuid = (guid, projectId) => {
 }
 
 export default (variants, guid, projectId) => {
-  const totalWeight = variants.reduce((sum, v) => sum + v.weight, 0)
+  const totalWeight = variants.reduce((sum, v) => sum + (v.weight ?? 5), 0)
   const hashValue = hashGuid(guid, projectId) % totalWeight
   let cumulativeWeight = 0
 

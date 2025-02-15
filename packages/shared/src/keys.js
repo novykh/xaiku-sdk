@@ -1,25 +1,18 @@
 const publicKeyPrefix = 'pk_'
 const isPublicKey = key => key.startsWith('pk_')
 
-const livePublicKeyPrefix = publicKeyPrefix + 'live_'
-const testPublicKeyPrefix = publicKeyPrefix + 'test_'
-
-const isLive = key => key.startsWith(livePublicKeyPrefix)
-
-const getEnv = key => (isLive(key) ? 'production' : 'development')
-
-const getToken = key =>
-  key.slice(isLive(key) ? livePublicKeyPrefix.length : testPublicKeyPrefix.length)
+const getToken = key => key.slice(publicKeyPrefix.length)
 
 const apiUrlByEnv = {
-  production: 'https://xaiku.com/api/',
   development: 'http://localhost:3000/api/',
+  production: 'https://xaiku.com/api/',
 }
 
-const getApiUrl = (env, { proxyApiUrl } = {}) => {
+const getApiUrl = ({ proxyApiUrl, dev } = {}) => {
+  if (dev) return apiUrlByEnv.development
   if (proxyApiUrl) return proxyApiUrl
 
-  return apiUrlByEnv[env] || apiUrlByEnv.development
+  return apiUrlByEnv.production
 }
 
 const whereTofindMessage = 'Access your xaiku keys here: https://xaiku.com/dashboard/settings/keys'
@@ -38,11 +31,9 @@ export const parsePublicKey = sdk => {
   }
 
   const token = getToken(key)
-  const apiEnv = getEnv(key)
-  const apiUrl = getApiUrl(apiEnv, sdk.getOptions())
+  const apiUrl = getApiUrl(sdk.getOptions())
 
   return {
-    apiEnv,
     apiUrl,
     token,
   }

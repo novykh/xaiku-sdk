@@ -5,7 +5,7 @@ const initGuid = () =>
     return v.toString(16)
   })
 
-const key = 'xaikuguid'
+const key = '@xaiku/guid'
 
 export default sdk => {
   let guid = sdk.getOptions().guid
