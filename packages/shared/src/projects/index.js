@@ -15,6 +15,7 @@ const findMissingIds = (projects, ids) =>
   ids.length === projects.ids ? [] : ids.filter(id => !projects.find(project => project.id === id))
 
 export default async sdk => {
+  let localVariants = null
   let storage = sdk.storage
 
   sdk.setProjects = projects => {
@@ -44,9 +45,22 @@ export default async sdk => {
     sdk.setProjects(projects)
 
     return projects
+  } 
+
+  sdk.getVariants = async ({ quickReturn } = {}) => {
+    if (localVariants) return localVariants
+
+    const variants = storage.get(variantsKey)
+
+    if (!variants) return await initializeForUser()
+
+    return variants
   }
 
-  sdk.setVariants = variants => onAfterNextFrame(() => sdk.storage.set(variantsKey, variants))
+  sdk.setVariants = variants => onAfterNextFrame(() => {
+    sdk.storage.set(variantsKey, variants)
+    localVariants = variants
+  })
 
   sdk.selectVariants = (projects, { force } = {}) => {
     let variants = force ? null : sdk.storage.get(variantsKey)
@@ -55,6 +69,9 @@ export default async sdk => {
 
     variants = Object.keys(projects).reduce((h, uid) => {
       h[uid] = selectVariant(projects[uid], sdk.guid, uid)
+
+      sdk.trigger('variants:select', h[project.uid])
+
       return h
     }, {})
 
@@ -63,41 +80,27 @@ export default async sdk => {
     return variants
   }
 
-  const returnFallback = payload => {
-    sdk.trigger('variants:selectFallback', payload)
-
-    return null
-  }
-
-  const returnVariant = (variant, payload) => {
-    if (!variant) return returnFallback()
-
-    sdk.trigger('variants:select', { ...payload, variant })
-
-    return variant
-  }
-
-  sdk.getVariant = (projectId, partId) => {
-    const variants = sdk.storage.get(variantsKey)
+  sdk.getVariant = async (projectId, partId) => {
+    const variants = await sdk.getVariants()
 
     if (!variants) {
       initializeForUser() // TODO make sure if inflight request then do not run again, or at least cancel previous
-      return returnFallback()
+      return null
     }
 
     const variant = variants[projectId]
 
-    if (!variant) return returnFallback()
+    if (!variant) return null
 
     if (typeof variant !== 'object') return variant
 
-    return returnVariant(variant[partId])
+    return variant[partId]
   }
 
   const initializeForUser = async () => {
     const projects = await sdk.getProjects(sdk.projectIds, { force: true })
 
-    sdk.selectVariants(projects, { force: true })
+    return sdk.selectVariants(projects, { force: true })
   }
 
   initializeForUser()
