@@ -29,7 +29,7 @@ describe('init', () => {
     expect(sdk.storage.name).toBe('memory')
     expect(sdk.trigger).toBeDefined()
     expect(sdk.token).toBe('123')
-    expect(sdk.apiUrl).toBe('https://xaiku.com/api/')
+    expect(sdk.apiUrl).toBe('https://xaiku.com/api/v1/')
   })
 
   it('initializes with options', () => {
@@ -56,20 +56,20 @@ describe('init', () => {
     // Invalid custom store actions
     expect(sdk.storage.name).toBe('memory')
     expect(sdk.token).toBe('1234')
-    expect(sdk.apiUrl).toBe('http://localhost:3000/api/')
+    expect(sdk.apiUrl).toBe('http://localhost:3000/api/v1/')
 
     sdk = init({
       pkey: 'pk_1234',
       projectIds: 1,
       store: { name: 'sessionStorage' },
-      proxyApiUrl: 'http://localhost:3001/api/',
+      proxyApiUrl: 'http://localhost:3001/api/v1/',
     })
 
     expect(sdk.projectIds).toEqual([1])
 
     // No DOM
     expect(sdk.storage.name).toBe('memory')
-    expect(sdk.apiUrl).toBe('http://localhost:3001/api/')
+    expect(sdk.apiUrl).toBe('http://localhost:3001/api/v1/')
   })
 
   it('listens on metric:report event', () => {

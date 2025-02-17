@@ -10,11 +10,5 @@ export default [
       'no-html-link-for-pages': 'off',
       'react/react-in-jsx-scope': 'off',
     },
-    ignores: [
-      // Ignore dotfiles
-      '.*.js',
-      'node_modules/',
-      'dist/',
-    ],
   },
 ]

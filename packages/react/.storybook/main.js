@@ -25,9 +25,14 @@ const config = {
   webpackFinal: async config => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@xaiku/browser': resolve(__dirname, '../../browser/dist'),
-      '@xaiku/shared': resolve(__dirname, '../../shared/dist'),
-      '@xaiku/core': resolve(__dirname, '../../core/dist'),
+      '@xaiku/browser': resolve(__dirname, '../../browser/src/'),
+      '@xaiku/shared': resolve(__dirname, '../../shared/src/'),
+      '@xaiku/core': resolve(__dirname, '../../core/src/'),
+      '@': [
+        resolve(__dirname, '../../core/src/'),
+        resolve(__dirname, '../../browser/src/'),
+        resolve(__dirname, '../../shared/src/'),
+      ],
     }
 
     return config

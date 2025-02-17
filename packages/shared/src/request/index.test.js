@@ -48,7 +48,7 @@ it('fails when success response is not JSON string', async () => {
 it('fetches with custom headers', async () => {
   fetch.mockResponseOnce(JSON.stringify({ data: '12345' }))
   const response = await request('url.com', {
-    headers: { Accept: 'custom/json' },
+    headers: { Accept: 'application/json' },
   })
   expect(response.data).toEqual('12345')
   expect(fetch.mock.calls.length).toEqual(1)
@@ -56,7 +56,7 @@ it('fetches with custom headers', async () => {
     'url.com',
     {
       headers: {
-        Accept: 'custom/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'GET',

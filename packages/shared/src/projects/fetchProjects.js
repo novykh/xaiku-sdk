@@ -6,7 +6,7 @@ export default async sdk => {
     const url = ensureOneSlash(`${sdk.apiUrl}/projects`)
     const response = await request(url, {
       headers: {
-        Accept: 'custom/json',
+        Accept: 'application/json',
         'X-public-key': sdk.pkey,
         'X-project-ids': sdk.projectIds.join(','),
       },

@@ -14,6 +14,7 @@ export default store => {
       store.delete(key)
       return true
     }
+    // eslint-disable-next-line no-unused-vars
   } catch (e) {
     store.supported = false
   }

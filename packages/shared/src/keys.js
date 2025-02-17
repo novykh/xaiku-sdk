@@ -4,8 +4,8 @@ const isPublicKey = key => key.startsWith('pk_')
 const getToken = key => key.slice(publicKeyPrefix.length)
 
 const apiUrlByEnv = {
-  development: 'http://localhost:3000/api/',
-  production: 'https://xaiku.com/api/',
+  development: 'http://localhost:3000/api/v1/',
+  production: 'https://xaiku.com/api/v1/',
 }
 
 const getApiUrl = ({ proxyApiUrl, dev } = {}) => {

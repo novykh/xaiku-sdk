@@ -1,4 +1,12 @@
-import React, { createContext, version, useContext, useMemo, useLayoutEffect } from 'react'
+import React, {
+  createContext,
+  version,
+  useCallback,
+  useContext,
+  useMemo,
+  useLayoutEffect,
+  useState,
+} from 'react'
 import browserSDK from '@xaiku/browser'
 
 export const XaikuContext = createContext(null)
@@ -10,22 +18,23 @@ const useForceUpdate = () => {
   return useCallback(() => set(i => i + 1), [])
 }
 
-export const useVariantPart = (projectId, partId, initialValue = "") => {
+export const useVariantPart = (projectId, partId, initialValue = '') => {
   const [part, setPart] = useState(initialValue)
   const sdk = useSDK()
 
   const off = useMemo(() => {
     if (!sdk) return
 
-    return sdk.on('variants:select', (variant) => {
-      sdk.getVariant(projectId, partId).then((value) => {
+    return sdk.on('variants:select', variant => {
+      sdk.getVariant(projectId, partId).then(value => {
+        console.log('selected', value, variant)
         setPart(value)
-      }) 
+      })
     })
   }, [sdk])
 
   useLayoutEffect(() => off, [off])
-  
+
   return part
 }
 
