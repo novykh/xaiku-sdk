@@ -1,4 +1,9 @@
 /** @type { import('@storybook/react').Preview } */
+import { initialize, mswLoader } from 'msw-storybook-addon'
+
+initialize({
+  onUnhandledRequest: 'bypass',
+})
 
 const preview = {
   parameters: {
@@ -9,6 +14,7 @@ const preview = {
       },
     },
   },
+  loaders: [mswLoader],
 }
 
 export default preview

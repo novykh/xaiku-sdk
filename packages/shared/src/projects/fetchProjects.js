@@ -1,14 +1,14 @@
 import request from '@/request'
 import ensureOneSlash from '@/ensureOneSlash'
 
-export default async sdk => {
+export default async (sdk, ids) => {
   try {
     const url = ensureOneSlash(`${sdk.apiUrl}/projects`)
     const response = await request(url, {
       headers: {
         Accept: 'application/json',
         'X-public-key': sdk.pkey,
-        'X-project-ids': sdk.projectIds.join(','),
+        'X-project-ids': (ids ?? sdk.projectIds).join(','),
       },
     })
 

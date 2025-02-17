@@ -22,6 +22,7 @@ const config = {
     name: getAbsolutePath('@storybook/react-webpack5'),
     options: {},
   },
+  staticDirs: ['../public'],
   webpackFinal: async config => {
     config.resolve.alias = {
       ...config.resolve.alias,

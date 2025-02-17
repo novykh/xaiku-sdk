@@ -18,24 +18,26 @@ const useForceUpdate = () => {
   return useCallback(() => set(i => i + 1), [])
 }
 
-export const useVariantPart = (projectId, partId, initialValue = '') => {
-  const [part, setPart] = useState(initialValue)
+export const useText = (projectId, partId, initialValue = '') => {
+  const rerender = useForceUpdate()
   const sdk = useSDK()
 
   const off = useMemo(() => {
     if (!sdk) return
 
-    return sdk.on('variants:select', variant => {
-      sdk.getVariant(projectId, partId).then(value => {
-        console.log('selected', value, variant)
-        setPart(value)
-      })
-    })
+    return sdk.on('variants:select', rerender)
   }, [sdk])
 
   useLayoutEffect(() => off, [off])
 
-  return part
+  return sdk.getVariant(projectId, partId) || initialValue
+}
+
+export const Text = ({ projectId, partId, children }) => {
+  // TODO if element, then clone and pass correctly the text in it
+  const text = useText(projectId, partId, children)
+
+  return text
 }
 
 const Provider = ({ children, pkey, sdk, ...rest }) => {

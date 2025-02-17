@@ -12,7 +12,7 @@ const checkSize = projects => {
 }
 
 const findMissingIds = (projects, ids) =>
-  ids.length === projects.ids ? [] : ids.filter(id => !projects.find(project => project.id === id))
+  ids.length === Object.keys(projects).length ? [] : ids.filter(id => !projects[id])
 
 export default async sdk => {
   let localVariants = null
@@ -38,16 +38,18 @@ export default async sdk => {
       const missingIds = findMissingIds(projects, ids)
 
       if (!missingIds.length) return projects
+
+      ids = missingIds
     }
 
-    projects = await fetchProjects(sdk)
+    projects = await fetchProjects(sdk, ids)
 
     sdk.setProjects(projects)
 
     return projects
-  } 
+  }
 
-  sdk.getVariants = async ({ quickReturn } = {}) => {
+  sdk.getVariants = async () => {
     if (localVariants) return localVariants
 
     const variants = storage.get(variantsKey)
@@ -57,10 +59,12 @@ export default async sdk => {
     return variants
   }
 
-  sdk.setVariants = variants => onAfterNextFrame(() => {
-    sdk.storage.set(variantsKey, variants)
+  sdk.setVariants = variants => {
     localVariants = variants
-  })
+    onAfterNextFrame(() => {
+      sdk.storage.set(variantsKey, variants)
+    })
+  }
 
   sdk.selectVariants = (projects, { force } = {}) => {
     let variants = force ? null : sdk.storage.get(variantsKey)
@@ -70,7 +74,7 @@ export default async sdk => {
     variants = Object.keys(projects).reduce((h, uid) => {
       h[uid] = selectVariant(projects[uid], sdk.guid, uid)
 
-      sdk.trigger('variants:select', h[project.uid])
+      sdk.trigger('variants:select', h[uid])
 
       return h
     }, {})
@@ -80,11 +84,11 @@ export default async sdk => {
     return variants
   }
 
-  sdk.getVariant = async (projectId, partId) => {
-    const variants = await sdk.getVariants()
+  sdk.getVariant = (projectId, partId) => {
+    const variants = localVariants
 
     if (!variants) {
-      initializeForUser() // TODO make sure if inflight request then do not run again, or at least cancel previous
+      initializeForUser({ force: true }) // TODO make sure if inflight request then do not run again, or at least cancel previous
       return null
     }
 
@@ -92,15 +96,15 @@ export default async sdk => {
 
     if (!variant) return null
 
-    if (typeof variant !== 'object') return variant
+    if (typeof variant?.parts !== 'object') return variant
 
-    return variant[partId]
+    return variant.parts[partId]
   }
 
-  const initializeForUser = async () => {
-    const projects = await sdk.getProjects(sdk.projectIds, { force: true })
+  const initializeForUser = async ({ force = false } = {}) => {
+    const projects = await sdk.getProjects(sdk.projectIds, { force })
 
-    return sdk.selectVariants(projects, { force: true })
+    return sdk.selectVariants(projects, { force })
   }
 
   initializeForUser()

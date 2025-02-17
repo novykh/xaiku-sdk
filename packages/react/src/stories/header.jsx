@@ -1,5 +1,5 @@
 import React from 'react'
-import initXaiku, { XaikuProvider } from '..'
+import initXaiku, { XaikuProvider, Text } from '..'
 import Button from './button'
 import './header.css'
 
@@ -36,7 +36,9 @@ const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
           {user ? (
             <>
               <span className="welcome">
-                Welcome, <b>{user.name}</b>!
+                <Text projectId="66a7aa430d37c7d301230442" partId="header">
+                  Welcome, <b>{user.name}</b>!
+                </Text>
               </span>
               <Button size="small" onClick={onLogout} label="Log out" />
             </>

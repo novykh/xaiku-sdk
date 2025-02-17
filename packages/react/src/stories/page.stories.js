@@ -1,4 +1,5 @@
 import { expect, userEvent, within } from '@storybook/test'
+import { http, HttpResponse, delay } from 'msw'
 import Page from './page'
 
 export default {
@@ -7,6 +8,32 @@ export default {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: 'fullscreen',
+    msw: {
+      handlers: [
+        http.get('http://localhost:3000/api/v1/projects', () => {
+          return HttpResponse.json({
+            projects: {
+              '66a7aa430d37c7d301230442': [
+                {
+                  parts: {
+                    header: 'Welcome to Acme',
+                    action: 'Sign up',
+                  },
+                  weight: 50,
+                },
+                {
+                  parts: {
+                    header: 'Hello, this is Acme',
+                    action: 'Register now!',
+                  },
+                  weight: 50,
+                },
+              ],
+            },
+          })
+        }),
+      ],
+    },
   },
 }
 
