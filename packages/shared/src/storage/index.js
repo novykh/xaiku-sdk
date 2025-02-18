@@ -4,7 +4,7 @@ import sessionStorage from './sessionStorage'
 import memory from './memory'
 import validateStore from './validateStore'
 
-const stores = {
+export const stores = {
   cookie,
   localStorage,
   sessionStorage,

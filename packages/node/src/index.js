@@ -16,7 +16,7 @@ export default (options = {}) => {
     throw new Error('@xaiku/node runs only on Node.js environments.')
   }
 
-  instance.client = makeClient(instance)
+  // instance.client = makeClient(instance)
 
   return instance
 }

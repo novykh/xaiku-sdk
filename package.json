@@ -5,9 +5,10 @@
   "author": "novykh <ioannis.klironomos@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=10"
+  },
   "scripts": {
     "build": "yarn workspaces run build",
     "lint": "yarn workspaces run lint",

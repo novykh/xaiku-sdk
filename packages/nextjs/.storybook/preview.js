@@ -2,7 +2,7 @@
 import { initialize, mswLoader } from 'msw-storybook-addon'
 
 initialize({
-  onUnhandledRequest: 'warn',
+  onUnhandledRequest: 'bypass',
 })
 
 const preview = {

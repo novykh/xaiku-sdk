@@ -4,7 +4,7 @@ import process from 'process'
 
 export default sdk => {
   let session = {
-    guid: null,
+    guid: getGuid(sdk),
     frameworks: [],
     userAgent: 'Node.js Server',
     environment: process.env.NODE_ENV || 'development',

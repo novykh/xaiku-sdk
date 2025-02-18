@@ -1,4 +1,5 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -27,7 +28,7 @@ export default {
       },
     ],
   },
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [new CleanWebpackPlugin(), new NodePolyfillPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),

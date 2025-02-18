@@ -8,7 +8,7 @@ module.exports = api => {
       [
         '@babel/preset-env',
         {
-          loose: true,
+          loose: false,
           modules: isES6 ? false : 'commonjs',
           ...(isTest && { targets: { node: 'current' } }),
         },
