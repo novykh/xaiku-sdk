@@ -10,8 +10,9 @@ export default {
     layout: 'fullscreen',
     msw: {
       handlers: [
-        http.get('http://localhost:3000/api/v1/projects', () => {
-          return HttpResponse.json({
+        http.get('http://localhost:3000/api/v1/projects', async () => {
+          await delay()
+          return await HttpResponse.json({
             projects: {
               '66a7aa430d37c7d301230442': [
                 {

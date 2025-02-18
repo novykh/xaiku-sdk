@@ -7,7 +7,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react'
-import browserSDK from '@xaiku/browser'
+import makeSDK from '@xaiku/browser'
 
 export const XaikuContext = createContext(null)
 
@@ -42,7 +42,7 @@ export const Text = ({ projectId, partId, children }) => {
 
 const Provider = ({ children, pkey, sdk, ...rest }) => {
   const memoizedSdk = useMemo(
-    () => sdk || browserSDK({ ...rest, pkey, framework: 'react', frameworkVersion: version }),
+    () => sdk || makeSDK({ ...rest, pkey, framework: 'react', frameworkVersion: version }),
     [sdk, pkey]
   )
 

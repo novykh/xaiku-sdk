@@ -35,6 +35,8 @@ export default async sdk => {
     let projects = force ? null : storage.get(projectsKey)
 
     if (projects) {
+      if (!force && projects) return projects
+
       const missingIds = findMissingIds(projects, ids)
 
       if (!missingIds.length) return projects
@@ -68,6 +70,7 @@ export default async sdk => {
 
   sdk.selectVariants = (projects, { force } = {}) => {
     let variants = force ? null : sdk.storage.get(variantsKey)
+    localVariants = variants
 
     if (variants) return variants
 
