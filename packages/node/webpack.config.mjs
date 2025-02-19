@@ -35,7 +35,7 @@ export default {
   resolve: {
     fallback: { process: require.resolve('process/browser') },
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@/': path.resolve(__dirname, 'src'),
     },
   },
 }

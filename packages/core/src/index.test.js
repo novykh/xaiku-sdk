@@ -1,5 +1,5 @@
 import init, { defaultOptions } from '.'
-import { errorMissingKeyMessage, errorInvalidKeyMessage } from '@xaiku/shared'
+import { errorMissingKeyMessage, errorInvalidKeyMessage } from 'git add .@xaiku/shared'
 
 describe('init', () => {
   it('throws missing public key', () => {
