@@ -11,13 +11,6 @@ export default {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: 'fullscreen',
-    moduleMock: {
-      mock: () => {
-        const mock = createMock(headers, 'cookies')
-        mock.mockReturnValue(Promise.resolve(stores.memory()))
-        return [mock]
-      },
-    },
     msw: {
       handlers: [
         http.get('http://localhost:3000/api/v1/projects', async () => {

@@ -10,14 +10,16 @@
     "pnpm": ">=10"
   },
   "scripts": {
-    "build": "yarn workspaces run build",
-    "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test --passWithNoTests",
-    "clean": "yarn workspaces run clean && rm -rf node_modules",
+    "build": "pnpm run --filter '@xaiku/*' --if-present build",
+    "lint": "pnpm run --filter '@xaiku/*' --if-present lint",
+    "test": "pnpm run --filter '@xaiku/*' --if-present test --passWithNoTests",
+    "clean": "pnpm run --filter '@xaiku/*' --if-present clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{js,mjs,md}\"",
-    "prepublishOnly": "yarn clean && yarn build"
+    "prepublishOnly": "pnpm run clean && pnpm run  build"
   },
   "devDependencies": {
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "@xaiku/eslint-config": "workspace:*",
+    "@xaiku/prettier-config": "workspace:*"
   }
 }

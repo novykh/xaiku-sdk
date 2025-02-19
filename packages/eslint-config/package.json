@@ -10,12 +10,7 @@
     "next.eslint.config.mjs"
   ],
   "scripts": {
-    "build": "echo 'not implemented'",
-    "lint": "echo 'not implemented'",
-    "test": "echo 'not implemented'",
-    "clean": "rimraf lib dist es coverage node_modules",
-    "format": "echo 'not implemented'",
-    "prepublishOnly": "echo 'not implemented'"
+    "clean": "rimraf lib dist es coverage node_modules"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.26.8"

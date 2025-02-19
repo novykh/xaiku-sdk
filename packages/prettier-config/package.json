@@ -8,12 +8,7 @@
     "eslint-plugin.mjs"
   ],
   "scripts": {
-    "build": "echo 'not implemented'",
-    "lint": "echo 'not implemented'",
-    "test": "echo 'not implemented'",
-    "clean": "rimraf lib dist es coverage node_modules",
-    "format": "echo 'not implemented'",
-    "prepublishOnly": "echo 'not implemented'"
+    "clean": "rimraf lib dist es coverage node_modules"
   },
   "devDependencies": {
     "eslint-config-prettier": "^10.0.1",

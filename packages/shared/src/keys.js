@@ -31,7 +31,7 @@ export const parsePublicKey = sdk => {
   }
 
   const token = getToken(key)
-  const apiUrl = getApiUrl(sdk.getOptions())
+  const apiUrl = getApiUrl(sdk.options)
 
   return {
     apiUrl,

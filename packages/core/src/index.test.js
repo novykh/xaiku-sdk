@@ -16,7 +16,7 @@ describe('init', () => {
     expect(sdk.appName).toBe(defaultOptions.appName)
     expect(sdk.version).toBe(defaultOptions.version)
     expect(sdk.projectIds).toEqual([])
-    expect(sdk.getOptions()).toEqual({ ...defaultOptions, pkey: 'pk_123' })
+    expect(sdk.options).toEqual({ ...defaultOptions, pkey: 'pk_123' })
     expect(sdk.on).toBeDefined()
     expect(sdk.trigger).toBeDefined()
     expect(sdk.storage).toBeDefined()

@@ -13,13 +13,13 @@
     "build:cjs": "babel src --out-dir dist --copy-files",
     "build:es6": "BABEL_ENV=es6 babel src --out-dir dist/es6 --copy-files",
     "build:umd": "NODE_ENV=production webpack",
-    "build": "yarn build:umd && yarn build:cjs && yarn build:es6",
+    "build": "pnpm run build:umd && pnpm run build:cjs && pnpm run build:es6",
     "test": "jest",
     "lint": "eslint './src/**/*.js'",
     "clean": "rimraf lib dist es coverage node_modules",
-    "prepublishOnly": "yarn clean && yarn build",
+    "prepublishOnly": "pnpm run clean && pnpm run build",
     "cp-xaiku": "cp -R ./dist ../xaiku/node_modules/@xaiku/react/",
-    "to-xaiku": "yarn build && yarn cp-xaiku",
+    "to-xaiku": "pnpm run build && pnpm run cp-xaiku",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -30,6 +30,7 @@
     "react": "18.x || 19.x"
   },
   "devDependencies": {
+    "@babel/cli": "^7.26.4",
     "@chromatic-com/storybook": "^3.2.4",
     "@storybook/addon-essentials": "^8.5.6",
     "@storybook/addon-interactions": "^8.5.6",
@@ -43,6 +44,7 @@
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
     "babel-jest": "^29.7.0",
+    "babel-loader": "^9.2.1",
     "clean-webpack-plugin": "^4.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",

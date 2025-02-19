@@ -14,7 +14,7 @@ const getExpiresUtcString = days => {
 }
 
 export default sdk => {
-  const { crossSubdomain, secure, expiresAfterDays } = sdk.getOptions()?.store || defaultConfig
+  const { crossSubdomain, secure, expiresAfterDays } = sdk.options?.store || defaultConfig
 
   let domain = null
 

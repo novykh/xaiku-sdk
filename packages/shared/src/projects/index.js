@@ -3,8 +3,8 @@ import memoryStore from '@/storage/memory'
 import fetchProjects from './fetchProjects'
 import selectVariant from './selectVariant'
 
-const projectsKey = '@xaiku/projects'
-const variantsKey = '@xaiku/variants'
+const projectsKey = '__xaiku__projects__'
+const variantsKey = '__xaiku__variants__'
 
 const checkSize = projects => {
   const stringified = JSON.stringify(projects)
@@ -16,6 +16,7 @@ const findMissingIds = (projects, ids) =>
 
 export default async sdk => {
   let localVariants = null
+
   let storage = sdk.storage
 
   sdk.setProjects = projects => {
@@ -30,6 +31,8 @@ export default async sdk => {
   }
 
   sdk.getProjects = async (ids, { force } = {}) => {
+    if (!force && sdk.projects) return sdk.projects
+
     ids = ids ? (Array.isArray(ids) ? ids : [ids]) : []
 
     let projects = force ? null : storage.get(projectsKey)

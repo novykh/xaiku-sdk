@@ -2,6 +2,9 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
 
 // Fix "ReferenceError: __dirname is not defined in ES module scope"
 const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
@@ -30,6 +33,7 @@ export default {
   },
   plugins: [new CleanWebpackPlugin(), new NodePolyfillPlugin()],
   resolve: {
+    fallback: { process: require.resolve('process/browser') },
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },

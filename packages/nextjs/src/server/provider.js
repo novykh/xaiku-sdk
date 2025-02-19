@@ -1,12 +1,10 @@
-'use server'
-
+import React, { cache } from 'react'
 import { cookies } from 'next/headers'
-import React from 'react'
 import nextjsLib from 'next/package.json'
 import makeSDK from '@xaiku/node'
 import { XaikuProvider as ClientProvider } from '@xaiku/react'
 
-const getState = React.cache(async (pkey, options = {}) => {
+const getState = cache(async (pkey, options = {}) => {
   const cookieStore = await cookies()
   const custom = {
     name: 'cookie',
@@ -17,7 +15,7 @@ const getState = React.cache(async (pkey, options = {}) => {
   }
 
   const sdk = makeSDK({
-    pkey: process.env.NEXT_PUBLIC_XAIKU_API_KEY,
+    pkey: pkey || process.env.NEXT_PUBLIC_XAIKU_API_KEY,
     store: { custom },
     framework: 'nextjs',
     frameworkVersion: nextjsLib?.version || 'N/A',
@@ -33,10 +31,12 @@ const Provider = async ({
   sdk,
   ...rest
 }) => {
-  const memoizedSdk = sdk || (await getState(pkey, rest))
+  sdk = sdk || (await getState(pkey, rest))
+
+  const projects = await sdk.getProjects()
 
   return (
-    <ClientProvider {...rest} pkey={pkey} store={{ name: 'cookie' }}>
+    <ClientProvider {...rest} store={{ name: 'cookie' }} pkey={pkey} projects={projects}>
       {children}
     </ClientProvider>
   )

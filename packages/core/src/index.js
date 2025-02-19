@@ -25,7 +25,7 @@ export default (options = {}) => {
   const listeners = makeListeners()
 
   let instance = {
-    getOptions: () => options,
+    options,
     appName,
     version,
     ...makeFnProxy(listeners.trigger),
