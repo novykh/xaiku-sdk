@@ -1,4 +1,4 @@
-import onAfterNextFrame from '@/onAfterNextFrame'
+import onNextTick from '@/onNextTick'
 import memoryStore from '@/storage/memory'
 import fetchProjects from './fetchProjects'
 import selectVariant from './selectVariant'
@@ -20,7 +20,7 @@ export default async sdk => {
   let storage = sdk.storage
 
   sdk.setProjects = projects => {
-    onAfterNextFrame(() => {
+    onNextTick(() => {
       if (storage.name !== 'memory' && !checkSize(projects)) {
         console.warn('Projects size exceeds 1MB - falling back to memory storage')
         storage.delete(projectsKey)
@@ -31,7 +31,7 @@ export default async sdk => {
   }
 
   sdk.getProjects = async (ids, { force } = {}) => {
-    if (!force && sdk.projects) return sdk.projects
+    if (!force && sdk.options.projects) return sdk.projects
 
     ids = ids ? (Array.isArray(ids) ? ids : [ids]) : []
 
@@ -66,7 +66,7 @@ export default async sdk => {
 
   sdk.setVariants = variants => {
     localVariants = variants
-    onAfterNextFrame(() => {
+    onNextTick(() => {
       sdk.storage.set(variantsKey, variants)
     })
   }

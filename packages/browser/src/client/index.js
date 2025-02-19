@@ -1,4 +1,4 @@
-import { getFrameworks, getGuid } from '@xaiku/shared'
+import { getFrameworks } from '@xaiku/shared'
 import cls from '@/metrics/cls'
 import fcp from '@/metrics/fcp'
 import fid from '@/metrics/fid'
@@ -12,24 +12,11 @@ import proxyFetch from './proxyFetch'
 import proxyDOM from './proxyDOM'
 
 export default sdk => {
-  let session = {
-    guid: null,
-    frameworks: [],
-    userAgent: '',
-    windowDimensions: [self.innerWidth, self.innerHeight],
-  }
-
-  const setAttribute = (key, value) => {
-    session[key] = typeof value === 'function' ? value(session[key]) : value
-  }
-
-  const setAttributes = values => {
-    Object.keys(values).forEach(key => setAttribute(key, values[key]))
-  }
+  const client = sdk.client
 
   const windowContext = makeWindowContext(sdk)
 
-  const options = { windowContext, session }
+  const options = { client, windowContext }
 
   proxyHistory(sdk, options)
   // proxyTimers(sdk, options)
@@ -43,7 +30,7 @@ export default sdk => {
   // ttfb(sdk, options)
 
   document.addEventListener('DOMContentLoaded', () => {
-    setAttributes({
+    client.setAttributes({
       frameworks: getFrameworks(),
       userAgent: navigator.userAgent,
       windowDimensions: [self.innerWidth, self.innerHeight],
@@ -52,15 +39,11 @@ export default sdk => {
 
   const stopMetricObserver = metricObserver(sdk)
 
-  const destroy = () => {
+  client.destroy = () => {
     windowContext.destroy()
     stopMetricObserver()
-    session = null
+    client.destroy()
   }
 
-  return {
-    setAttribute,
-    setAttributes,
-    destroy,
-  }
+  return client
 }

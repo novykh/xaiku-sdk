@@ -6,6 +6,7 @@ import {
   getGuid,
   noop,
 } from '@xaiku/shared'
+import makeClient from './client'
 
 export const defaultOptions = {
   appName: 'xaiku',
@@ -37,6 +38,8 @@ export default (options = {}) => {
   instance.storage = makeStorage(instance)
   instance.guid = getGuid(instance)
   instance = { ...instance, ...parsePublicKey(instance) }
+
+  instance.client = makeClient(instance)
 
   instance.on('metric:report', metric => onReport(metric, instance))
 
