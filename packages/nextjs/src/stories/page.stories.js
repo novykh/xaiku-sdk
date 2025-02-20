@@ -1,8 +1,5 @@
 import { expect, userEvent, within } from '@storybook/test'
 import { http, HttpResponse, delay } from 'msw'
-import { createMock } from 'storybook-addon-module-mock'
-import * as headers from 'next/headers'
-import { stores } from '@xaiku/shared'
 import Page from './page'
 
 export default {

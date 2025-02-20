@@ -1,4 +1,4 @@
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/nextjs').Preview } */
 import { initialize, mswLoader } from 'msw-storybook-addon'
 
 initialize({

@@ -4,6 +4,82 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  build:
+    '@babel/cli':
+      specifier: ^7.26.4
+      version: 7.26.4
+    babel-jest:
+      specifier: ^29.7.0
+      version: 29.7.0
+    babel-loader:
+      specifier: ^9.2.1
+      version: 9.2.1
+    clean-webpack-plugin:
+      specifier: ^4.0.0
+      version: 4.0.0
+    webpack:
+      specifier: ^5.98.0
+      version: 5.98.0
+    webpack-cli:
+      specifier: ^6.0.1
+      version: 6.0.1
+  default:
+    next:
+      specifier: ^15.1.7
+      version: 15.1.7
+    react:
+      specifier: 18.3.1
+      version: 18.3.1
+  peers:
+    react:
+      specifier: 18.x || 19.x
+      version: 19.0.0
+    react-dom:
+      specifier: 18.x || 19.x
+      version: 19.0.0
+  storybook:
+    '@chromatic-com/storybook':
+      specifier: ^3.2.4
+      version: 3.2.4
+    '@storybook/addon-essentials':
+      specifier: ^8.5.6
+      version: 8.5.6
+    '@storybook/addon-interactions':
+      specifier: ^8.5.6
+      version: 8.5.6
+    '@storybook/addon-onboarding':
+      specifier: ^8.5.6
+      version: 8.5.6
+    '@storybook/addon-webpack5-compiler-swc':
+      specifier: ^2.1.0
+      version: 2.1.0
+    '@storybook/blocks':
+      specifier: ^8.5.6
+      version: 8.5.6
+    '@storybook/test':
+      specifier: ^8.5.6
+      version: 8.5.6
+    storybook:
+      specifier: ^8.5.6
+      version: 8.5.6
+  test:
+    jest:
+      specifier: ^29.7.0
+      version: 29.7.0
+    jest-environment-jsdom:
+      specifier: ^29.7.0
+      version: 29.7.0
+    jest-mock:
+      specifier: ^29.7.0
+      version: 29.7.0
+    msw:
+      specifier: ^2.7.0
+      version: 2.7.0
+    msw-storybook-addon:
+      specifier: ^2.0.4
+      version: 2.0.4
+
 importers:
 
   .:
@@ -34,7 +110,7 @@ importers:
         specifier: ^7.26.3
         version: 7.26.3(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       babel-plugin-module-resolver:
         specifier: ^5.0.2
@@ -50,22 +126,22 @@ importers:
         version: link:../shared
     devDependencies:
       '@babel/cli':
-        specifier: ^7.26.4
+        specifier: catalog:build
         version: 7.26.4(@babel/core@7.26.9)
       '@chromatic-com/storybook':
-        specifier: ^3.2.4
+        specifier: catalog:storybook
         version: 3.2.4(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-essentials':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(@types/react@19.0.10)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-interactions':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-webpack5-compiler-swc':
-        specifier: ^2.1.0
+        specifier: catalog:storybook
         version: 2.1.0(@swc/helpers@0.5.15)(webpack@5.98.0)
       '@storybook/blocks':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/html':
         specifier: ^8.5.6
@@ -74,7 +150,7 @@ importers:
         specifier: ^8.5.6
         version: 8.5.6(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)(webpack-cli@6.0.1)
       '@storybook/test':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -86,31 +162,31 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: ^29.7.0
+        specifier: catalog:build
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: ^4.0.0
+        specifier: catalog:build
         version: 4.0.0(webpack@5.98.0)
       jest:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0(@types/node@22.13.4)
       jest-environment-jsdom:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       jest-mock:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       storybook:
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(prettier@3.5.1)
       webpack:
-        specifier: ^5.98.0
+        specifier: catalog:build
         version: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: catalog:build
         version: 6.0.1(webpack@5.98.0)
 
   packages/core:
@@ -120,7 +196,7 @@ importers:
         version: link:../shared
     devDependencies:
       '@babel/cli':
-        specifier: ^7.26.4
+        specifier: catalog:build
         version: 7.26.4(@babel/core@7.26.9)
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -132,28 +208,28 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: ^29.7.0
+        specifier: catalog:build
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: ^4.0.0
+        specifier: catalog:build
         version: 4.0.0(webpack@5.98.0)
       jest:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0(@types/node@22.13.4)
       jest-environment-jsdom:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       jest-mock:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       webpack:
-        specifier: ^5.98.0
+        specifier: catalog:build
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: catalog:build
         version: 6.0.1(webpack@5.98.0)
 
   packages/eslint-config:
@@ -198,33 +274,33 @@ importers:
       '@xaiku/react':
         specifier: workspace:*
         version: link:../react
+      react-dom:
+        specifier: catalog:peers
+        version: 19.0.0(react@18.3.1)
     devDependencies:
       '@babel/cli':
-        specifier: ^7.26.4
+        specifier: catalog:build
         version: 7.26.4(@babel/core@7.26.9)
       '@chromatic-com/storybook':
-        specifier: ^3.2.4
-        version: 3.2.4(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
+        specifier: catalog:storybook
+        version: 3.2.4(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-essentials':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(@types/react@19.0.10)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-interactions':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-onboarding':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@storybook/blocks':
-        specifier: ^8.5.6
-        version: 8.5.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
+        specifier: catalog:storybook
+        version: 8.5.6(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/nextjs':
         specifier: ^8.5.6
-        version: 8.5.6(next@15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(type-fest@4.35.0)(typescript@5.7.3)(webpack-cli@6.0.1)(webpack-hot-middleware@2.26.1)(webpack@5.98.0)
-      '@storybook/react':
-        specifier: ^8.5.6
-        version: 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)
+        version: 8.5.6(next@15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@18.3.1))(react@18.3.1))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(type-fest@4.35.0)(typescript@5.7.3)(webpack-cli@6.0.1)(webpack-hot-middleware@2.26.1)(webpack@5.98.0)
       '@storybook/test':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -236,46 +312,43 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: ^29.7.0
+        specifier: catalog:build
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: ^4.0.0
+        specifier: catalog:build
         version: 4.0.0(webpack@5.98.0)
       jest:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0(@types/node@22.13.4)
       jest-environment-jsdom:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       jest-mock:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       msw:
-        specifier: ^2.7.0
+        specifier: catalog:test
         version: 2.7.0(@types/node@22.13.4)(typescript@5.7.3)
       msw-storybook-addon:
-        specifier: ^2.0.4
+        specifier: catalog:test
         version: 2.0.4(msw@2.7.0(@types/node@22.13.4)(typescript@5.7.3))
       next:
-        specifier: ^15.1.7
-        version: 15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 'catalog:'
+        version: 15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
       react:
-        specifier: ^19.0.0
-        version: 19.0.0
+        specifier: 'catalog:'
+        version: 18.3.1
       storybook:
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(prettier@3.5.1)
-      storybook-addon-module-mock:
-        specifier: ^1.3.4
-        version: 1.3.4(@types/react@19.0.10)(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
       webpack:
-        specifier: ^5.98.0
+        specifier: catalog:build
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: catalog:build
         version: 6.0.1(webpack@5.98.0)
 
   packages/node:
@@ -288,7 +361,7 @@ importers:
         version: link:../shared
     devDependencies:
       '@babel/cli':
-        specifier: ^7.26.4
+        specifier: catalog:build
         version: 7.26.4(@babel/core@7.26.9)
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -300,22 +373,22 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: ^29.7.0
+        specifier: catalog:build
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: ^4.0.0
+        specifier: catalog:build
         version: 4.0.0(webpack@5.98.0)
       jest:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0(@types/node@22.13.4)
       jest-environment-jsdom:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       jest-mock:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       node-polyfill-webpack-plugin:
         specifier: ^4.1.0
@@ -324,10 +397,10 @@ importers:
         specifier: 0.11.10
         version: 0.11.10
       webpack:
-        specifier: ^5.98.0
+        specifier: catalog:build
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: catalog:build
         version: 6.0.1(webpack@5.98.0)
 
   packages/prettier-config:
@@ -348,29 +421,32 @@ importers:
         specifier: workspace:*
         version: link:../browser
       react:
-        specifier: 18.x || 19.x
+        specifier: catalog:peers
         version: 19.0.0
+      react-dom:
+        specifier: catalog:peers
+        version: 19.0.0(react@19.0.0)
     devDependencies:
       '@babel/cli':
-        specifier: ^7.26.4
+        specifier: catalog:build
         version: 7.26.4(@babel/core@7.26.9)
       '@chromatic-com/storybook':
-        specifier: ^3.2.4
+        specifier: catalog:storybook
         version: 3.2.4(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-essentials':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(@types/react@19.0.10)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-interactions':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-onboarding':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@storybook/addon-webpack5-compiler-swc':
-        specifier: ^2.1.0
+        specifier: catalog:storybook
         version: 2.1.0(@swc/helpers@0.5.15)(webpack@5.98.0)
       '@storybook/blocks':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))
       '@storybook/react':
         specifier: ^8.5.6
@@ -379,7 +455,7 @@ importers:
         specifier: ^8.5.6
         version: 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)(webpack-cli@6.0.1)
       '@storybook/test':
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -391,43 +467,43 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: ^29.7.0
+        specifier: catalog:build
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: ^4.0.0
+        specifier: catalog:build
         version: 4.0.0(webpack@5.98.0)
       jest:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0(@types/node@22.13.4)
       jest-environment-jsdom:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       jest-mock:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       msw:
-        specifier: ^2.7.0
+        specifier: catalog:test
         version: 2.7.0(@types/node@22.13.4)(typescript@5.7.3)
       msw-storybook-addon:
-        specifier: ^2.0.4
+        specifier: catalog:test
         version: 2.0.4(msw@2.7.0(@types/node@22.13.4)(typescript@5.7.3))
       storybook:
-        specifier: ^8.5.6
+        specifier: catalog:storybook
         version: 8.5.6(prettier@3.5.1)
       webpack:
-        specifier: ^5.98.0
+        specifier: catalog:build
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: catalog:build
         version: 6.0.1(webpack@5.98.0)
 
   packages/shared:
     devDependencies:
       '@babel/cli':
-        specifier: ^7.26.4
+        specifier: catalog:build
         version: 7.26.4(@babel/core@7.26.9)
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -439,31 +515,31 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: ^29.7.0
+        specifier: catalog:build
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: catalog:build
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: ^4.0.0
+        specifier: catalog:build
         version: 4.0.0(webpack@5.98.0)
       jest:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0(@types/node@22.13.4)
       jest-environment-jsdom:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       jest-fetch-mock:
         specifier: ^3.0.3
         version: 3.0.3
       jest-mock:
-        specifier: ^29.7.0
+        specifier: catalog:test
         version: 29.7.0
       webpack:
-        specifier: ^5.98.0
+        specifier: catalog:build
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: catalog:build
         version: 6.0.1(webpack@5.98.0)
 
 packages:
@@ -2104,9 +2180,6 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-
-  '@types/lodash@4.17.15':
-    resolution: {integrity: sha512-w/P33JFeySuhN6JLkysYUK2gEmy9kHHFN7E8ro0tkfmlDOgxBDzWEZ/J8cWA+fHqFevpswDTFZnDx+R9lbL6xw==}
 
   '@types/mdx@2.0.13':
     resolution: {integrity: sha512-+OWZQfAYyio6YkJb3HLxDrvnx6SWWDbC0zVPfBRzUk0/nqoDyf6dNxQi3eArPe8rJ473nobTMQ/8Zk+LxJ+Yuw==}
@@ -4200,9 +4273,6 @@ packages:
     resolution: {integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
 
@@ -4816,9 +4886,6 @@ packages:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
 
-  react-base16-styling@0.10.0:
-    resolution: {integrity: sha512-H1k2eFB6M45OaiRru3PBXkuCcn2qNmx+gzLb4a9IPMR7tMH8oBRXU5jGbPDYG1Hz+82d88ED0vjR8BmqU3pQdg==}
-
   react-confetti@6.2.2:
     resolution: {integrity: sha512-K+kTyOPgX+ZujMZ+Rmb7pZdHBvg+DzinG/w4Eh52WOB8/pfO38efnnrtEZNJmjTvLxc16RBYO+tPM68Fg8viBA==}
     engines: {node: '>=16'}
@@ -4848,14 +4915,12 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-json-tree@0.19.0:
-    resolution: {integrity: sha512-PqT1WRVcWP+RROsZPQfNEKIC1iM/ZMfY4g5jN6oDnXp5593PPRAYgoHcgYCDjflAHQMtxl8XGdlTwIBdEGUXvw==}
-    peerDependencies:
-      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
+    engines: {node: '>=0.10.0'}
+
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
 
   react@19.0.0:
@@ -5181,9 +5246,6 @@ packages:
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
-
-  storybook-addon-module-mock@1.3.4:
-    resolution: {integrity: sha512-THK+a5PDW/v1WOnClRuzDIPT2uaWS00cpi7W1CwlrX3l/q5cHIf94tkFM49VbkHKbV6XA7ClKTKUXsKgFWwqqQ==}
 
   storybook@8.5.6:
     resolution: {integrity: sha512-mrcYAA5CP6QBrq5O9grz2eqBoEfJNsK3b+Iz+PdGYqpr04oMC7rg1h80murV2pRwsbHxIWBFpLpXAVX8tMK01w==}
@@ -6567,6 +6629,19 @@ snapshots:
       '@types/tough-cookie': 4.0.5
       tough-cookie: 4.1.4
 
+  '@chromatic-com/storybook@3.2.4(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))':
+    dependencies:
+      chromatic: 11.25.2
+      filesize: 10.1.6
+      jsonfile: 6.1.0
+      react-confetti: 6.2.2(react@18.3.1)
+      storybook: 8.5.6(prettier@3.5.1)
+      strip-ansi: 7.1.0
+    transitivePeerDependencies:
+      - '@chromatic-com/cypress'
+      - '@chromatic-com/playwright'
+      - react
+
   '@chromatic-com/storybook@3.2.4(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))':
     dependencies:
       chromatic: 11.25.2
@@ -7230,6 +7305,16 @@ snapshots:
       - '@swc/helpers'
       - webpack
 
+  '@storybook/blocks@8.5.6(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))':
+    dependencies:
+      '@storybook/csf': 0.1.12
+      '@storybook/icons': 1.3.2(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
+      storybook: 8.5.6(prettier@3.5.1)
+      ts-dedent: 2.2.0
+    optionalDependencies:
+      react: 18.3.1
+      react-dom: 19.0.0(react@18.3.1)
+
   '@storybook/blocks@8.5.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))':
     dependencies:
       '@storybook/csf': 0.1.12
@@ -7377,6 +7462,11 @@ snapshots:
       storybook: 8.5.6(prettier@3.5.1)
       ts-dedent: 2.2.0
 
+  '@storybook/icons@1.3.2(react-dom@19.0.0(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 19.0.0(react@18.3.1)
+
   '@storybook/icons@1.3.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
@@ -7392,7 +7482,7 @@ snapshots:
     dependencies:
       storybook: 8.5.6(prettier@3.5.1)
 
-  '@storybook/nextjs@8.5.6(next@15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(type-fest@4.35.0)(typescript@5.7.3)(webpack-cli@6.0.1)(webpack-hot-middleware@2.26.1)(webpack@5.98.0)':
+  '@storybook/nextjs@8.5.6(next@15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@18.3.1))(react@18.3.1))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(type-fest@4.35.0)(typescript@5.7.3)(webpack-cli@6.0.1)(webpack-hot-middleware@2.26.1)(webpack@5.98.0)':
     dependencies:
       '@babel/core': 7.26.9
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.26.9)
@@ -7409,8 +7499,8 @@ snapshots:
       '@babel/runtime': 7.26.9
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(type-fest@4.35.0)(webpack-hot-middleware@2.26.1)(webpack@5.98.0)
       '@storybook/builder-webpack5': 8.5.6(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)(webpack-cli@6.0.1)
-      '@storybook/preset-react-webpack': 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)(webpack-cli@6.0.1)
-      '@storybook/react': 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)
+      '@storybook/preset-react-webpack': 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)(webpack-cli@6.0.1)
+      '@storybook/react': 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)
       '@storybook/test': 8.5.6(storybook@8.5.6(prettier@3.5.1))
       '@types/semver': 7.5.8
       babel-loader: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
@@ -7418,20 +7508,20 @@ snapshots:
       find-up: 5.0.0
       image-size: 1.2.0
       loader-utils: 3.3.1
-      next: 15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.98.0)
       pnp-webpack-plugin: 1.7.0(typescript@5.7.3)
       postcss: 8.5.2
       postcss-loader: 8.1.1(postcss@8.5.2)(typescript@5.7.3)(webpack@5.98.0)
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
+      react: 18.3.1
+      react-dom: 19.0.0(react@18.3.1)
       react-refresh: 0.14.2
       resolve-url-loader: 5.0.0
       sass-loader: 14.2.1(webpack@5.98.0)
       semver: 7.7.1
       storybook: 8.5.6(prettier@3.5.1)
       style-loader: 3.3.4(webpack@5.98.0)
-      styled-jsx: 5.1.6(@babel/core@7.26.9)(react@19.0.0)
+      styled-jsx: 5.1.6(@babel/core@7.26.9)(react@18.3.1)
       ts-dedent: 2.2.0
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.2.0
@@ -7466,6 +7556,32 @@ snapshots:
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
+      - uglify-js
+      - webpack-cli
+
+  '@storybook/preset-react-webpack@8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)(webpack-cli@6.0.1)':
+    dependencies:
+      '@storybook/core-webpack': 8.5.6(storybook@8.5.6(prettier@3.5.1))
+      '@storybook/react': 8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)
+      '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.7.3)(webpack@5.98.0)
+      '@types/semver': 7.5.8
+      find-up: 5.0.0
+      magic-string: 0.30.17
+      react: 18.3.1
+      react-docgen: 7.1.1
+      react-dom: 19.0.0(react@18.3.1)
+      resolve: 1.22.10
+      semver: 7.7.1
+      storybook: 8.5.6(prettier@3.5.1)
+      tsconfig-paths: 4.2.0
+      webpack: 5.98.0(webpack-cli@6.0.1)
+    optionalDependencies:
+      typescript: 5.7.3
+    transitivePeerDependencies:
+      - '@storybook/test'
+      - '@swc/core'
+      - esbuild
+      - supports-color
       - uglify-js
       - webpack-cli
 
@@ -7513,6 +7629,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@storybook/react-dom-shim@8.5.6(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))':
+    dependencies:
+      react: 18.3.1
+      react-dom: 19.0.0(react@18.3.1)
+      storybook: 8.5.6(prettier@3.5.1)
+
   '@storybook/react-dom-shim@8.5.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))':
     dependencies:
       react: 19.0.0
@@ -7537,6 +7659,21 @@ snapshots:
       - supports-color
       - uglify-js
       - webpack-cli
+
+  '@storybook/react@8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)':
+    dependencies:
+      '@storybook/components': 8.5.6(storybook@8.5.6(prettier@3.5.1))
+      '@storybook/global': 5.0.0
+      '@storybook/manager-api': 8.5.6(storybook@8.5.6(prettier@3.5.1))
+      '@storybook/preview-api': 8.5.6(storybook@8.5.6(prettier@3.5.1))
+      '@storybook/react-dom-shim': 8.5.6(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(storybook@8.5.6(prettier@3.5.1))
+      '@storybook/theming': 8.5.6(storybook@8.5.6(prettier@3.5.1))
+      react: 18.3.1
+      react-dom: 19.0.0(react@18.3.1)
+      storybook: 8.5.6(prettier@3.5.1)
+    optionalDependencies:
+      '@storybook/test': 8.5.6(storybook@8.5.6(prettier@3.5.1))
+      typescript: 5.7.3
 
   '@storybook/react@8.5.6(@storybook/test@8.5.6(storybook@8.5.6(prettier@3.5.1)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.6(prettier@3.5.1))(typescript@5.7.3)':
     dependencies:
@@ -7722,8 +7859,6 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
-
-  '@types/lodash@4.17.15': {}
 
   '@types/mdx@2.0.13': {}
 
@@ -8496,11 +8631,13 @@ snapshots:
     dependencies:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
+    optional: true
 
   color@4.2.3:
     dependencies:
       color-convert: 2.0.1
       color-string: 1.9.1
+    optional: true
 
   colorette@2.0.20: {}
 
@@ -9681,7 +9818,8 @@ snapshots:
 
   is-arrayish@0.2.1: {}
 
-  is-arrayish@0.3.2: {}
+  is-arrayish@0.3.2:
+    optional: true
 
   is-async-function@2.1.1:
     dependencies:
@@ -10356,8 +10494,6 @@ snapshots:
     dependencies:
       p-locate: 6.0.0
 
-  lodash-es@4.17.21: {}
-
   lodash.debounce@4.0.8: {}
 
   lodash.merge@4.6.2: {}
@@ -10513,7 +10649,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  next@15.1.7(@babel/core@7.26.9)(react-dom@19.0.0(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 15.1.7
       '@swc/counter': 0.1.3
@@ -10521,9 +10657,9 @@ snapshots:
       busboy: 1.6.0
       caniuse-lite: 1.0.30001700
       postcss: 8.4.31
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
-      styled-jsx: 5.1.6(@babel/core@7.26.9)(react@19.0.0)
+      react: 18.3.1
+      react-dom: 19.0.0(react@18.3.1)
+      styled-jsx: 5.1.6(@babel/core@7.26.9)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.1.7
       '@next/swc-darwin-x64': 15.1.7
@@ -11006,12 +11142,10 @@ snapshots:
 
   range-parser@1.2.1: {}
 
-  react-base16-styling@0.10.0:
+  react-confetti@6.2.2(react@18.3.1):
     dependencies:
-      '@types/lodash': 4.17.15
-      color: 4.2.3
-      csstype: 3.1.3
-      lodash-es: 4.17.21
+      react: 18.3.1
+      tween-functions: 1.2.0
 
   react-confetti@6.2.2(react@19.0.0):
     dependencies:
@@ -11037,6 +11171,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  react-dom@19.0.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      scheduler: 0.25.0
+
   react-dom@19.0.0(react@19.0.0):
     dependencies:
       react: 19.0.0
@@ -11048,14 +11187,11 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-json-tree@0.19.0(@types/react@19.0.10)(react@19.0.0):
-    dependencies:
-      '@types/lodash': 4.17.15
-      '@types/react': 19.0.10
-      react: 19.0.0
-      react-base16-styling: 0.10.0
-
   react-refresh@0.14.2: {}
+
+  react@18.3.1:
+    dependencies:
+      loose-envify: 1.4.0
 
   react@19.0.0: {}
 
@@ -11388,6 +11524,7 @@ snapshots:
   simple-swizzle@0.2.2:
     dependencies:
       is-arrayish: 0.3.2
+    optional: true
 
   sisteransi@1.0.5: {}
 
@@ -11422,16 +11559,6 @@ snapshots:
   stackframe@1.3.4: {}
 
   statuses@2.0.1: {}
-
-  storybook-addon-module-mock@1.3.4(@types/react@19.0.10)(react@19.0.0)(storybook@8.5.6(prettier@3.5.1)):
-    dependencies:
-      '@storybook/test': 8.5.6(storybook@8.5.6(prettier@3.5.1))
-      minimatch: 10.0.1
-      react-json-tree: 0.19.0(@types/react@19.0.10)(react@19.0.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-      - storybook
 
   storybook@8.5.6(prettier@3.5.1):
     dependencies:
@@ -11562,10 +11689,10 @@ snapshots:
     dependencies:
       webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
 
-  styled-jsx@5.1.6(@babel/core@7.26.9)(react@19.0.0):
+  styled-jsx@5.1.6(@babel/core@7.26.9)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
-      react: 19.0.0
+      react: 18.3.1
     optionalDependencies:
       '@babel/core': 7.26.9
 

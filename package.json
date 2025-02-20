@@ -15,7 +15,8 @@
     "test": "pnpm run --filter '@xaiku/*' --if-present test --passWithNoTests",
     "clean": "pnpm run --filter '@xaiku/*' --if-present clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{js,mjs,md}\"",
-    "prepublishOnly": "pnpm run clean && pnpm run  build"
+    "prepublishOnly": "pnpm run clean && pnpm run  build",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
