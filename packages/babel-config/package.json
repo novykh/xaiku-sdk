@@ -20,7 +20,7 @@
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
-    "babel-loader": "catalog:build",
+    "babel-loader": "catalog:building",
     "babel-plugin-module-resolver": "^5.0.2"
   }
 }

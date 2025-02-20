@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
-  build:
+  building:
     '@babel/cli':
       specifier: ^7.26.4
       version: 7.26.4
@@ -97,6 +97,9 @@ importers:
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
+      webpack-cli:
+        specifier: catalog:building
+        version: 6.0.1(webpack@5.98.0)
 
   packages/babel-config:
     dependencies:
@@ -114,8 +117,8 @@ importers:
         specifier: ^7.26.3
         version: 7.26.3(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
-        version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
+        specifier: catalog:building
+        version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0(webpack-cli@6.0.1(webpack@5.98.0)))
       babel-plugin-module-resolver:
         specifier: ^5.0.2
         version: 5.0.2
@@ -130,7 +133,7 @@ importers:
         version: link:../shared
     devDependencies:
       '@babel/cli':
-        specifier: catalog:build
+        specifier: catalog:building
         version: 7.26.4(@babel/core@7.26.9)
       '@chromatic-com/storybook':
         specifier: catalog:storybook
@@ -166,13 +169,13 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 4.0.0(webpack@5.98.0)
       jest:
         specifier: catalog:test
@@ -187,10 +190,10 @@ importers:
         specifier: catalog:storybook
         version: 8.5.6(prettier@3.5.1)
       webpack:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 6.0.1(webpack@5.98.0)
 
   packages/core:
@@ -200,7 +203,7 @@ importers:
         version: link:../shared
     devDependencies:
       '@babel/cli':
-        specifier: catalog:build
+        specifier: catalog:building
         version: 7.26.4(@babel/core@7.26.9)
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -212,13 +215,13 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 4.0.0(webpack@5.98.0)
       jest:
         specifier: catalog:test
@@ -230,10 +233,10 @@ importers:
         specifier: catalog:test
         version: 29.7.0
       webpack:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 6.0.1(webpack@5.98.0)
 
   packages/eslint-config:
@@ -283,7 +286,7 @@ importers:
         version: 19.0.0(react@18.3.1)
     devDependencies:
       '@babel/cli':
-        specifier: catalog:build
+        specifier: catalog:building
         version: 7.26.4(@babel/core@7.26.9)
       '@chromatic-com/storybook':
         specifier: catalog:storybook
@@ -316,13 +319,13 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 4.0.0(webpack@5.98.0)
       jest:
         specifier: catalog:test
@@ -349,10 +352,10 @@ importers:
         specifier: catalog:storybook
         version: 8.5.6(prettier@3.5.1)
       webpack:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 6.0.1(webpack@5.98.0)
 
   packages/node:
@@ -365,7 +368,7 @@ importers:
         version: link:../shared
     devDependencies:
       '@babel/cli':
-        specifier: catalog:build
+        specifier: catalog:building
         version: 7.26.4(@babel/core@7.26.9)
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -377,13 +380,13 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 4.0.0(webpack@5.98.0)
       jest:
         specifier: catalog:test
@@ -401,10 +404,10 @@ importers:
         specifier: 0.11.10
         version: 0.11.10
       webpack:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 6.0.1(webpack@5.98.0)
 
   packages/prettier-config:
@@ -432,7 +435,7 @@ importers:
         version: 19.0.0(react@19.0.0)
     devDependencies:
       '@babel/cli':
-        specifier: catalog:build
+        specifier: catalog:building
         version: 7.26.4(@babel/core@7.26.9)
       '@chromatic-com/storybook':
         specifier: catalog:storybook
@@ -471,13 +474,13 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 4.0.0(webpack@5.98.0)
       jest:
         specifier: catalog:test
@@ -498,16 +501,16 @@ importers:
         specifier: catalog:storybook
         version: 8.5.6(prettier@3.5.1)
       webpack:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 6.0.1(webpack@5.98.0)
 
   packages/shared:
     devDependencies:
       '@babel/cli':
-        specifier: catalog:build
+        specifier: catalog:building
         version: 7.26.4(@babel/core@7.26.9)
       '@xaiku/babel-config':
         specifier: workspace:*
@@ -519,13 +522,13 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       babel-jest:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 29.7.0(@babel/core@7.26.9)
       babel-loader:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 9.2.1(@babel/core@7.26.9)(webpack@5.98.0)
       clean-webpack-plugin:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 4.0.0(webpack@5.98.0)
       jest:
         specifier: catalog:test
@@ -540,10 +543,10 @@ importers:
         specifier: catalog:test
         version: 29.7.0
       webpack:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 5.98.0(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: catalog:build
+        specifier: catalog:building
         version: 6.0.1(webpack@5.98.0)
 
 packages:
@@ -8417,17 +8420,17 @@ snapshots:
 
   '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)':
     dependencies:
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.98.0)
 
   '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)':
     dependencies:
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.98.0)
 
   '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)':
     dependencies:
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.98.0)
 
   '@xtuc/ieee754@1.2.0': {}
@@ -8651,12 +8654,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  babel-loader@9.2.1(@babel/core@7.26.9)(webpack@5.98.0(webpack-cli@6.0.1(webpack@5.98.0))):
+    dependencies:
+      '@babel/core': 7.26.9
+      find-cache-dir: 4.0.0
+      schema-utils: 4.3.0
+      webpack: 5.98.0(webpack-cli@6.0.1(webpack@5.98.0))
+
   babel-loader@9.2.1(@babel/core@7.26.9)(webpack@5.98.0):
     dependencies:
       '@babel/core': 7.26.9
       find-cache-dir: 4.0.0
       schema-utils: 4.3.0
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
 
   babel-plugin-istanbul@6.1.1:
     dependencies:
@@ -8947,7 +8957,7 @@ snapshots:
   clean-webpack-plugin@4.0.0(webpack@5.98.0):
     dependencies:
       del: 4.1.1
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
 
   cli-width@4.1.0: {}
 
@@ -9119,7 +9129,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.7.1
     optionalDependencies:
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
 
   css-select@4.3.0:
     dependencies:
@@ -12119,7 +12129,7 @@ snapshots:
 
   style-loader@3.3.4(webpack@5.98.0):
     dependencies:
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
 
   styled-jsx@5.1.6(@babel/core@7.26.9)(react@18.3.1):
     dependencies:
@@ -12166,6 +12176,15 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.10.17(@swc/helpers@0.5.15)
       esbuild: 0.24.2
+
+  terser-webpack-plugin@5.3.11(webpack@5.98.0(webpack-cli@6.0.1(webpack@5.98.0))):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 4.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.39.0
+      webpack: 5.98.0(webpack-cli@6.0.1(webpack@5.98.0))
 
   terser-webpack-plugin@5.3.11(webpack@5.98.0):
     dependencies:
@@ -12414,7 +12433,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack-cli@6.0.1)
       webpack-merge: 6.0.1
 
   webpack-dev-middleware@6.1.3(webpack@5.98.0):
@@ -12466,6 +12485,38 @@ snapshots:
       schema-utils: 4.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.11(@swc/core@1.10.17(@swc/helpers@0.5.15))(esbuild@0.24.2)(webpack@5.98.0)
+      watchpack: 2.4.2
+      webpack-sources: 3.2.3
+    optionalDependencies:
+      webpack-cli: 6.0.1(webpack@5.98.0)
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+
+  webpack@5.98.0(webpack-cli@6.0.1(webpack@5.98.0)):
+    dependencies:
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.6
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      acorn: 8.14.0
+      browserslist: 4.24.4
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.18.1
+      es-module-lexer: 1.6.0
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 4.3.0
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.11(webpack@5.98.0(webpack-cli@6.0.1(webpack@5.98.0)))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:

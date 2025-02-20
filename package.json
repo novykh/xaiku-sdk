@@ -14,18 +14,19 @@
     "pnpm": ">=10"
   },
   "scripts": {
-    "build": "pnpm run --filter '@xaiku/*' --if-present build",
-    "lint": "pnpm run --filter '@xaiku/*' --if-present lint",
-    "test": "pnpm run --filter '@xaiku/*' --if-present test --passWithNoTests",
-    "clean": "pnpm run --filter '@xaiku/*' --if-present clean && rm -rf node_modules",
+    "build": "pnpm --filter '@xaiku/*' --if-present build",
+    "lint": "pnpm --filter '@xaiku/*' --if-present lint",
+    "test": "pnpm --filter '@xaiku/*' --if-present test --passWithNoTests",
+    "clean": "pnpm --filter '@xaiku/*' --if-present clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{js,mjs,md}\"",
-    "prepublishOnly": "pnpm run clean && pnpm run  build",
+    "prepublishOnly": "pnpm clean && pnpm build",
     "release": "changeset publish"
   },
   "devDependencies": {
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "webpack-cli": "catalog:building"
   },
   "dependencies": {
     "@changesets/cli": "2.28.1"

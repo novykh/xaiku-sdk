@@ -37,7 +37,7 @@
     "react-dom": "catalog:peers"
   },
   "devDependencies": {
-    "@babel/cli": "catalog:build",
+    "@babel/cli": "catalog:building",
     "@chromatic-com/storybook": "catalog:storybook",
     "@storybook/addon-essentials": "catalog:storybook",
     "@storybook/addon-interactions": "catalog:storybook",
@@ -48,9 +48,9 @@
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
-    "babel-jest": "catalog:build",
-    "babel-loader": "catalog:build",
-    "clean-webpack-plugin": "catalog:build",
+    "babel-jest": "catalog:building",
+    "babel-loader": "catalog:building",
+    "clean-webpack-plugin": "catalog:building",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
     "jest-mock": "catalog:test",
@@ -59,8 +59,8 @@
     "next": "catalog:",
     "react": "catalog:",
     "storybook": "catalog:storybook",
-    "webpack": "catalog:build",
-    "webpack-cli": "catalog:build"
+    "webpack": "catalog:building",
+    "webpack-cli": "catalog:building"
   },
   "msw": {
     "workerDirectory": [

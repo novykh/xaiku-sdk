@@ -14,8 +14,8 @@ catalogs:
     react: 18.x || 19.x
     react-dom: 18.x || 19.x
 
-  # catalog:build
-  build:
+  # catalog:buildinging
+  building:
     "@babel/cli": ^7.26.4
     babel-jest: ^29.7.0
     babel-loader: ^9.2.1

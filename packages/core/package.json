@@ -27,17 +27,17 @@
     "@xaiku/shared": "workspace:*"
   },
   "devDependencies": {
-    "@babel/cli": "catalog:build",
+    "@babel/cli": "catalog:building",
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
-    "babel-jest": "catalog:build",
-    "babel-loader": "catalog:build",
-    "clean-webpack-plugin": "catalog:build",
+    "babel-jest": "catalog:building",
+    "babel-loader": "catalog:building",
+    "clean-webpack-plugin": "catalog:building",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
     "jest-mock": "catalog:test",
-    "webpack": "catalog:build",
-    "webpack-cli": "catalog:build"
+    "webpack": "catalog:building",
+    "webpack-cli": "catalog:building"
   }
 }

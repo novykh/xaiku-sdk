@@ -29,7 +29,7 @@ const config = {
       '@xaiku/browser': resolve(__dirname, '../../browser/src/'),
       '@xaiku/shared': resolve(__dirname, '../../shared/src/'),
       '@xaiku/core': resolve(__dirname, '../../core/src/'),
-      '@/': [
+      '@': [
         resolve(__dirname, '../../core/src/'),
         resolve(__dirname, '../../browser/src/'),
         resolve(__dirname, '../../shared/src/'),
