@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "novykh <ioannis.klironomos@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novykh/xaiku-sdk.git"
+  },
   "private": true,
   "engines": {
     "node": ">=20",

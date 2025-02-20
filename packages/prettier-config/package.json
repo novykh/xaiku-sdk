@@ -2,6 +2,10 @@
   "name": "@xaiku/prettier-config",
   "version": "0.0.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novykh/xaiku-sdk.git"
+  },
   "private": false,
   "files": [
     "prettier.config.mjs",
