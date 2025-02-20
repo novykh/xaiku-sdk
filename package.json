@@ -26,6 +26,7 @@
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
     "rimraf": "^6.0.1",
+    "webpack": "catalog:building",
     "webpack-cli": "catalog:building"
   },
   "dependencies": {
