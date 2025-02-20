@@ -19,8 +19,11 @@
     "release": "changeset publish"
   },
   "devDependencies": {
-    "rimraf": "^6.0.1",
     "@xaiku/eslint-config": "workspace:*",
-    "@xaiku/prettier-config": "workspace:*"
+    "@xaiku/prettier-config": "workspace:*",
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "@changesets/cli": "2.28.1"
   }
 }
