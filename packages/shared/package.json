@@ -1,6 +1,6 @@
 {
   "name": "@xaiku/shared",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -10,7 +10,9 @@
   "main": "dist/index.js",
   "module": "dist/es6/index.js",
   "browser": "dist/umd/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build:cjs": "BABEL_ENV=cjs babel src -d dist",
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6",
