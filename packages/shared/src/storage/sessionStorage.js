@@ -4,7 +4,7 @@ import validateStore from './validateStore'
 
 export default () => {
   const store = {
-    name: 'sessionStorage',
+    name: Symbol('XAIKU@sessionStorage'),
     supported: isBrowser() && !!window.sessionStorage,
     get: name => deserialize(window.sessionStorage.getItem(name)),
     set: (name, value) => window.sessionStorage.setItem(name, serialize(value)),

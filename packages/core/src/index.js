@@ -21,7 +21,7 @@ export const defaultOptions = {
 export default (options = {}) => {
   options = { ...defaultOptions, ...options }
 
-  const { appName, version, pkey, projectIds, onReport } = options
+  const { appName, version, pkey, projectIds, onReport, skipClient } = options
 
   const listeners = makeListeners()
 
@@ -39,9 +39,13 @@ export default (options = {}) => {
   instance.guid = getGuid(instance)
   instance = { ...instance, ...parsePublicKey(instance) }
 
-  instance.client = makeClient(instance)
+  if (!skipClient) instance.client = makeClient(instance)
 
   instance.on('metric:report', metric => onReport(metric, instance))
+
+  instance.destroy = () => {
+    instance.client?.destroy?.()
+  }
 
   return instance
 }

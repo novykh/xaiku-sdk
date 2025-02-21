@@ -12,7 +12,8 @@ import proxyFetch from './proxyFetch'
 import proxyDOM from './proxyDOM'
 
 export default sdk => {
-  const client = sdk.client
+  let client = sdk.client
+  let parentDestroy = client.destroy
 
   const windowContext = makeWindowContext(sdk)
 
@@ -43,6 +44,9 @@ export default sdk => {
     windowContext.destroy()
     stopMetricObserver()
     client.destroy()
+    parentDestroy()
+    client = null
+    parentDestroy = null
   }
 
   return client

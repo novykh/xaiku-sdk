@@ -4,6 +4,9 @@ import sessionStorage from './sessionStorage'
 import memory from './memory'
 import validateStore from './validateStore'
 
+export { validateStore }
+export { checkSizeForCookie, checkSizeForLocalStorage } from './validateStore'
+
 export const stores = {
   cookie,
   localStorage,

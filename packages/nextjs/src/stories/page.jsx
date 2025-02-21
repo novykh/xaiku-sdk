@@ -2,6 +2,7 @@
 
 import React, { Suspense } from 'react'
 import { XaikuProvider } from '../server'
+import { Text } from '..'
 import Header from './header'
 import './page.css'
 
@@ -13,7 +14,11 @@ const Page = async () => {
           <Header />
 
           <section className="storybook-page">
-            <h2>Pages in Storybook</h2>
+            <h2>
+              <Text projectId="66a7aa430d37c7d301230442" id="header">
+                Pages in Storybook
+              </Text>
+            </h2>
             <p>
               We recommend building UIs with a{' '}
               <a href="https://componentdriven.org" target="_blank" rel="noopener noreferrer">

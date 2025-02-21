@@ -4,7 +4,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/novykh/xaiku-sdk.git"
+    "url": "https://github.com/novykh/xaiku-sdk.git",
+    "directory": "packages/eslint-config"
   },
   "private": false,
   "files": [
@@ -13,6 +14,10 @@
     "react.eslint.config.mjs",
     "next.eslint.config.mjs"
   ],
+  "scripts": {
+    "cp-xaiku": "cp -R . ../../../xaiku/node_modules/@xaiku/eslint-config/",
+    "to-xaiku": "pnpm cp-xaiku"
+  },
   "dependencies": {
     "@babel/eslint-parser": "^7.26.8"
   },

@@ -1,3 +1,5 @@
+'use server'
+
 const Variant = async ({ project, part }) => {
   const variant = await getVariantForUser(project, part)
 

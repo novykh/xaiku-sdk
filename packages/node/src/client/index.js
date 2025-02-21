@@ -2,7 +2,8 @@ import os from 'os'
 import process from 'process'
 
 export default sdk => {
-  const client = sdk.client
+  let client = sdk.client
+  let parentDestroy = client.destroy
 
   // Capture request-specific analytics (example using Express)
   client.captureRequestData = (req, res) => {
@@ -53,22 +54,27 @@ export default sdk => {
     serverContext: serverContext(),
   })
 
-  // Error handler to capture uncaught exceptions and unhandled rejections
-  process.on('uncaughtException', err => {
+  const handleUncaughtException = err => {
     console.error('Uncaught Exception:', err)
-    // Log to your monitoring system
-  })
+  }
 
-  process.on('unhandledRejection', (reason, promise) => {
+  process.on('uncaughtException', handleUncaughtException)
+
+  const handleUnhandledRejection = (reason, promise) => {
     console.error('Unhandled Rejection:', reason)
-    // Log to your monitoring system
-  })
+  }
+
+  process.on('unhandledRejection', handleUnhandledRejection)
 
   // Add other Node.js-specific proxies or performance monitoring mechanisms as needed
   // For example, you could track DB query times, network requests, etc.
 
   client.destroy = () => {
-    client.destroy()
+    process.off('uncaughtException', handleUncaughtException)
+    process.off('unhandledRejection', handleUnhandledRejection)
+    parentDestroy()
+    client = null
+    parentDestroy = null
   }
 
   return client

@@ -1,5 +1,5 @@
 import makeCoreSdk from '@xaiku/core'
-import { makeProjects, isNode } from '@xaiku/shared'
+import { makeProjects, isBrowser } from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
@@ -10,18 +10,25 @@ const defaultOptions = {
   },
 }
 
-export default (options = {}) => {
+export default async (options = {}) => {
   let instance = makeCoreSdk({ ...defaultOptions, ...options })
+  let parentDestroy = instance.destroy
 
-  if (!isNode()) {
+  if (isBrowser()) {
     throw new Error(
       `@xaiku ${instance.options.framework} runs only on Node.js/server environments.`
     )
   }
 
-  instance.client = makeClient(instance)
+  if (!instance.options.skipClient) instance.client = makeClient(instance)
 
-  makeProjects(instance)
+  await makeProjects(instance)
+
+  instance.destroy = () => {
+    instance.client?.destroy?.()
+    parentDestroy()
+    instance = null
+  }
 
   return instance
 }

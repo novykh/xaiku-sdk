@@ -4,7 +4,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/novykh/xaiku-sdk.git"
+    "url": "https://github.com/novykh/xaiku-sdk.git",
+    "directory": "packages/babel-config"
   },
   "private": false,
   "files": [
@@ -16,10 +17,8 @@
   "dependencies": {
     "@babel/core": "^7.26.9",
     "@babel/plugin-syntax-dynamic-import": "7.8.3",
-    "@babel/plugin-transform-modules-umd": "7.25.9",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
-    "@xaiku/babel-config": "workspace:*",
     "babel-plugin-module-resolver": "^5.0.2"
   }
 }

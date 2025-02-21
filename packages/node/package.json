@@ -4,24 +4,29 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/novykh/xaiku-sdk.git"
+    "url": "https://github.com/novykh/xaiku-sdk.git",
+    "directory": "packages/node"
   },
   "private": false,
   "main": "dist/index.js",
   "module": "dist/es6/index.js",
-  "jsnext:main": "dist/es6/index.js",
-  "files": [
-    "/dist"
-  ],
+  "exports": {
+    ".": {
+      "import": "./dist/es6/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
   "scripts": {
     "build:cjs": "BABEL_ENV=cjs babel src -d dist",
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6",
-    "build:umd": "BABEL_ENV=umd babel src/index.js --out-file dist/umd/index.js",
-    "build": "pnpm build:umd && pnpm build:cjs && pnpm build:esm",
+    "build": "pnpm build:cjs && pnpm build:esm",
     "test": "jest",
     "lint": "eslint './src/**/*.js'",
     "clean": "rm -rf dist",
-    "prepublishOnly": "pnpm clean && pnpm build"
+    "prepublishOnly": "pnpm clean && pnpm build",
+    "cp-xaiku": "cp -R ./dist ./package.json ../../../xaiku/node_modules/@xaiku/node/",
+    "to-xaiku": "pnpm build && pnpm cp-xaiku"
   },
   "dependencies": {
     "@xaiku/core": "workspace:*",

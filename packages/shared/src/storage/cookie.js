@@ -1,5 +1,6 @@
 import isBrowser from '~/isBrowser'
 import { deserialize, serialize } from '~/json'
+import validateStore from './validateStore'
 
 const defaultConfig = {
   crossSubdomain: true,
@@ -26,7 +27,7 @@ export default sdk => {
   }
 
   const store = {
-    name: 'cookie',
+    name: Symbol('XAIKU@cookie'),
     supported: isBrowser(),
     get: name => {
       try {
@@ -45,6 +46,7 @@ export default sdk => {
         }, null)
 
         return deserialize(value)
+        // eslint-disable-next-line no-unused-vars
       } catch (e) {
         // do nothing
       }
@@ -61,6 +63,8 @@ export default sdk => {
     },
     delete: name => store.set(name, ''),
   }
+
+  validateStore(store)
 
   return store
 }

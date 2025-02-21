@@ -12,6 +12,7 @@ const defaultOptions = {
 
 export default (options = {}) => {
   let instance = makeCoreSdk({ ...defaultOptions, ...options })
+  let parentDestroy = instance.destroy
 
   if (!isBrowser()) {
     throw new Error(
@@ -24,9 +25,16 @@ export default (options = {}) => {
 
   instance.on('hide', instance.pos.disconnect)
 
-  instance.client = makeClient(instance)
+  if (!instance.options.skipClient) instance.client = makeClient(instance)
 
   makeProjects(instance)
+
+  instance.destroy = () => {
+    instance.client?.destroy?.()
+    instance.pos.disconnect()
+    parentDestroy()
+    instance = null
+  }
 
   return instance
 }

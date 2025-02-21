@@ -36,7 +36,7 @@ const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
           {user ? (
             <>
               <span className="welcome">
-                <Text projectId="66a7aa430d37c7d301230442" partId="header">
+                <Text projectId="66a7aa430d37c7d301230442" id="header">
                   Welcome, <b>{user.name}</b>!
                 </Text>
               </span>

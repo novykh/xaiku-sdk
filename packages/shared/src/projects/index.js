@@ -1,14 +1,23 @@
 import onNextTick from '~/onNextTick'
-import memoryStore from '~/storage/memory'
+import { stores, checkSizeForCookie, checkSizeForLocalStorage } from '~/storage'
 import fetchProjects from './fetchProjects'
 import selectVariant from './selectVariant'
 
 const projectsKey = '__xaiku__projects__'
 const variantsKey = '__xaiku__variants__'
 
-const checkSize = projects => {
-  const stringified = JSON.stringify(projects)
-  return stringified.length <= 1e6 // < 1MB
+const checkSize = (projects, storeName) => {
+  switch (storeName) {
+    case stores.cookie.name:
+      return [checkSizeForCookie(projects), stores.localStorage]
+    case stores.localStorage.name:
+    case stores.sessionStorage.name:
+      return [checkSizeForLocalStorage(projects), stores.memory]
+    case stores.memory.name:
+      return [true]
+    default:
+      return [true, stores.memory]
+  }
 }
 
 const findMissingIds = (projects, ids) =>
@@ -21,17 +30,22 @@ export default async sdk => {
 
   sdk.setProjects = projects => {
     onNextTick(() => {
-      if (storage.name !== 'memory' && !checkSize(projects)) {
-        console.warn('Projects size exceeds 1MB - falling back to memory storage')
+      const [sizeIsOk, fallbackStore] = checkSize(projects, storage.name)
+      if (storage.name !== 'memory' && !sizeIsOk) {
+        console.warn('Projects size exceeds storage size validation')
         storage.delete(projectsKey)
-        storage = memoryStore()
+        storage = fallbackStore()
       }
       storage.set(projectsKey, projects)
     })
   }
 
   sdk.getProjects = async (ids, { force } = {}) => {
-    if (!force && sdk.options.projects) return sdk.projects
+    if (!force && sdk.options.projects) {
+      if (!storage.get(projectsKey)) sdk.setProjects(sdk.options.projects)
+
+      return sdk.options.projects
+    }
 
     ids = ids ? (Array.isArray(ids) ? ids : [ids]) : []
 
@@ -50,30 +64,26 @@ export default async sdk => {
     projects = await fetchProjects(sdk, ids)
 
     sdk.setProjects(projects)
+    sdk.trigger('projects:fetched', projects)
 
     return projects
   }
 
-  sdk.getVariants = async () => {
+  sdk.getVariants = () => {
     if (localVariants) return localVariants
 
-    const variants = storage.get(variantsKey)
-
-    if (!variants) return await initializeForUser()
-
-    return variants
+    return storage.get(variantsKey)
   }
 
   sdk.setVariants = variants => {
     localVariants = variants
-    onNextTick(() => {
-      sdk.storage.set(variantsKey, variants)
-    })
+    onNextTick(() => sdk.storage.set(variantsKey, variants))
   }
 
   sdk.selectVariants = (projects, { force } = {}) => {
-    let variants = force ? null : sdk.storage.get(variantsKey)
-    localVariants = variants
+    if (!projects) return null
+
+    let variants = force ? null : sdk.getVariants()
 
     if (variants) return variants
 
@@ -90,19 +100,29 @@ export default async sdk => {
     return variants
   }
 
-  sdk.getVariant = (projectId, partId) => {
-    const variants = localVariants
+  sdk.on('projects:fetched', projects => sdk.selectVariants(projects, { force: true }))
+
+  sdk.getVariantText = (projectId, partId) => {
+    const variants = sdk.getVariants()
 
     if (!variants) {
-      initializeForUser({ force: true }) // TODO make sure if inflight request then do not run again, or at least cancel previous
+      if (sdk.options.dev) console.warn('Variants not found', projectId, partId)
       return null
     }
 
     const variant = variants[projectId]
 
-    if (!variant) return null
+    if (!variant) {
+      if (sdk.options.dev) console.warn('Variant not found', projectId, partId)
+      return null
+    }
 
     if (typeof variant?.parts !== 'object') return variant
+
+    if (!variant.parts[partId]) {
+      if (sdk.options.dev) console.warn('Variant text not found', projectId, partId)
+      return null
+    }
 
     return variant.parts[partId]
   }
@@ -113,5 +133,5 @@ export default async sdk => {
     return sdk.selectVariants(projects, { force })
   }
 
-  initializeForUser()
+  if (!sdk.options.skipProjects) await initializeForUser()
 }

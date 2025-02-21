@@ -1,52 +1,22 @@
-import React, {
-  createContext,
-  version,
-  useCallback,
-  useContext,
-  useMemo,
-  useLayoutEffect,
-  useState,
-} from 'react'
+'use client'
+
+import React, { createContext, version, useContext, useEffect, useState } from 'react'
 import makeSDK from '@xaiku/browser'
 
 export const XaikuContext = createContext(null)
 
 export const useSDK = () => useContext(XaikuContext)
 
-const useForceUpdate = () => {
-  const [, set] = useState(0)
-  return useCallback(() => set(i => i + 1), [])
-}
-
-export const useText = (projectId, partId, initialValue = '') => {
-  const rerender = useForceUpdate()
-  const sdk = useSDK()
-
-  const off = useMemo(() => {
-    if (!sdk) return
-
-    return sdk.on('variants:select', rerender)
-  }, [sdk])
-
-  useLayoutEffect(() => off, [off])
-
-  return sdk.getVariant(projectId, partId) || initialValue
-}
-
-export const Text = ({ projectId, partId, children }) => {
-  // TODO if element, then clone and pass correctly the text in it
-  const text = useText(projectId, partId, children)
-
-  return text
-}
-
 const Provider = ({ children, pkey, sdk, ...rest }) => {
-  const memoizedSdk = useMemo(
-    () => sdk || makeSDK({ pkey, framework: 'react', frameworkVersion: version, ...rest }),
-    [sdk, pkey]
-  )
+  const [memoizedSDK, setMemoizedSDK] = useState(sdk)
 
-  return <XaikuContext.Provider value={memoizedSdk}>{children}</XaikuContext.Provider>
+  useEffect(() => {
+    if (memoizedSDK) return
+
+    setMemoizedSDK(sdk || makeSDK({ pkey, framework: 'react', frameworkVersion: version, ...rest }))
+  }, [])
+
+  return <XaikuContext.Provider value={memoizedSDK}>{children}</XaikuContext.Provider>
 }
 
 export default Provider
