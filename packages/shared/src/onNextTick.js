@@ -1,5 +1,5 @@
-import isBrowser from '@/isBrowser'
-import isNode from '@/isNode'
+import isBrowser from '~/isBrowser'
+import isNode from '~/isNode'
 
 export default callback => {
   if (isBrowser() && typeof requestAnimationFrame === 'function') {

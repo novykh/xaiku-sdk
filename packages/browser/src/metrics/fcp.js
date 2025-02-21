@@ -1,4 +1,4 @@
-import getInitialNavEntry from '@/helpers/getInitialNavEntry'
+import getInitialNavEntry from '~/helpers/getInitialNavEntry'
 import makeMetric from './metric'
 
 // [FCP](https://web.dev/fcp/) - First Contentful Paint

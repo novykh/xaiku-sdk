@@ -1,4 +1,4 @@
-import withRenderGuard from '@/helpers/withRenderGuard'
+import withRenderGuard from '~/helpers/withRenderGuard'
 import makeEventHandler from './makeEventHandler'
 
 export default sdk => {

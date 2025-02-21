@@ -1,4 +1,4 @@
-import hasDocument from '@/hasDocument'
+import hasDocument from '~/hasDocument'
 
 describe('hasDocument', () => {
   it('should return false when document is undefined', () => {

@@ -1,4 +1,4 @@
-import isBrowser from '@/isBrowser'
+import isBrowser from '~/isBrowser'
 
 describe('isBrowser', () => {
   it('should return false when window is undefined', () => {

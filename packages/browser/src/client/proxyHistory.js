@@ -1,4 +1,4 @@
-import makeMetric from '@/metrics/metric'
+import makeMetric from '~/metrics/metric'
 
 const hasSupport = () => {
   if (self?.chrome?.app?.runtime) return false

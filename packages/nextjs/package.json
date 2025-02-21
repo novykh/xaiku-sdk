@@ -14,13 +14,13 @@
     "/dist"
   ],
   "scripts": {
-    "build:cjs": "babel src --out-dir dist --copy-files",
-    "build:es6": "BABEL_ENV=es6 babel src --out-dir dist/es6 --copy-files",
-    "build:umd": "NODE_ENV=production webpack",
-    "build": "pnpm build:umd && pnpm build:cjs && pnpm build:es6",
+    "build:cjs": "BABEL_ENV=cjs babel src -d dist",
+    "build:esm": "BABEL_ENV=es6 babel src -d dist/es6",
+    "build:umd": "BABEL_ENV=umd babel src/index.js --out-file dist/umd/index.js",
+    "build": "pnpm build:umd && pnpm build:cjs && pnpm build:esm",
     "test": "jest",
     "lint": "eslint './src/**/*.js'",
-    "clean": "rimraf lib dist es coverage",
+    "clean": "rm -rf dist",
     "prepublishOnly": "pnpm clean && pnpm build",
     "cp-xaiku": "cp -R ./dist ../xaiku/node_modules/@xaiku/react/",
     "to-xaiku": "pnpm build && pnpm cp-xaiku",
@@ -37,7 +37,7 @@
     "react-dom": "catalog:peers"
   },
   "devDependencies": {
-    "@babel/cli": "catalog:building",
+    "@babel/cli": "catalog:",
     "@chromatic-com/storybook": "catalog:storybook",
     "@storybook/addon-essentials": "catalog:storybook",
     "@storybook/addon-interactions": "catalog:storybook",
@@ -48,9 +48,7 @@
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
-    "babel-jest": "catalog:building",
-    "babel-loader": "catalog:building",
-    "clean-webpack-plugin": "catalog:building",
+    "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
     "jest-mock": "catalog:test",
@@ -58,9 +56,7 @@
     "msw-storybook-addon": "catalog:test",
     "next": "catalog:",
     "react": "catalog:",
-    "storybook": "catalog:storybook",
-    "webpack": "catalog:building",
-    "webpack-cli": "catalog:building"
+    "storybook": "catalog:storybook"
   },
   "msw": {
     "workerDirectory": [

@@ -1,4 +1,4 @@
-import makeListeners, { unregister } from '@/listeners'
+import makeListeners, { unregister } from '~/listeners'
 
 describe('makeListeners', () => {
   let listeners

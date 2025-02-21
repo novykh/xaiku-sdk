@@ -1,5 +1,5 @@
-import isBrowser from '@/isBrowser'
-import { deserialize, serialize } from '@/json'
+import isBrowser from '~/isBrowser'
+import { deserialize, serialize } from '~/json'
 import validateStore from './validateStore'
 
 export default () => {

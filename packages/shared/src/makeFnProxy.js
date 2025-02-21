@@ -1,4 +1,4 @@
-import { noop } from '@/helpers'
+import { noop } from '~/helpers'
 
 export const xaikuFn = Symbol('XAIKU@originalFn')
 export const states = {

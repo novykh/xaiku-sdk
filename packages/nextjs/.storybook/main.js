@@ -31,7 +31,7 @@ const config = {
       '@xaiku/core': resolve(__dirname, '../../core/dist/'),
       '@xaiku/react': resolve(__dirname, '../../react/dist/'),
       '@xaiku/node': resolve(__dirname, '../../node/dist/'),
-      '@': resolve(__dirname, '../../nextjs/src/'),
+      '~': resolve(__dirname, '../../nextjs/src/'),
       process: require.resolve('../__mocks__/process.js'),
       os: require.resolve('../__mocks__/os.js'),
     }

@@ -1,4 +1,4 @@
-import isNode from '@/isNode'
+import isNode from '~/isNode'
 
 describe('isNode', () => {
   let originalProcess

@@ -13,7 +13,7 @@ module.exports = {
     '<rootDir>/jest',
   ],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    '^~/(.*)$': '<rootDir>/src/$1',
   },
   testMatch: ['<rootDir>/**/*.test.js'],
   globals: {},

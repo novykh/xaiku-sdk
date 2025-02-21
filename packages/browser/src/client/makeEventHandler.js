@@ -1,4 +1,4 @@
-import makeMetric from '@/metrics/metric'
+import makeMetric from '~/metrics/metric'
 
 const isDifferentEvent = (previous, current) => {
   if (!previous) return true

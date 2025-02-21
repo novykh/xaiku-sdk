@@ -1,5 +1,5 @@
-import request from '@/request'
-import ensureOneSlash from '@/ensureOneSlash'
+import request from '~/request'
+import ensureOneSlash from '~/ensureOneSlash'
 
 export default async (sdk, ids) => {
   try {

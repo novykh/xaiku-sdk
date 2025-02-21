@@ -1,5 +1,5 @@
-import onNextTick from '@/onNextTick'
-import memoryStore from '@/storage/memory'
+import onNextTick from '~/onNextTick'
+import memoryStore from '~/storage/memory'
 import fetchProjects from './fetchProjects'
 import selectVariant from './selectVariant'
 

@@ -14,7 +14,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     '@xaiku/(.*)': '<rootDir>/../$1/src',
-    '^@/(.*)$': ['<rootDir>/src/$1', '<rootDir>/../shared/src/$1'],
+    '^~/(.*)$': ['<rootDir>/src/$1', '<rootDir>/../shared/src/$1'],
   },
   testMatch: ['<rootDir>/**/*.test.js'],
   globals: {},

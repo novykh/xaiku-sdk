@@ -1,4 +1,4 @@
-import getInitialNavEntry from '@/helpers/getInitialNavEntry'
+import getInitialNavEntry from '~/helpers/getInitialNavEntry'
 import makeMetric from './metric'
 
 // [TTFB](https://web.dev/time-to-first-byte/) - Time to First Byte
