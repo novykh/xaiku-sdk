@@ -13,9 +13,6 @@
     "react.eslint.config.mjs",
     "next.eslint.config.mjs"
   ],
-  "scripts": {
-    "clean": "rimraf lib dist es coverage node_modules"
-  },
   "dependencies": {
     "@babel/eslint-parser": "^7.26.8"
   },

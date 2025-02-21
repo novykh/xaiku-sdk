@@ -17,9 +17,8 @@
     "build": "pnpm --filter '@xaiku/*' --if-present build",
     "lint": "pnpm --filter '@xaiku/*' --if-present lint",
     "test": "pnpm --filter '@xaiku/*' --if-present test --passWithNoTests",
-    "clean": "pnpm --filter '@xaiku/*' --if-present clean && rm -rf node_modules",
+    "clean": "pnpm --filter '@xaiku/*' --if-present clean",
     "format": "prettier --write \"**/*.{js,mjs,md}\"",
-    "prepublishOnly": "pnpm clean && pnpm build",
     "release": "changeset publish"
   },
   "devDependencies": {

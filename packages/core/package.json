@@ -17,11 +17,11 @@
     "build:cjs": "babel src --out-dir dist --copy-files",
     "build:es6": "BABEL_ENV=es6 babel src --out-dir dist/es6 --copy-files",
     "build:umd": "NODE_ENV=production webpack",
-    "build": "pnpm run build:umd && pnpm run build:cjs && pnpm run build:es6",
+    "build": "pnpm build:umd && pnpm build:cjs && pnpm build:es6",
     "test": "jest",
     "lint": "eslint './src/**/*.js'",
-    "clean": "rimraf lib dist es coverage node_modules",
-    "prepublishOnly": "pnpm run clean && pnpm run build"
+    "clean": "rimraf lib dist es coverage",
+    "prepublishOnly": "pnpm clean && pnpm build"
   },
   "dependencies": {
     "@xaiku/shared": "workspace:*"
