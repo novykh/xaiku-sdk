@@ -30,6 +30,7 @@ export default (options = {}) => {
   makeProjects(instance)
 
   instance.destroy = () => {
+    if (!instance) return
     instance.client?.destroy?.()
     instance.pos.disconnect()
     parentDestroy()

@@ -4,8 +4,14 @@ it('fetches', async () => {
   fetch.mockResponseOnce(JSON.stringify({ data: '12345' }))
   const response = await request('url.com')
   expect(response.data).toEqual('12345')
-  expect(fetch.mock.calls.length).toEqual(1)
-  expect(fetch.mock.calls[0][0]).toEqual('url.com')
+  expect(fetch).toHaveBeenCalledTimes(1)
+  expect(fetch).toHaveBeenCalledWith('url.com', {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'GET',
+  })
 })
 
 it('returns response data keys', async () => {
@@ -51,17 +57,14 @@ it('fetches with custom headers', async () => {
     headers: { Accept: 'application/json' },
   })
   expect(response.data).toEqual('12345')
-  expect(fetch.mock.calls.length).toEqual(1)
-  expect(fetch.mock.calls[0]).toEqual([
-    'url.com',
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
+  expect(fetch).toHaveBeenCalledTimes(1)
+  expect(fetch).toHaveBeenCalledWith('url.com', {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  ])
+    method: 'GET',
+  })
 })
 
 it('posts body', async () => {
@@ -73,18 +76,15 @@ it('posts body', async () => {
     }),
   })
   expect(response.data).toEqual('12345')
-  expect(fetch.mock.calls.length).toEqual(1)
-  expect(fetch.mock.calls[0]).toEqual([
-    'url.com',
-    {
-      body: '{"account":"account"}',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
+  expect(fetch).toHaveBeenCalledTimes(1)
+  expect(fetch).toHaveBeenCalledWith('url.com', {
+    body: '{"account":"account"}',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  ])
+    method: 'POST',
+  })
 })
 
 it('puts body', async () => {
@@ -96,18 +96,15 @@ it('puts body', async () => {
     }),
   })
   expect(response.data).toEqual('12345')
-  expect(fetch.mock.calls.length).toEqual(1)
-  expect(fetch.mock.calls[0]).toEqual([
-    'url.com',
-    {
-      body: '{"account":"account"}',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'PUT',
+  expect(fetch).toHaveBeenCalledTimes(1)
+  expect(fetch).toHaveBeenCalledWith('url.com', {
+    body: '{"account":"account"}',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  ])
+    method: 'PUT',
+  })
 })
 
 it('throws on 300 statuses', async () => {

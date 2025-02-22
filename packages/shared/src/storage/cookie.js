@@ -14,6 +14,8 @@ const getExpiresUtcString = days => {
   return date.toUTCString()
 }
 
+export const name = Symbol('XAIKU@cookie')
+
 export default sdk => {
   const { crossSubdomain, secure, expiresAfterDays } = sdk.options?.store || defaultConfig
 
@@ -27,7 +29,7 @@ export default sdk => {
   }
 
   const store = {
-    name: Symbol('XAIKU@cookie'),
+    name,
     supported: isBrowser(),
     get: name => {
       try {

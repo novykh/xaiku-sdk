@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  isValidElement,
-  cloneElement,
-  useCallback,
-  useMemo,
-  useLayoutEffect,
-  useState,
-} from 'react'
+import { isValidElement, cloneElement, useCallback, useLayoutEffect, useState } from 'react'
 import { useSDK } from './provider'
 import { useProjectId } from './project'
 
@@ -16,7 +9,7 @@ const useForceUpdate = () => {
   return useCallback(() => set(i => i + 1), [])
 }
 
-export const useText = (projectId, id, fallback = '') => {
+export const useText = (projectId, id, fallback) => {
   const rerender = useForceUpdate()
   const sdk = useSDK()
 
@@ -28,7 +21,7 @@ export const useText = (projectId, id, fallback = '') => {
 
   if (!sdk) return fallback
 
-  return sdk.getVariantText(projectId, id) || fallback
+  return sdk.getVariantText(projectId, id) ?? fallback
 }
 
 export const Text = ({
@@ -41,7 +34,7 @@ export const Text = ({
   projectId = projectId ?? contextProjectId
 
   if (!projectId) {
-    console.warn('No projectId provided, falling back to fallback provided.')
+    console.warn('No projectId provided, falling back to fallback prop.')
     return fallback
   }
 

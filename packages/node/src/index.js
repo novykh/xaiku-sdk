@@ -25,6 +25,7 @@ export default async (options = {}) => {
   await makeProjects(instance)
 
   instance.destroy = () => {
+    if (!instance) return
     instance.client?.destroy?.()
     parentDestroy()
     instance = null

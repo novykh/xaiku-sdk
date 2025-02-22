@@ -40,7 +40,6 @@
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "jest-fetch-mock": "^3.0.3",
-    "jest-mock": "catalog:test"
+    "jest-fetch-mock": "^3.0.3"
   }
 }

@@ -38,7 +38,6 @@
     "@xaiku/prettier-config": "workspace:*",
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
-    "jest-environment-jsdom": "catalog:test",
-    "jest-mock": "catalog:test"
+    "jest-environment-jsdom": "catalog:test"
   }
 }

@@ -17,8 +17,6 @@ const stringToGuid = string => {
   return `00000000-0000-4000-8000-${hash.toString(16).padStart(12, '0')}`
 }
 
-export const key = '__xaiku__guid__'
-
 // validate and sanitize it rigorously to prevent security issues
 const validate = guid => {
   if (typeof guid !== 'string') return false
@@ -32,6 +30,8 @@ const sanitize = guid => {
   if (validate(guid)) return guid
   return stringToGuid(guid)
 }
+
+export const key = '__xaiku__guid__'
 
 export default sdk => {
   let guid = sdk.storage.get(key)

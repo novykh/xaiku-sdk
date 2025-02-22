@@ -1,5 +1,5 @@
 import init, { defaultOptions } from '.'
-import { errorMissingKeyMessage, errorInvalidKeyMessage } from '@xaiku/shared'
+import { errorMissingKeyMessage, errorInvalidKeyMessage, storeNames } from '@xaiku/shared'
 
 describe('init', () => {
   it('throws missing public key', () => {
@@ -26,7 +26,7 @@ describe('init', () => {
     expect(sdk.storage.supported).toBeDefined()
 
     // No DOM - fallback to memory from default store cookie
-    expect(sdk.storage.name).toBe('memory')
+    expect(sdk.storage.name).toBe(storeNames.memory)
     expect(sdk.trigger).toBeDefined()
     expect(sdk.token).toBe('123')
     expect(sdk.apiUrl).toBe('https://xaiku.com/api/v1/')
@@ -54,7 +54,7 @@ describe('init', () => {
     expect(sdk.storage.supported).toBeDefined()
 
     // Invalid custom store actions
-    expect(sdk.storage.name).toBe('memory')
+    expect(sdk.storage.name).toBe(storeNames.memory)
     expect(sdk.token).toBe('1234')
     expect(sdk.apiUrl).toBe('http://localhost:3000/api/v1/')
 
@@ -68,7 +68,7 @@ describe('init', () => {
     expect(sdk.projectIds).toEqual([1])
 
     // No DOM
-    expect(sdk.storage.name).toBe('memory')
+    expect(sdk.storage.name).toBe(storeNames.memory)
     expect(sdk.apiUrl).toBe('http://localhost:3001/api/v1/')
   })
 

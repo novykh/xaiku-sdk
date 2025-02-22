@@ -42,6 +42,7 @@ const makePerformanceObserver = (entryType, trigger, options = {}) => {
     })
 
     return po
+    // eslint-disable-next-line no-unused-vars
   } catch (e) {
     // Do nothing.
   }

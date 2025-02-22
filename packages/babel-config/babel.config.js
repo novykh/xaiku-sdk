@@ -9,9 +9,9 @@ module.exports = api => {
       [
         '@babel/preset-env',
         {
-          loose: false,
-          modules: isES6 ? false : isCJS ? 'commonjs' : false,
-          ...(isTest && { targets: { node: 'current' } }),
+          ...(isTest
+            ? { targets: { node: 'current' }, modules: 'commonjs' }
+            : { loose: false, modules: isES6 ? false : isCJS ? 'commonjs' : false }),
         },
       ],
       '@babel/preset-react',
@@ -28,6 +28,6 @@ module.exports = api => {
         },
       ],
     ].filter(Boolean),
-    ignore: ['**/*.test.js', '**/*.stories.js', 'stories/**/*'],
+    ignore: [!isTest && '**/*.test.js', '**/*.stories.js', 'stories/**/*'].filter(Boolean),
   }
 }

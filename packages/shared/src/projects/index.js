@@ -1,5 +1,5 @@
 import onNextTick from '~/onNextTick'
-import { stores, checkSizeForCookie, checkSizeForLocalStorage } from '~/storage'
+import { stores, storeNames, checkSizeForCookie, checkSizeForLocalStorage } from '~/storage'
 import fetchProjects from './fetchProjects'
 import selectVariant from './selectVariant'
 
@@ -8,12 +8,12 @@ const variantsKey = '__xaiku__variants__'
 
 const checkSize = (projects, storeName) => {
   switch (storeName) {
-    case stores.cookie.name:
+    case storeNames.cookie:
       return [checkSizeForCookie(projects), stores.localStorage]
-    case stores.localStorage.name:
-    case stores.sessionStorage.name:
+    case storeNames.localStorage:
+    case storeNames.sessionStorage:
       return [checkSizeForLocalStorage(projects), stores.memory]
-    case stores.memory.name:
+    case storeNames.memory:
       return [true]
     default:
       return [true, stores.memory]
@@ -31,7 +31,7 @@ export default async sdk => {
   sdk.setProjects = projects => {
     onNextTick(() => {
       const [sizeIsOk, fallbackStore] = checkSize(projects, storage.name)
-      if (storage.name !== 'memory' && !sizeIsOk) {
+      if (storage.name !== storeNames.memory && !sizeIsOk) {
         console.warn('Projects size exceeds storage size validation')
         storage.delete(projectsKey)
         storage = fallbackStore()

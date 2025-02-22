@@ -44,6 +44,7 @@ export default (options = {}) => {
   instance.on('metric:report', metric => onReport(metric, instance))
 
   instance.destroy = () => {
+    if (!instance) return
     instance.client?.destroy?.()
   }
 

@@ -16,7 +16,7 @@ export default (variants, guid, projectId) => {
   let cumulativeWeight = 0
 
   return variants.find(variant => {
-    cumulativeWeight += variant.weight
+    cumulativeWeight += variant.weight ?? 5
     return hashValue < cumulativeWeight
   })
 }

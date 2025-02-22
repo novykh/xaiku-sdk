@@ -16,7 +16,9 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build:cjs": "BABEL_ENV=cjs babel src -d dist",
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6",
@@ -41,8 +43,8 @@
     "@storybook/addon-interactions": "catalog:storybook",
     "@storybook/addon-webpack5-compiler-swc": "catalog:storybook",
     "@storybook/blocks": "catalog:storybook",
-    "@storybook/html": "^8.5.6",
-    "@storybook/html-webpack5": "^8.5.6",
+    "@storybook/html": "8.5.8",
+    "@storybook/html-webpack5": "8.5.8",
     "@storybook/test": "catalog:storybook",
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
@@ -50,7 +52,6 @@
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "jest-mock": "catalog:test",
     "storybook": "catalog:storybook"
   }
 }

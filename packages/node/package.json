@@ -40,7 +40,6 @@
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "jest-mock": "catalog:test",
     "process": "0.11.10"
   }
 }

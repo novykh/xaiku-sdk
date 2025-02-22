@@ -20,7 +20,9 @@
       "require": "./dist/server/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build:cjs": "BABEL_ENV=cjs babel src -d dist",
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6",
@@ -50,15 +52,18 @@
     "@storybook/addon-interactions": "catalog:storybook",
     "@storybook/addon-onboarding": "catalog:storybook",
     "@storybook/blocks": "catalog:storybook",
-    "@storybook/nextjs": "^8.5.6",
+    "@storybook/nextjs": "8.5.8",
     "@storybook/test": "catalog:storybook",
+    "@testing-library/dom": "catalog:test",
+    "@testing-library/jest-dom": "catalog:test",
+    "@testing-library/react": "catalog:test",
+    "@testing-library/user-event": "catalog:test",
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "jest-mock": "catalog:test",
     "msw": "catalog:test",
     "msw-storybook-addon": "catalog:test",
     "next": "catalog:",

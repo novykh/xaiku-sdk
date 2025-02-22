@@ -1,8 +1,10 @@
 let attributes = {}
 
+export const name = Symbol('XAIKU@memory')
+
 export default () => {
   const store = {
-    name: Symbol('XAIKU@memory'),
+    name,
     supported: true,
     get: name => attributes[name],
     set: (name, value) => (attributes[name] = value),

@@ -1,8 +1,15 @@
-import cookie from './cookie'
-import localStorage from './localStorage'
-import sessionStorage from './sessionStorage'
-import memory from './memory'
+import cookie, { name as cookieName } from './cookie'
+import localStorage, { name as localStorageName } from './localStorage'
+import sessionStorage, { name as sessionStorageName } from './sessionStorage'
+import memory, { name as memoryName } from './memory'
 import validateStore from './validateStore'
+
+export const storeNames = {
+  cookie: cookieName,
+  localStorage: localStorageName,
+  sessionStorage: sessionStorageName,
+  memory: memoryName,
+}
 
 export { validateStore }
 export { checkSizeForCookie, checkSizeForLocalStorage } from './validateStore'
