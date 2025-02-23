@@ -24,12 +24,7 @@ export const useText = (projectId, id, fallback) => {
   return sdk.getVariantText(projectId, id) ?? fallback
 }
 
-export const Text = ({
-  id,
-  projectId,
-  children,
-  fallback = typeof children === 'function' ? '' : children,
-}) => {
+export const Text = ({ id, projectId, children, fallback }) => {
   const contextProjectId = useProjectId()
   projectId = projectId ?? contextProjectId
 
@@ -38,11 +33,18 @@ export const Text = ({
     return fallback
   }
 
+  fallback =
+    (fallback ?? isValidElement(children))
+      ? children.props.children
+      : typeof children === 'function'
+        ? ''
+        : children
+
   const text = useText(projectId, id, fallback)
 
   if (typeof children === 'function') return children(text)
 
-  if (isValidElement(children)) return cloneElement(children, { children: text })
+  if (isValidElement(children)) return cloneElement(children, {}, text)
 
   return text
 }
