@@ -10,7 +10,7 @@ const TestComponent = () => {
 describe('ProjectProvider', () => {
   it('provides the project ID to its children', () => {
     render(
-      <ProjectProvider projectId="test-project-id">
+      <ProjectProvider id="test-project-id">
         <TestComponent />
       </ProjectProvider>
     )

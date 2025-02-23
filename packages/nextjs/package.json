@@ -24,8 +24,8 @@
     "dist"
   ],
   "scripts": {
-    "build:cjs": "BABEL_ENV=cjs babel src -d dist",
-    "build:esm": "BABEL_ENV=es6 babel src -d dist/es6",
+    "build:cjs": "BABEL_ENV=cjs babel src -d dist --no-copy-ignored",
+    "build:esm": "BABEL_ENV=es6 babel src -d dist/es6 --no-copy-ignored",
     "build": "pnpm build:cjs && pnpm build:esm",
     "test": "jest",
     "lint": "eslint './src/**/*.js'",

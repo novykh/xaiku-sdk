@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "allowJs": true,
+    "baseUrl": "./src",
+    "strict": false,
+    "lib": ["esnext"],
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.js", "**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.js"]
+}

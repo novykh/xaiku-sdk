@@ -8,7 +8,7 @@ const getAbsolutePath = value => dirname(require.resolve(join(value, 'package.js
 
 /** @type { import('@storybook/html-webpack5').StorybookConfig } */
 const config = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
     getAbsolutePath('@storybook/addon-essentials'),

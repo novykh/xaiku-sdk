@@ -1,5 +1,5 @@
 import React from 'react'
-import initXaiku, { XaikuProvider, Text } from '..'
+import initXaiku, { XaikuProvider, Text } from '~'
 import Button from './button'
 import './header.css'
 

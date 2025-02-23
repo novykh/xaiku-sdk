@@ -28,6 +28,6 @@ module.exports = api => {
         },
       ],
     ].filter(Boolean),
-    ignore: [!isTest && '**/*.test.js', '**/*.stories.js', 'stories/**/*'].filter(Boolean),
+    ignore: [!isTest && '**/*.test.js'].filter(Boolean),
   }
 }
