@@ -14,25 +14,20 @@ const Provider = async ({
   sdk,
   ...rest
 }) => {
-  let projects
-  try {
-    const cookieStore = await cookies()
-    if (!userId) console.warn('Missing userId')
-    sdk =
-      sdk ||
-      (await makeSDK({
-        ...rest,
-        pkey,
-        framework: 'nextjs',
-        frameworkVersion: nextjsLib?.version || 'N/A',
-        skipClient: true,
-        guid: cookieStore.get(guidStorageKey || userId),
-      }))
+  const cookieStore = await cookies()
+  if (!userId) console.warn('Missing userId')
+  sdk =
+    sdk ||
+    (await makeSDK({
+      ...rest,
+      pkey,
+      framework: 'nextjs',
+      frameworkVersion: nextjsLib?.version || 'N/A',
+      skipClient: true,
+      guid: cookieStore.get(guidStorageKey || userId),
+    }))
 
-    projects = await sdk.getProjects()
-  } catch (e) {
-    console.log('CANNOT GET PROJECTS', e)
-  }
+  const projects = await sdk.getProjects()
 
   return (
     <ClientProvider {...rest} store={{ name: 'cookie' }} pkey={pkey} projects={projects}>
