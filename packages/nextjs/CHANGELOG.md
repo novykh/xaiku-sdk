@@ -1,5 +1,16 @@
 # @xaiku/nextjs
 
+## 0.0.2
+
+### Patch Changes
+
+- 561c3fb: Add tests and fix text component!
+- d0755bd: Introduced next js components.
+- Updated dependencies [561c3fb]
+- Updated dependencies [d0755bd]
+  - @xaiku/node@0.0.2
+  - @xaiku/react@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes
