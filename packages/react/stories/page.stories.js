@@ -25,14 +25,14 @@ export default {
               '66a7aa430d37c7d301230442': [
                 {
                   parts: {
-                    header: 'Welcome to Acme',
+                    header: 'Welcome to Xaiku',
                     action: 'Sign up',
                   },
                   weight: 50,
                 },
                 {
                   parts: {
-                    header: 'Hello, this is Acme',
+                    header: 'Hello, this is Xaiku',
                     action: 'Register now!',
                   },
                   weight: 50,

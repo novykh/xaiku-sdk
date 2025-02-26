@@ -1,30 +1,6 @@
-interface StoreOptions {
-  name: 'localStorage'
-  custom: any | null
-}
+import { SdkInstance, Options } from "@xaiku/shared"
 
-interface Options {
-  framework?: string
-  store?: StoreOptions
-  skipClient?: boolean
-  [key: string]: any
-}
-
-interface PerformanceObserverInstance {
-  connect: () => void
-  disconnect: () => void
-}
-
-interface SdkInstance {
-  options: Options
-  trigger: (event: string, data?: any) => void
-  client?: {
-    destroy?: () => void
-  }
-  pos: PerformanceObserverInstance
-  on: (event: string, callback: () => void) => void
-  destroy: () => void
-}
+export * from "@xaiku/shared/types"
 
 declare function makeXaikuSdk(options?: Options): SdkInstance
 

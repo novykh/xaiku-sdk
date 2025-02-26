@@ -1,4 +1,4 @@
-import Store from "~/storage"
+import Store from "./store"
 
 export interface StoreOptions {
   name: string
@@ -17,13 +17,18 @@ export interface PerformanceObserverInstance {
   disconnect: () => void
 }
 
-export interface SdkInstance {
+interface SdkBaseInstance {
   options: Options
   trigger: (event: string, data?: any) => void
   client?: {
     destroy?: () => void
   }
-  pos: PerformanceObserverInstance
   on: (event: string, callback: () => void) => void
   destroy: () => void
 }
+
+export interface SdkInstance extends SdkBaseInstance {
+  pos: PerformanceObserverInstance
+}
+
+export type SdkNodeInstance = SdkBaseInstance

@@ -1,8 +1,8 @@
 'use server'
 
 import React, { Suspense } from 'react'
-import { XaikuProvider } from '../server'
-import { Text } from '..'
+import { XaikuProvider } from '../src/server'
+import { Text } from '../src'
 import Header from './header'
 import './page.css'
 
