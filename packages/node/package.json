@@ -1,6 +1,6 @@
 {
   "name": "@xaiku/node",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,7 +16,9 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build:cjs": "BABEL_ENV=cjs babel src -d dist --no-copy-ignored --copy-files && tsc --outDir dist",
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6 --no-copy-ignored --copy-files && tsc --outDir dist/es6",
