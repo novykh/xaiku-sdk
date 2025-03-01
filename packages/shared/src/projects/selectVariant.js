@@ -15,8 +15,13 @@ export default (variants, guid, projectId) => {
   const hashValue = hashGuid(guid, projectId) % totalWeight
   let cumulativeWeight = 0
 
-  return variants.find(variant => {
+  const selected = variants.find(variant => {
     cumulativeWeight += variant.weight ?? 5
     return hashValue < cumulativeWeight
   })
+
+  return {
+    selected,
+    control: selected.control ? selected : variants.find(variant => variant.control),
+  }
 }

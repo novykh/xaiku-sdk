@@ -102,7 +102,7 @@ export default async sdk => {
 
   sdk.on('projects:fetched', projects => sdk.selectVariants(projects, { force: true }))
 
-  sdk.getVariantText = (projectId, partId) => {
+  sdk.getVariantText = (projectId, partId, { control = false } = {}) => {
     const variants = sdk.getVariants()
 
     if (!variants) {
@@ -117,14 +117,15 @@ export default async sdk => {
       return null
     }
 
-    if (typeof variant?.parts !== 'object') return variant
+    const key = control ? 'control' : 'selected'
+    if (typeof variant?.[key]?.parts !== 'object') return variant
 
-    if (!variant.parts[partId]) {
+    if (!variant[key].parts[partId]) {
       if (sdk.options.dev) console.warn('Variant text not found', projectId, partId)
       return null
     }
 
-    return variant.parts[partId]
+    return variant[key].parts[partId]
   }
 
   const initializeForUser = async ({ force = false } = {}) => {

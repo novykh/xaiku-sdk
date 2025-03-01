@@ -1,6 +1,14 @@
 'use client'
 
-import { isValidElement, cloneElement, useCallback, useLayoutEffect, useState } from 'react'
+import {
+  Children,
+  isValidElement,
+  cloneElement,
+  createElement,
+  useCallback,
+  useLayoutEffect,
+  useState,
+} from 'react'
 import { useSDK } from './provider'
 import { useProjectId } from './project'
 
@@ -9,7 +17,7 @@ const useForceUpdate = () => {
   return useCallback(() => set(i => i + 1), [])
 }
 
-export const useText = (projectId, id, fallback) => {
+export const useText = (projectId, id, fallback, control) => {
   const rerender = useForceUpdate()
   const sdk = useSDK()
 
@@ -21,10 +29,10 @@ export const useText = (projectId, id, fallback) => {
 
   if (!sdk) return fallback
 
-  return sdk.getVariantText(projectId, id) ?? fallback
+  return sdk.getVariantText(projectId, id, { control }) ?? fallback
 }
 
-export const Text = ({ id, projectId, children, fallback }) => {
+export const Text = ({ id, projectId, children, fallback, control }) => {
   const contextProjectId = useProjectId()
   projectId = projectId ?? contextProjectId
 
@@ -34,17 +42,19 @@ export const Text = ({ id, projectId, children, fallback }) => {
   }
 
   fallback =
-    (fallback ?? isValidElement(children))
+    fallback ??
+    (isValidElement(children)
       ? children.props.children
       : typeof children === 'function'
         ? ''
-        : children
+        : (children ?? ''))
 
   const text = useText(projectId, id, fallback)
 
   if (typeof children === 'function') return children(text)
 
-  if (isValidElement(children)) return cloneElement(children, {}, text)
+  if (isValidElement(children))
+    return cloneElement(children, { 'data-projectId': projectId, 'data-partId': id }, text)
 
-  return text
+  return createElement('span', { 'data-projectId': projectId, 'data-partId': id }, text)
 }
