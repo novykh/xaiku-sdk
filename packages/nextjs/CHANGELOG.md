@@ -1,5 +1,16 @@
 # @xaiku/nextjs
 
+## 0.0.3
+
+### Patch Changes
+
+- eaa7570: Fix: DynamicServerError.
+- 008979d: Rollback: Try fixing DynamicServerError, but still including try-catch on sdk specific functions.
+- defe646: Analytics hooks.
+- Updated dependencies [defe646]
+  - @xaiku/react@0.0.3
+  - @xaiku/node@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

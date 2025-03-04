@@ -1,5 +1,13 @@
 # @xaiku/core
 
+## 0.0.3
+
+### Patch Changes
+
+- defe646: Analytics hooks.
+- Updated dependencies [defe646]
+  - @xaiku/shared@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes
