@@ -24,8 +24,11 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Create pnpm store directory
+        run: mkdir -p ~/.pnpm-store
+      
       - name: Cache pnpm store
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
@@ -36,7 +39,7 @@ jobs:
         run: npm i -g pnpm@latest-10
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Publish to npm or create a version pull request
         id: changesets
