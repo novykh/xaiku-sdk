@@ -1,5 +1,13 @@
 # @xaiku/node
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [defe646]
+  - @xaiku/core@0.0.3
+  - @xaiku/shared@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @xaiku/react
 
+## 0.0.3
+
+### Patch Changes
+
+- defe646: Analytics hooks.
+- Updated dependencies [defe646]
+  - @xaiku/browser@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

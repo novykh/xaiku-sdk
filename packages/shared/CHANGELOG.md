@@ -1,5 +1,11 @@
 # @xaiku/shared
 
+## 0.0.3
+
+### Patch Changes
+
+- defe646: Analytics hooks.
+
 ## 0.0.2
 
 ### Patch Changes
