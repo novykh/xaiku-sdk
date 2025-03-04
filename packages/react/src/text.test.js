@@ -95,8 +95,8 @@ describe('Text', () => {
       expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <span
-          data-partid="1"
-          data-projectid="1"
+          data-xaiku-partid="1"
+          data-xaiku-projectid="1"
         />
       </DocumentFragment>
     `)

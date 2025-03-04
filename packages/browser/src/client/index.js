@@ -35,6 +35,7 @@ export default sdk => {
       frameworks: getFrameworks(),
       userAgent: navigator.userAgent,
       windowDimensions: [self.innerWidth, self.innerHeight],
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
     })
   })
 

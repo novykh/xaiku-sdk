@@ -1,6 +1,5 @@
 export default sdk => {
   let attributes = {
-    userId: sdk.options.userId,
     framework: sdk.options.framework,
     frameworkVersion: sdk.options.frameworkVersion,
   }

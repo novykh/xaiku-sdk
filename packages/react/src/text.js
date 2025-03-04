@@ -11,6 +11,7 @@ import {
 } from 'react'
 import { useSDK } from './provider'
 import { useProjectId } from './project'
+import { useTrackView } from './useTrack'
 
 const useForceUpdate = () => {
   const [, set] = useState(0)
@@ -36,6 +37,8 @@ export const Text = ({ id, projectId, children, fallback, control }) => {
   const contextProjectId = useProjectId()
   projectId = projectId ?? contextProjectId
 
+  useTrackView({ projectId, partId: id })
+
   if (!projectId) {
     console.warn('No projectId provided, falling back to fallback prop.')
     return fallback
@@ -54,7 +57,11 @@ export const Text = ({ id, projectId, children, fallback, control }) => {
   if (typeof children === 'function') return children(text)
 
   if (isValidElement(children))
-    return cloneElement(children, { 'data-projectId': projectId, 'data-partId': id }, text)
+    return cloneElement(
+      children,
+      { 'data-xaiku-projectid': projectId, 'data-xaiku-partid': id },
+      text
+    )
 
-  return createElement('span', { 'data-projectId': projectId, 'data-partId': id }, text)
+  return createElement('span', { 'data-xaiku-projectid': projectId, 'data-xaiku-partid': id }, text)
 }

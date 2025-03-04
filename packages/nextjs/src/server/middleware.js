@@ -1,10 +1,11 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { guidStorageKey } from '@xaiku/shared'
 import makeSDK from './makeSDK'
 
 export default async () => {
   const cookieStore = await cookies()
-  let guid = cookieStore.get('__xaiku__guid__')?.value
+  let guid = cookieStore.get(guidStorageKey)?.value
 
   try {
     if (!guid) {
@@ -17,7 +18,7 @@ export default async () => {
 
   const response = NextResponse.next()
 
-  cookieStore.set('__xaiku__guid__', guid, {
+  cookieStore.set(guidStorageKey, guid, {
     path: '/',
   })
 

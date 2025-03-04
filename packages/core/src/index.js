@@ -15,13 +15,13 @@ export const defaultOptions = {
     name: 'memory',
     custom: null,
   },
-  onReport: noop,
+  onReport: null,
 }
 
 export default (options = {}) => {
   options = { ...defaultOptions, ...options }
 
-  const { appName, version, pkey, projectIds, onReport, skipClient } = options
+  const { appName, version, pkey, projectIds, skipClient } = options
 
   const listeners = makeListeners()
 
@@ -37,11 +37,10 @@ export default (options = {}) => {
 
   instance.storage = makeStorage(instance)
   instance.guid = getGuid(instance)
+
   instance = { ...instance, ...parsePublicKey(instance) }
 
   if (!skipClient) instance.client = makeClient(instance)
-
-  instance.on('metric:report', metric => onReport(metric, instance))
 
   instance.destroy = () => {
     if (!instance) return

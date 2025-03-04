@@ -1,5 +1,5 @@
 import makeCoreSdk from '@xaiku/core'
-import { makeProjects, makePerformanceObserver, isBrowser } from '@xaiku/shared'
+import { makeTrack, makeProjects, makePerformanceObserver, isBrowser } from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
@@ -8,6 +8,7 @@ const defaultOptions = {
     name: 'localStorage',
     custom: null,
   },
+  searchParams: ['utm_source', 'utm_medium', 'utm_campaign'],
 }
 
 export default (options = {}) => {
@@ -28,9 +29,11 @@ export default (options = {}) => {
   if (!instance.options.skipClient) instance.client = makeClient(instance)
 
   makeProjects(instance)
+  instance.track = makeTrack(instance)
 
   instance.destroy = () => {
     if (!instance) return
+    instance.track?.destroy?.()
     instance.client?.destroy?.()
     instance.pos.disconnect()
     parentDestroy()

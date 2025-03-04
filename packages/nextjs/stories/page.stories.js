@@ -16,6 +16,7 @@ export default {
             projects: {
               '66a7aa430d37c7d301230442': [
                 {
+                  id: 11,
                   parts: {
                     header: 'Welcome to Xaiku',
                     action: 'Sign up',
@@ -23,6 +24,7 @@ export default {
                   weight: 50,
                 },
                 {
+                  id: 12,
                   parts: {
                     header: 'Hello, this is Xaiku',
                     action: 'Register now!',

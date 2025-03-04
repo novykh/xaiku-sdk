@@ -27,7 +27,8 @@ const Provider = async ({
         framework: 'nextjs',
         frameworkVersion: nextjsLib?.version || 'N/A',
         skipClient: true,
-        guid: cookieStore.get(guidStorageKey || userId),
+        userId,
+        guid: cookieStore.get(guidStorageKey)?.value || userId,
       }))
 
     projects = await sdk.getProjects()

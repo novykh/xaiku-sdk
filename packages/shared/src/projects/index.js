@@ -102,30 +102,38 @@ export default async sdk => {
 
   sdk.on('projects:fetched', projects => sdk.selectVariants(projects, { force: true }))
 
-  sdk.getVariantText = (projectId, partId, { control = false } = {}) => {
+  sdk.getVariant = (projectId, { control = false } = {}) => {
     const variants = sdk.getVariants()
 
     if (!variants) {
-      if (sdk.options.dev) console.warn('Variants not found', projectId, partId)
+      if (sdk.options.dev) console.warn('Variants not found', projectId)
       return null
     }
 
     const variant = variants[projectId]
 
     if (!variant) {
-      if (sdk.options.dev) console.warn('Variant not found', projectId, partId)
+      if (sdk.options.dev) console.warn('Variant not found', projectId)
       return null
     }
 
-    const key = control ? 'control' : 'selected'
-    if (typeof variant?.[key]?.parts !== 'object') return variant
+    return control ? variant.control : variant.selected
+  }
 
-    if (!variant[key].parts[partId]) {
+  sdk.getVariantId = projectId => sdk.getVariant(projectId)?.id ?? null
+
+  sdk.getVariantText = (projectId, partId, { control = false } = {}) => {
+    const variant = sdk.getVariant(projectId, { control })
+
+    if (!variant) return null
+    if (!variant?.parts || typeof variant.parts !== 'object') return variant
+
+    if (!variant.parts[partId]) {
       if (sdk.options.dev) console.warn('Variant text not found', projectId, partId)
       return null
     }
 
-    return variant[key].parts[partId]
+    return variant.parts[partId]
   }
 
   const initializeForUser = async ({ force = false } = {}) => {

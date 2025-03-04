@@ -13,7 +13,7 @@ const Page = () => {
   const [user, setUser] = React.useState()
 
   return (
-    <XaikuProvider sdk={sdk}>
+    <XaikuProvider sdk={sdk} dev>
       <article>
         <Header
           user={user}

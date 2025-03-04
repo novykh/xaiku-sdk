@@ -33,7 +33,7 @@ export default (sdk, name, { session = initialState.session, reportAll = false }
 
   const broadcast = action => {
     sdk.trigger(`metric:${metric.name}:${action}`, metric)
-    sdk.trigger(`metric:${action}`, metric)
+    // sdk.trigger(`metric:${action}`, metric)
   }
 
   let metric = {
