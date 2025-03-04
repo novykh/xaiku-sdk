@@ -14,6 +14,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
+      pull-requests: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -37,7 +38,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Publish to npm
+      - name: Publish to npm or create pull request
         id: changesets
         uses: changesets/action@v1
         with:
