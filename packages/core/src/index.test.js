@@ -71,24 +71,4 @@ describe('init', () => {
     expect(sdk.storage.name).toBe(storeNames.memory)
     expect(sdk.apiUrl).toBe('http://localhost:3001/api/v1/')
   })
-
-  it('listens on metric:report event', () => {
-    const onReport = jest.fn()
-
-    const sdk = init({ pkey: 'pk_123', onReport })
-
-    const metric = {
-      context: 'test',
-      value: 1,
-      group: 'testGroup',
-      name: 'testMetric',
-      title: 'Test Metric',
-      labels: [],
-      entries: [],
-    }
-
-    sdk.trigger('metric:report', metric)
-
-    expect(onReport).toHaveBeenCalledWith(metric, sdk)
-  })
 })

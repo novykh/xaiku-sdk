@@ -45,7 +45,6 @@ export default sdk => {
   })
 
   client.setAttributes({
-    frameworks: sdk.options.frameworks,
     userAgent: 'Node.js Server',
     environment: process.env.NODE_ENV || 'development',
     cpuUsage: os.cpus(),

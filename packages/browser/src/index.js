@@ -8,7 +8,6 @@ const defaultOptions = {
     name: 'localStorage',
     custom: null,
   },
-  searchParams: ['utm_source', 'utm_medium', 'utm_campaign'],
 }
 
 export default (options = {}) => {

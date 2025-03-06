@@ -1,11 +1,4 @@
-import {
-  makeListeners,
-  makeFnProxy,
-  parsePublicKey,
-  makeStorage,
-  getGuid,
-  noop,
-} from '@xaiku/shared'
+import { makeListeners, makeFnProxy, parsePublicKey, makeStorage, getGuid } from '@xaiku/shared'
 import makeClient from './client'
 
 export const defaultOptions = {

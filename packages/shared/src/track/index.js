@@ -65,19 +65,16 @@ export default sdk => {
 
     const baseMetric = {
       ...clientAttributes,
-      projectId: metric.projectId || 'defaultProject',
-      variantId: metric.variantId,
-      partId: metric.partId || 'defaultPart',
-      eventName: eventName || metric.name,
-      referrer: metric.referrer || document.referrer,
+      pathname: window.location.pathname,
+      referrer: document.referrer,
       ...(!!sdk.options.searchParams &&
         sdk.options.searchParams.reduce((h, k) => {
-          h[k] = metric[k] || urlParams.get(k)
+          h[k] = urlParams.get(k) || ''
           return h
         }, {})),
     }
 
-    addMetric({ ...baseMetric, ...metric })
+    addMetric({ ...baseMetric, ...metric, eventName })
   })
 
   const destroy = () => {

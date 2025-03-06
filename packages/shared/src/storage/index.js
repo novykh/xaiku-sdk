@@ -22,7 +22,7 @@ export const stores = {
 }
 
 export default sdk => {
-  const { name = 'cookie', custom } = sdk.options?.store || {}
+  const { name, custom } = sdk.options?.store || {}
 
   if (validateStore(custom)) return custom
 

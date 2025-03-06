@@ -1,14 +1,14 @@
-import { getFrameworks } from '@xaiku/shared'
-import cls from '~/metrics/cls'
-import fcp from '~/metrics/fcp'
-import fid from '~/metrics/fid'
-import lcp from '~/metrics/lcp'
-import ttfb from '~/metrics/ttfb'
+import { getDataFromLocale } from '@xaiku/shared'
+// import cls from '~/metrics/cls'
+// import fcp from '~/metrics/fcp'
+// import fid from '~/metrics/fid'
+// import lcp from '~/metrics/lcp'
+// import ttfb from '~/metrics/ttfb'
 import makeWindowContext from './makeWindowContext'
 import metricObserver from './metricObserver'
 import proxyHistory from './proxyHistory'
-import proxyTimers from './proxyTimers'
-import proxyFetch from './proxyFetch'
+// import proxyTimers from './proxyTimers'
+// import proxyFetch from './proxyFetch'
 import proxyDOM from './proxyDOM'
 
 export default sdk => {
@@ -32,10 +32,11 @@ export default sdk => {
 
   document.addEventListener('DOMContentLoaded', () => {
     client.setAttributes({
-      frameworks: getFrameworks(),
+      domain: window.location.hostname,
       userAgent: navigator.userAgent,
       windowDimensions: [self.innerWidth, self.innerHeight],
       screenResolution: `${window.screen.width}x${window.screen.height}`,
+      ...getDataFromLocale(),
     })
   })
 

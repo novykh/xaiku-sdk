@@ -20,7 +20,7 @@ export const useTrackClick = ({ projectId, variantId, partId }) => {
 
   return useCallback(() => {
     if (!sdk || !projectId) return
-    console.log(projectId, sdk.getVariantId(projectId), partId)
+
     sdk.track.events.trackClick({
       projectId,
       variantId: variantId || sdk.getVariantId(projectId),

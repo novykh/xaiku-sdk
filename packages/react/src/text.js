@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  Children,
   isValidElement,
   cloneElement,
   createElement,
@@ -52,7 +51,7 @@ export const Text = ({ id, projectId, children, fallback, control }) => {
         ? ''
         : (children ?? ''))
 
-  const text = useText(projectId, id, fallback)
+  const text = useText(projectId, id, fallback, control)
 
   if (typeof children === 'function') return children(text)
 

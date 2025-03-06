@@ -1,11 +1,10 @@
 'use server'
 
 import React from 'react'
-import nextjsLib from 'next/package.json'
 import { cookies } from 'next/headers'
-import makeSDK from '@xaiku/node'
 import { XaikuProvider as ClientProvider } from '@xaiku/react'
 import { guidStorageKey } from '@xaiku/shared'
+import makeSDK from './makeSDK'
 
 const Provider = async ({
   children,
@@ -18,15 +17,11 @@ const Provider = async ({
 
   let projects
   try {
-    if (!userId) console.warn('Missing userId')
     sdk =
       sdk ||
       (await makeSDK({
         ...rest,
         pkey,
-        framework: 'nextjs',
-        frameworkVersion: nextjsLib?.version || 'N/A',
-        skipClient: true,
         userId,
         guid: cookieStore.get(guidStorageKey)?.value || userId,
       }))
@@ -37,7 +32,7 @@ const Provider = async ({
   }
 
   return (
-    <ClientProvider {...rest} store={{ name: 'cookie' }} pkey={pkey} projects={projects}>
+    <ClientProvider {...rest} pkey={pkey} guid={sdk.guid} projects={projects}>
       {children}
     </ClientProvider>
   )

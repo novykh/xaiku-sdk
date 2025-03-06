@@ -12,6 +12,11 @@ jest.mock('./project', () => ({
   useProjectId: jest.fn(),
 }))
 
+jest.mock('./useTrack', () => ({
+  useTrackView: jest.fn(),
+  useTrackClick: jest.fn(),
+}))
+
 const TestComponent = ({ projectId, id, fallback }) => {
   const text = useText(projectId, id, fallback)
   return <div>{text}</div>
@@ -55,7 +60,7 @@ describe('useText', () => {
       },
     }
     useSDK.mockReturnValue(mockSdk)
-    const { rerender } = render(<TestComponent projectId="1" id="1" fallback="Fallback Text" />)
+    render(<TestComponent projectId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Variant Text')).toBeInTheDocument()
   })
 })
