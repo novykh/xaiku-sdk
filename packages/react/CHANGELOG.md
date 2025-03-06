@@ -1,5 +1,13 @@
 # @xaiku/react
 
+## 0.0.4
+
+### Patch Changes
+
+- 85897eb: Sending events.
+- Updated dependencies [85897eb]
+  - @xaiku/browser@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes

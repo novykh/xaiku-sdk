@@ -1,5 +1,11 @@
 # @xaiku/shared
 
+## 0.0.4
+
+### Patch Changes
+
+- 85897eb: Sending events.
+
 ## 0.0.3
 
 ### Patch Changes
