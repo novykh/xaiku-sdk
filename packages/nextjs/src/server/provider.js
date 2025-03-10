@@ -32,7 +32,7 @@ const Provider = async ({
   }
 
   return (
-    <ClientProvider {...rest} pkey={pkey} guid={sdk.guid} projects={projects}>
+    <ClientProvider {...rest} userId={userId} pkey={pkey} guid={sdk.guid} projects={projects}>
       {children}
     </ClientProvider>
   )

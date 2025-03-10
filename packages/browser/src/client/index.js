@@ -31,12 +31,15 @@ export default sdk => {
   // ttfb(sdk, options)
 
   document.addEventListener('DOMContentLoaded', () => {
+    const locale = getDataFromLocale()
+
     client.setAttributes({
       domain: window.location.hostname,
       userAgent: navigator.userAgent,
       windowDimensions: [self.innerWidth, self.innerHeight],
       screenResolution: `${window.screen.width}x${window.screen.height}`,
-      ...getDataFromLocale(),
+      country: sdk.options.country || locale.country,
+      language: sdk.options.language || locale.language,
     })
   })
 

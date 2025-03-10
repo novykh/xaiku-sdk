@@ -7,7 +7,7 @@ export const XaikuContext = createContext(null)
 
 export const useSDK = () => useContext(XaikuContext)
 
-const Provider = ({ children, pkey, sdk, userId, ...rest }) => {
+const Provider = ({ children, pkey, sdk, ...rest }) => {
   const [memoizedSDK, setMemoizedSDK] = useState(sdk)
 
   useEffect(() => {
@@ -19,8 +19,6 @@ const Provider = ({ children, pkey, sdk, userId, ...rest }) => {
           pkey,
           framework: 'react',
           frameworkVersion: version,
-          userId,
-          guid: userId,
           ...rest,
         })
     )

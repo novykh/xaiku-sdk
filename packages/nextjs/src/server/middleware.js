@@ -3,17 +3,15 @@ import { NextResponse } from 'next/server'
 import { guidStorageKey } from '@xaiku/shared'
 import makeSDK from './makeSDK'
 
-export default async () => {
+export default async (request, options = {}) => {
   const cookieStore = await cookies()
   let guid = cookieStore.get(guidStorageKey)?.value
 
   try {
-    if (!guid) {
-      const sdk = await makeSDK({ pkey: process.env.NEXT_PUBLIC_XAIKU_API_KEY })
-      guid = sdk.guid
-    }
+    const sdk = await makeSDK({ pkey: process.env.NEXT_PUBLIC_XAIKU_API_KEY, guid, ...options })
+    guid = sdk.guid
   } catch (e) {
-    console.error(e)
+    console.error('Xaiku middleware error:', e)
   }
 
   const response = NextResponse.next()

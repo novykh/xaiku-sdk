@@ -2,7 +2,8 @@ export default sdk => {
   let attributes = {
     framework: sdk.options.framework,
     frameworkVersion: sdk.options.frameworkVersion,
-    userId: sdk.options.userId || sdk.options.guid || sdk.guid || '',
+    sessionId: sdk.options.guid || sdk.guid || '',
+    userId: sdk.options.userId || '',
     orgId: sdk.options.orgId || '',
   }
 
