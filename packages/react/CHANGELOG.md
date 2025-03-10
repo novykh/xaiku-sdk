@@ -1,5 +1,15 @@
 # @xaiku/react
 
+## 0.0.4
+
+### Patch Changes
+
+- 85897eb: Sending events.
+- a04cbc5: Cleanup.
+- Updated dependencies [85897eb]
+- Updated dependencies [a04cbc5]
+  - @xaiku/browser@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
