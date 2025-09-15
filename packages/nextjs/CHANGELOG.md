@@ -1,5 +1,14 @@
 # @xaiku/nextjs
 
+## 0.0.6
+
+### Patch Changes
+
+- e96e6c1: Fix lint issues.
+- Updated dependencies [e96e6c1]
+  - @xaiku/react@0.0.6
+  - @xaiku/node@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
