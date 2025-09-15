@@ -28,6 +28,6 @@
     "@xaiku/prettier-config": "workspace:*"
   },
   "dependencies": {
-    "@changesets/cli": "2.28.1"
+    "@changesets/cli": "2.29.7"
   }
 }

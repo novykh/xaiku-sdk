@@ -42,15 +42,10 @@
   },
   "devDependencies": {
     "@babel/cli": "catalog:",
-    "@chromatic-com/storybook": "catalog:storybook",
-    "@storybook/addon-essentials": "catalog:storybook",
-    "@storybook/addon-interactions": "catalog:storybook",
-    "@storybook/addon-onboarding": "catalog:storybook",
-    "@storybook/addon-webpack5-compiler-swc": "catalog:storybook",
-    "@storybook/blocks": "catalog:storybook",
-    "@storybook/react": "8.5.8",
-    "@storybook/react-webpack5": "8.5.8",
-    "@storybook/test": "catalog:storybook",
+    "@chromatic-com/storybook": "4.1.1",
+    "@storybook/addon-onboarding": "9.1.5",
+    "@storybook/addon-webpack5-compiler-swc": "4.0.1",
+    "@storybook/react-webpack5": "9.1.5",
     "@testing-library/dom": "catalog:test",
     "@testing-library/jest-dom": "catalog:test",
     "@testing-library/react": "catalog:test",
@@ -64,7 +59,9 @@
     "msw": "catalog:test",
     "msw-storybook-addon": "catalog:test",
     "react": "catalog:",
-    "storybook": "catalog:storybook"
+    "storybook": "9.1.5",
+    "eslint-plugin-storybook": "9.1.5",
+    "@storybook/addon-docs": "9.1.5"
   },
   "msw": {
     "workerDirectory": [
