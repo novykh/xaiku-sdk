@@ -1,5 +1,11 @@
 # @xaiku/shared
 
+## 0.0.5
+
+### Patch Changes
+
+- 2c9e835: Documentation.
+
 ## 0.0.4
 
 ### Patch Changes
