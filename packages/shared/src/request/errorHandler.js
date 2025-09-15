@@ -130,7 +130,7 @@ const handlerFactory = {
     this.response = response
     try {
       this.body = await response.json()
-    } catch (e) {
+    } catch {
       this.body = {}
     }
     return this
