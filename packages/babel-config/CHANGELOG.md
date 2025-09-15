@@ -1,5 +1,11 @@
 # @xaiku/babel-config
 
+## 0.0.3
+
+### Patch Changes
+
+- af7afb0: Upgrade packages.
+
 ## 0.0.2
 
 ### Patch Changes
