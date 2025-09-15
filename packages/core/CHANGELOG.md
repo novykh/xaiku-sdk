@@ -1,5 +1,12 @@
 # @xaiku/core
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [e96e6c1]
+  - @xaiku/shared@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes

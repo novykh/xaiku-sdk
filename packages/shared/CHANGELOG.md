@@ -1,5 +1,11 @@
 # @xaiku/shared
 
+## 0.0.6
+
+### Patch Changes
+
+- e96e6c1: Fix lint issues.
+
 ## 0.0.5
 
 ### Patch Changes
