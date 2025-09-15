@@ -1,4 +1,4 @@
-import { fn } from '@storybook/test'
+import { fn } from 'storybook/test'
 import createButton from './button'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories

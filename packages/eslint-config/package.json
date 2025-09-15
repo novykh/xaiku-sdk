@@ -19,18 +19,18 @@
     "to-xaiku": "pnpm cp-xaiku"
   },
   "dependencies": {
-    "@babel/eslint-parser": "7.26.8"
+    "@babel/eslint-parser": "7.28.4"
   },
   "devDependencies": {
-    "@eslint/js": "9.21.0",
-    "@next/eslint-plugin-next": "15.1.7",
+    "@eslint/js": "9.35.0",
+    "@next/eslint-plugin-next": "15.5.3",
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
-    "eslint": "9.21.0",
-    "eslint-config-next": "15.1.7",
+    "eslint": "9.35.0",
+    "eslint-config-next": "15.5.3",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-react": "7.37.4",
-    "eslint-plugin-react-hooks": "5.1.0",
-    "globals": "16.0.0"
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "16.4.0"
   }
 }

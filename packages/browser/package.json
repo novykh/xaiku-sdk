@@ -38,20 +38,18 @@
   },
   "devDependencies": {
     "@babel/cli": "catalog:",
-    "@chromatic-com/storybook": "catalog:storybook",
-    "@storybook/addon-essentials": "catalog:storybook",
-    "@storybook/addon-interactions": "catalog:storybook",
-    "@storybook/addon-webpack5-compiler-swc": "catalog:storybook",
-    "@storybook/blocks": "catalog:storybook",
-    "@storybook/html": "8.5.8",
-    "@storybook/html-webpack5": "8.5.8",
-    "@storybook/test": "catalog:storybook",
+    "@chromatic-com/storybook": "4.1.1",
+    "@storybook/addon-webpack5-compiler-swc": "4.0.1",
+    "@storybook/html": "9.1.5",
+    "@storybook/html-webpack5": "8.6.14",
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "storybook": "catalog:storybook"
+    "storybook": "9.1.5",
+    "eslint-plugin-storybook": "9.1.5",
+    "@storybook/addon-docs": "9.1.5"
   }
 }

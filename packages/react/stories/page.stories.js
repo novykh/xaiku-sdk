@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { expect, userEvent, within } from '@storybook/test'
+import { expect, userEvent, within } from 'storybook/test'
 import { http, HttpResponse, delay } from 'msw'
 
 const Page = React.lazy(() => import('./page'))
