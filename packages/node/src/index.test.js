@@ -55,7 +55,7 @@ describe('SDK factory', () => {
     makeCoreSdk.mockReturnValue(dummySdk)
     makeProjects.mockResolvedValue()
 
-    const instance = await makeSDK()
+    await makeSDK()
 
     expect(makeClient).not.toHaveBeenCalled()
     expect(dummySdk.client).toBeUndefined()

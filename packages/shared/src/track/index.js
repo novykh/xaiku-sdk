@@ -19,7 +19,7 @@ export default sdk => {
         navigator.sendBeacon(endpoint, JSON.stringify({ events: buffer, pkey: sdk.pkey }))
       } else {
         const url = ensureOneSlash(endpoint)
-        const response = request(url, {
+        request(url, {
           method: 'POST',
           body: JSON.stringify({ events: buffer }),
           headers: {
