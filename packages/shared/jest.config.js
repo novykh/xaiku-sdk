@@ -1,6 +1,6 @@
 module.exports = {
   // this is the package root, even when tests are being run at the repo level
-  rootDir: process.cwd(),
+  rootDir: __dirname,
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',
   testEnvironment: 'jsdom',

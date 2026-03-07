@@ -1,5 +1,6 @@
 const isES6 = process.env.BABEL_ENV === 'es6'
 const isCJS = process.env.BABEL_ENV === 'cjs'
+const moduleResolver = require('babel-plugin-module-resolver').default
 
 module.exports = api => {
   const isTest = api.env('test')
@@ -18,7 +19,7 @@ module.exports = api => {
     ],
     plugins: [
       !isTest && [
-        'module-resolver',
+        moduleResolver,
         {
           alias: {
             '~': './src',

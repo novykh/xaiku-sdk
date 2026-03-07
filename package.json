@@ -19,15 +19,17 @@
     "test": "pnpm --filter '@xaiku/*' --if-present test --passWithNoTests",
     "clean": "pnpm --filter '@xaiku/*' --if-present clean",
     "format": "prettier --write \"**/*.{js,mjs,md}\"",
+    "catalog:audit": "node ./scripts/catalog-audit.mjs",
     "changes": "changeset",
     "version": "changeset version",
     "release": "changeset publish"
   },
   "devDependencies": {
     "@xaiku/eslint-config": "workspace:*",
-    "@xaiku/prettier-config": "workspace:*"
+    "@xaiku/prettier-config": "workspace:*",
+    "eslint": "catalog:lint"
   },
   "dependencies": {
-    "@changesets/cli": "2.29.7"
+    "@changesets/cli": "2.30.0"
   }
 }

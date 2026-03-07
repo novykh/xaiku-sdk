@@ -1,4 +1,9 @@
-import { join, dirname, resolve } from 'path'
+import { createRequire } from 'module'
+import { dirname, join, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const require = createRequire(import.meta.url)
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -12,7 +17,7 @@ const config = {
   addons: [
     getAbsolutePath('@storybook/addon-onboarding'),
     getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath("@storybook/addon-docs")
+    getAbsolutePath('@storybook/addon-docs'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/nextjs'),

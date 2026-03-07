@@ -24,7 +24,7 @@
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6 --no-copy-ignored --copy-files && tsc --outDir dist/es6",
     "build": "pnpm build:cjs && pnpm build:esm",
     "test": "jest",
-    "lint": "eslint './src/**/*.js'",
+    "lint": "pnpm exec eslint './src/**/*.js'",
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm clean && pnpm build",
     "cp-xaiku": "cp -R ./dist ./package.json ../../../xaiku/node_modules/@xaiku/node/",
@@ -42,6 +42,7 @@
     "babel-jest": "catalog:test",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "process": "0.11.10"
+    "process": "0.11.10",
+    "eslint": "catalog:lint"
   }
 }

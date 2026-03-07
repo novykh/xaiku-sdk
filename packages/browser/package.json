@@ -24,7 +24,7 @@
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6 --no-copy-ignored --copy-files && tsc --outDir dist/es6",
     "build": "pnpm build:cjs && pnpm build:esm",
     "test": "jest",
-    "lint": "eslint './src/**/*.js'",
+    "lint": "pnpm exec eslint './src/**/*.js'",
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm clean && pnpm build",
     "cp-xaiku": "cp -R ./dist ./package.json ../../../xaiku/node_modules/@xaiku/browser/",
@@ -38,18 +38,19 @@
   },
   "devDependencies": {
     "@babel/cli": "catalog:",
-    "@chromatic-com/storybook": "4.1.1",
-    "@storybook/addon-webpack5-compiler-swc": "4.0.1",
-    "@storybook/html": "9.1.5",
-    "@storybook/html-webpack5": "8.6.14",
+    "@chromatic-com/storybook": "catalog:storybook-html",
+    "@storybook/addon-docs": "catalog:storybook-html",
+    "@storybook/addon-webpack5-compiler-swc": "catalog:storybook-html",
+    "@storybook/html": "catalog:storybook-html",
+    "@storybook/html-webpack5": "catalog:storybook-html",
     "@xaiku/babel-config": "workspace:*",
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
     "babel-jest": "catalog:test",
+    "eslint-plugin-storybook": "catalog:storybook-html",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
-    "storybook": "9.1.5",
-    "eslint-plugin-storybook": "9.1.5",
-    "@storybook/addon-docs": "9.1.5"
+    "storybook": "catalog:storybook-html",
+    "eslint": "catalog:lint"
   }
 }
