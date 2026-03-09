@@ -1,5 +1,14 @@
 # @xaiku/node
 
+## 0.0.7
+
+### Patch Changes
+
+- fcb869b: Upgrade npm packages
+- Updated dependencies [fcb869b]
+  - @xaiku/shared@0.0.7
+  - @xaiku/core@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @xaiku/shared
 
+## 0.0.7
+
+### Patch Changes
+
+- fcb869b: Upgrade npm packages
+
 ## 0.0.6
 
 ### Patch Changes

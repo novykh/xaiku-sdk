@@ -1,5 +1,11 @@
 # @xaiku/prettier-config
 
+## 0.0.4
+
+### Patch Changes
+
+- fcb869b: Upgrade npm packages
+
 ## 0.0.3
 
 ### Patch Changes

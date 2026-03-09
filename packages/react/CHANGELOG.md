@@ -1,5 +1,13 @@
 # @xaiku/react
 
+## 0.0.7
+
+### Patch Changes
+
+- fcb869b: Upgrade npm packages
+- Updated dependencies [fcb869b]
+  - @xaiku/browser@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes
