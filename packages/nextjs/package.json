@@ -28,7 +28,7 @@
     "build:esm": "BABEL_ENV=es6 babel src -d dist/es6 --no-copy-ignored --copy-files && tsc --outDir dist/es6",
     "build": "pnpm build:cjs && pnpm build:esm",
     "test": "jest",
-    "lint": "eslint './src/**/*.js'",
+    "lint": "pnpm exec eslint './src/**/*.js'",
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm clean && pnpm build",
     "cp-xaiku": "cp -R ./dist ./package.json ../../../xaiku/node_modules/@xaiku/nextjs/",
@@ -47,9 +47,11 @@
   },
   "devDependencies": {
     "@babel/cli": "catalog:",
-    "@chromatic-com/storybook": "4.1.1",
-    "@storybook/addon-onboarding": "9.1.5",
-    "@storybook/nextjs": "9.1.5",
+    "@chromatic-com/storybook": "catalog:storybook-modern",
+    "@storybook/addon-docs": "catalog:storybook-modern",
+    "@storybook/addon-onboarding": "catalog:storybook-modern",
+    "@storybook/addon-webpack5-compiler-swc": "catalog:storybook-modern",
+    "@storybook/react-webpack5": "catalog:storybook-modern",
     "@testing-library/dom": "catalog:test",
     "@testing-library/jest-dom": "catalog:test",
     "@testing-library/react": "catalog:test",
@@ -64,9 +66,8 @@
     "msw-storybook-addon": "catalog:test",
     "next": "catalog:",
     "react": "catalog:",
-    "storybook": "9.1.5",
-    "eslint-plugin-storybook": "9.1.5",
-    "@storybook/addon-docs": "9.1.5"
+    "storybook": "catalog:storybook-modern",
+    "eslint": "catalog:lint"
   },
   "msw": {
     "workerDirectory": [

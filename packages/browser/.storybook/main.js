@@ -1,4 +1,7 @@
-import { join, dirname } from 'path'
+import { createRequire } from 'module'
+import { dirname, join } from 'path'
+
+const require = createRequire(import.meta.url)
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -12,7 +15,7 @@ const config = {
   addons: [
     getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
     getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath("@storybook/addon-docs")
+    getAbsolutePath('@storybook/addon-docs'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/html-webpack5'),

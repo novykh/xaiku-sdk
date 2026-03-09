@@ -38,7 +38,9 @@ it('has errors and creates xhrHandler', async () => {
   } catch (error) {
     expect(error.message).toEqual('Unprocessable Entity')
     expect(error.response.status).toEqual(422)
-    expect(error.asyncHandler).toEqual(Promise.resolve({}))
+    const asyncHandler = await error.asyncHandler
+    expect(asyncHandler.response).toEqual(error.response)
+    expect(typeof asyncHandler.handle).toBe('function')
   }
 })
 
@@ -113,7 +115,9 @@ it('throws on 300 statuses', async () => {
     await request('url.com')
   } catch (error) {
     expect(error.message).toEqual('Moved Permanently')
-    expect(error.asyncHandler).toEqual(Promise.resolve({}))
+    const asyncHandler = await error.asyncHandler
+    expect(asyncHandler.response).toEqual(error.response)
+    expect(typeof asyncHandler.handle).toBe('function')
   }
 })
 
@@ -123,6 +127,8 @@ it('throws on 100 statuses', async () => {
     await request('url.com')
   } catch (error) {
     expect(error.message).toEqual('Processing')
-    expect(error.asyncHandler).toEqual(Promise.resolve({}))
+    const asyncHandler = await error.asyncHandler
+    expect(asyncHandler.response).toEqual(error.response)
+    expect(typeof asyncHandler.handle).toBe('function')
   }
 })

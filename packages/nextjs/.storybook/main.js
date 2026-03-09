@@ -1,4 +1,9 @@
-import { join, dirname, resolve } from 'path'
+import { createRequire } from 'module'
+import { dirname, join, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const require = createRequire(import.meta.url)
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -6,16 +11,17 @@ import { join, dirname, resolve } from 'path'
  */
 const getAbsolutePath = value => dirname(require.resolve(join(value, 'package.json')))
 
-/** @type { import('@storybook/nextjs').StorybookConfig } */
+/** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     getAbsolutePath('@storybook/addon-onboarding'),
     getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath("@storybook/addon-docs")
+    getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
   ],
   framework: {
-    name: getAbsolutePath('@storybook/nextjs'),
+    name: getAbsolutePath('@storybook/react-webpack5'),
     options: {},
   },
   features: {
