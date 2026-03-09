@@ -49,7 +49,6 @@ catalogs:
     "@storybook/addon-webpack5-compiler-swc": 4.0.2
     "@storybook/nextjs": 10.2.15
     "@storybook/react-webpack5": 10.2.15
-    eslint-plugin-storybook: 10.2.15
     storybook: 10.2.15
 
   # catalog:storybook-html
@@ -59,5 +58,5 @@ catalogs:
     "@storybook/addon-webpack5-compiler-swc": 2.1.0
     "@storybook/html": 8.6.14
     "@storybook/html-webpack5": 8.6.14
-    eslint-plugin-storybook: 9.1.20
+    "@storybook/test": 8.6.14
     storybook: 8.6.14

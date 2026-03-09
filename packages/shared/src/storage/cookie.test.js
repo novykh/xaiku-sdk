@@ -13,21 +13,6 @@ Object.defineProperty(document, 'cookie', {
 })
 
 describe('store module (default export)', () => {
-  const originalHostname = window.location.hostname
-
-  beforeAll(() => {
-    Object.defineProperty(window, 'location', {
-      value: {
-        hostname: 'sub.example.com',
-      },
-      writable: true,
-    })
-  })
-
-  afterAll(() => {
-    window.location.hostname = originalHostname
-  })
-
   beforeEach(() => {
     cookieStore = ''
   })
@@ -74,7 +59,7 @@ describe('store module (default export)', () => {
       expect(cookieStore).toContain(`${encodedKey}=${encodedValue}`)
       expect(cookieStore).toContain('path=/')
 
-      expect(cookieStore).toContain('domain=.example.com')
+      expect(cookieStore).toContain('domain=.xaiku.com')
       expect(cookieStore).toContain('secure')
     })
 

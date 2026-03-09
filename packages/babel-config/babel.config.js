@@ -4,6 +4,7 @@ const moduleResolver = require('babel-plugin-module-resolver').default
 
 module.exports = api => {
   const isTest = api.env('test')
+  const useModuleResolver = isES6 || isCJS
 
   return {
     presets: [
@@ -18,7 +19,8 @@ module.exports = api => {
       '@babel/preset-react',
     ],
     plugins: [
-      !isTest && [
+      !isTest &&
+        useModuleResolver && [
         moduleResolver,
         {
           alias: {

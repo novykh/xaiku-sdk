@@ -1,25 +1,29 @@
+/** @jest-environment node */
+
 import hasDocument from '~/hasDocument'
 
 describe('hasDocument', () => {
+  let originalDocument
+
+  beforeEach(() => {
+    originalDocument = global.document
+  })
+
+  afterEach(() => {
+    if (originalDocument === undefined) {
+      delete global.document
+    } else {
+      global.document = originalDocument
+    }
+  })
+
   it('should return false when document is undefined', () => {
-    const windowSpy = jest.spyOn(global, 'document', 'get')
-    windowSpy.mockImplementation(() => undefined)
-
-    const result = hasDocument()
-
-    expect(result).toBe(false)
-
-    windowSpy.mockRestore()
+    delete global.document
+    expect(hasDocument()).toBe(false)
   })
 
   it('should return true when document is defined', () => {
-    const windowSpy = jest.spyOn(global, 'document', 'get')
-    windowSpy.mockImplementation(() => ({}))
-
-    const result = hasDocument()
-
-    expect(result).toBe(true)
-
-    windowSpy.mockRestore()
+    global.document = {}
+    expect(hasDocument()).toBe(true)
   })
 })

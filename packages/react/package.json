@@ -55,7 +55,6 @@
     "@xaiku/eslint-config": "workspace:*",
     "@xaiku/prettier-config": "workspace:*",
     "babel-jest": "catalog:test",
-    "eslint-plugin-storybook": "catalog:storybook-modern",
     "jest": "catalog:test",
     "jest-environment-jsdom": "catalog:test",
     "msw": "catalog:test",
