@@ -51,7 +51,6 @@ jobs:
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ''
           NPM_CONFIG_PROVENANCE: true
 
       # - name: Do something on successful publish
