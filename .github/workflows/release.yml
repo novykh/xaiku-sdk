@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
@@ -20,10 +24,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 22.x
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x
+          node-version: 22.x
           registry-url: 'https://registry.npmjs.org'
 
       - name: Create pnpm store directory
@@ -45,7 +49,7 @@ jobs:
 
       - name: Publish to npm or create a version pull request
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v1.7.0
         with:
           version: pnpm run version
           publish: pnpm run release
