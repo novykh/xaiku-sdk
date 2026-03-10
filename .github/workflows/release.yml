@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: read
-
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
@@ -22,17 +18,19 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js 22.x
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          registry-url: 'https://registry.npmjs.org'
+
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@latest
 
       - name: Create pnpm store directory
         run: mkdir -p ~/.pnpm-store
-      
+
       - name: Cache pnpm store
         uses: actions/cache@v4
         with:
@@ -49,16 +47,10 @@ jobs:
 
       - name: Publish to npm or create a version pull request
         id: changesets
-        uses: changesets/action@v1.7.0
+        uses: changesets/action@v1
         with:
           version: pnpm run version
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-          NODE_AUTH_TOKEN: ''
-
-      # - name: Do something on successful publish
-      #   if: steps.changesets.outputs.published == 'true'
-      #   You can do something when a publish happens.
-      #   run: my-slack-bot send-notification --message "A new version of ${GITHUB_REPOSITORY} was published!"
