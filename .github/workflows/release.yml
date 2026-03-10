@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22.x
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Create pnpm store directory
         run: mkdir -p ~/.pnpm-store
@@ -55,6 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ''
 
       # - name: Do something on successful publish
       #   if: steps.changesets.outputs.published == 'true'
