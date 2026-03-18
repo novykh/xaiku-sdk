@@ -5,7 +5,7 @@ import './page.css'
 
 const sdk = initXaiku({
   pkey: 'pk_IxIifMkJ4Ot8XNBs',
-  projectIds: ['66a7aa430d37c7d301230442', '667ad845393ebebbca17b2e8'],
+  experimentIds: ['66a7aa430d37c7d301230442', '667ad845393ebebbca17b2e8'],
   dev: true,
 })
 
@@ -23,13 +23,13 @@ const Page = () => {
         />
 
         <section className="storybook-page">
-          <Text projectId="66a7aa430d37c7d301230442" id="header">
+          <Text experimentId="66a7aa430d37c7d301230442" id="header">
             <h2>Pages in Storybook</h2>
           </Text>
-          <Text projectId="66a7aa430d37c7d301230442" id="header">
+          <Text experimentId="66a7aa430d37c7d301230442" id="header">
             Just a string
           </Text>
-          <Text projectId="66a7aa430d37c7d301230442" id="header">
+          <Text experimentId="66a7aa430d37c7d301230442" id="header">
             Multiple <strong>children</strong>
           </Text>
           <p>

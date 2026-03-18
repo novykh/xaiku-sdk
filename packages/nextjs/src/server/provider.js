@@ -15,7 +15,7 @@ const Provider = async ({
 }) => {
   const cookieStore = await cookies()
 
-  let projects
+  let experiments
   try {
     sdk =
       sdk ||
@@ -26,13 +26,13 @@ const Provider = async ({
         guid: cookieStore.get(guidStorageKey)?.value || userId,
       }))
 
-    projects = await sdk.getProjects()
+    experiments = await sdk.getExperiments()
   } catch (e) {
-    console.log('CANNOT GET PROJECTS', e)
+    console.log('CANNOT GET EXPERIMENTS', e)
   }
 
   return (
-    <ClientProvider {...rest} userId={userId} pkey={pkey} guid={sdk?.guid} projects={projects}>
+    <ClientProvider {...rest} userId={userId} pkey={pkey} guid={sdk?.guid} experiments={experiments}>
       {children}
     </ClientProvider>
   )

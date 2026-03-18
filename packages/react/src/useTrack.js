@@ -3,52 +3,52 @@ import { useSDK } from './provider'
 
 const trackedViews = new Set()
 
-export const useTrackView = ({ projectId, variantId, partId }) => {
+export const useTrackView = ({ experimentId, variantId, partId }) => {
   const sdk = useSDK()
 
   useEffect(() => {
-    if (!sdk || !projectId) return
+    if (!sdk || !experimentId) return
 
-    const actualVariantId = variantId || sdk.getVariantId(projectId)
-    const trackingKey = `${projectId}:${actualVariantId}:${partId || 'default'}`
+    const actualVariantId = variantId || sdk.getVariantId(experimentId)
+    const trackingKey = `${experimentId}:${actualVariantId}:${partId || 'default'}`
 
     if (trackedViews.has(trackingKey)) return
 
     sdk.track.events.trackView({
-      projectId,
+      experimentId,
       variantId: actualVariantId,
       partId,
     })
 
     trackedViews.add(trackingKey)
-  }, [sdk, projectId, variantId, partId])
+  }, [sdk, experimentId, variantId, partId])
 }
 
-export const useTrackClick = ({ projectId, variantId, partId }) => {
+export const useTrackClick = ({ experimentId, variantId, partId }) => {
   const sdk = useSDK()
 
   return useCallback(() => {
-    if (!sdk || !projectId) return
+    if (!sdk || !experimentId) return
 
     sdk.track.events.trackClick({
-      projectId,
-      variantId: variantId || sdk.getVariantId(projectId),
+      experimentId,
+      variantId: variantId || sdk.getVariantId(experimentId),
       partId,
     })
-  }, [sdk, projectId, variantId, partId])
+  }, [sdk, experimentId, variantId, partId])
 }
 
-export const useTrackConversion = ({ projectId, variantId, partId, value }) => {
+export const useTrackConversion = ({ experimentId, variantId, partId, value }) => {
   const sdk = useSDK()
 
   return useCallback(() => {
-    if (!sdk || !projectId) return
+    if (!sdk || !experimentId) return
 
     sdk.track.events.trackConversion({
-      projectId,
-      variantId: variantId || sdk.getVariantId(projectId),
+      experimentId,
+      variantId: variantId || sdk.getVariantId(experimentId),
       partId,
       value,
     })
-  }, [sdk, projectId, variantId, partId, value])
+  }, [sdk, experimentId, variantId, partId, value])
 }

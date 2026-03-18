@@ -1,5 +1,5 @@
 import makeCoreSdk from '@xaiku/core'
-import { makeTrack, makeProjects, makePerformanceObserver, isBrowser } from '@xaiku/shared'
+import { makeTrack, makeExperiments, makePerformanceObserver, isBrowser } from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
@@ -27,7 +27,7 @@ export default (options = {}) => {
 
   if (!instance.options.skipClient) instance.client = makeClient(instance)
 
-  makeProjects(instance)
+  makeExperiments(instance)
   instance.track = makeTrack(instance)
 
   instance.destroy = () => {

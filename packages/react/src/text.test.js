@@ -2,14 +2,14 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Text, useText } from './text'
 import { useSDK } from './provider'
-import { useProjectId } from './project'
+import { useExperimentId } from './experiment'
 
 jest.mock('./provider', () => ({
   useSDK: jest.fn(),
 }))
 
-jest.mock('./project', () => ({
-  useProjectId: jest.fn(),
+jest.mock('./experiment', () => ({
+  useExperimentId: jest.fn(),
 }))
 
 jest.mock('./useTrack', () => ({
@@ -17,15 +17,15 @@ jest.mock('./useTrack', () => ({
   useTrackClick: jest.fn(),
 }))
 
-const TestComponent = ({ projectId, id, fallback }) => {
-  const text = useText(projectId, id, fallback)
+const TestComponent = ({ experimentId, id, fallback }) => {
+  const text = useText(experimentId, id, fallback)
   return <div>{text}</div>
 }
 
 describe('useText', () => {
   it('returns fallback when sdk is not available', () => {
     useSDK.mockReturnValue(null)
-    render(<TestComponent projectId="1" id="1" fallback="Fallback Text" />)
+    render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Fallback Text')).toBeInTheDocument()
   })
 
@@ -35,7 +35,7 @@ describe('useText', () => {
       on: jest.fn(),
     }
     useSDK.mockReturnValue(mockSdk)
-    render(<TestComponent projectId="1" id="1" fallback="Fallback Text" />)
+    render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Fallback Text')).toBeInTheDocument()
   })
 
@@ -45,7 +45,7 @@ describe('useText', () => {
       on: jest.fn(),
     }
     useSDK.mockReturnValue(mockSdk)
-    render(<TestComponent projectId="1" id="1" fallback="Fallback Text" />)
+    render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Variant Text')).toBeInTheDocument()
   })
 
@@ -60,13 +60,13 @@ describe('useText', () => {
       },
     }
     useSDK.mockReturnValue(mockSdk)
-    render(<TestComponent projectId="1" id="1" fallback="Fallback Text" />)
+    render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Variant Text')).toBeInTheDocument()
   })
 })
 
 describe('Text', () => {
-  it('returns fallback when no projectId is provided', () => {
+  it('returns fallback when no experimentId is provided', () => {
     const mockSdk = {
       getVariantText: jest.fn().mockReturnValue('Variant Text'),
       on: jest.fn(),
@@ -83,12 +83,12 @@ describe('Text', () => {
         on: jest.fn(),
       }
       useSDK.mockReturnValue(mockSdk)
-      useProjectId.mockReturnValue('1')
+      useExperimentId.mockReturnValue('1')
     })
 
     it('returns string children as fallback', () => {
       render(
-        <Text id="1" projectId="1">
+        <Text id="1" experimentId="1">
           Fallback Text
         </Text>
       )
@@ -96,12 +96,12 @@ describe('Text', () => {
     })
 
     it('returns empty children as fallback', () => {
-      const { asFragment } = render(<Text id="1" projectId="1" />)
+      const { asFragment } = render(<Text id="1" experimentId="1" />)
       expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <span
+          data-xaiku-experimentid="1"
           data-xaiku-partid="1"
-          data-xaiku-projectid="1"
         />
       </DocumentFragment>
     `)
@@ -109,7 +109,7 @@ describe('Text', () => {
 
     it('returns cloned valid element child as fallback', () => {
       render(
-        <Text id="1" projectId="1">
+        <Text id="1" experimentId="1">
           <strong>Fallback Text</strong>
         </Text>
       )
@@ -118,7 +118,7 @@ describe('Text', () => {
 
     it('returns render props children as fallback', () => {
       render(
-        <Text id="1" projectId="1">
+        <Text id="1" experimentId="1">
           {emptyString => `Fallback${emptyString}Text`}
         </Text>
       )
@@ -127,7 +127,7 @@ describe('Text', () => {
 
     it('returns multiple children as fallback', () => {
       render(
-        <Text id="1" projectId="1">
+        <Text id="1" experimentId="1">
           Multiple <span>Original</span> Texts
         </Text>
       )
@@ -144,17 +144,17 @@ describe('Text', () => {
         on: jest.fn(),
       }
       useSDK.mockReturnValue(mockSdk)
-      useProjectId.mockReturnValue('1')
+      useExperimentId.mockReturnValue('1')
     })
 
     it('returns variant text when sdk is available', () => {
-      render(<Text id="1" projectId="1" fallback="Fallback Text" />)
+      render(<Text id="1" experimentId="1" fallback="Fallback Text" />)
       expect(screen.getByText('Variant Text')).toBeInTheDocument()
     })
 
     it('calls children function with text', () => {
       render(
-        <Text id="1" projectId="1" fallback="Fallback Text">
+        <Text id="1" experimentId="1" fallback="Fallback Text">
           {text => text}
         </Text>
       )
@@ -163,7 +163,7 @@ describe('Text', () => {
 
     it('clones element with text as children', () => {
       render(
-        <Text id="1" projectId="1" fallback="Fallback Text">
+        <Text id="1" experimentId="1" fallback="Fallback Text">
           <span>Original Text</span>
         </Text>
       )

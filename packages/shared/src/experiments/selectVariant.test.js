@@ -8,8 +8,8 @@ describe('selectVariant (default export)', () => {
       { name: 'C', weight: 3 },
     ]
     const guid = 'user-guid'
-    const projectId = 'project-xyz'
-    const variant = selectVariant(variants, guid, projectId)
+    const experimentId = 'experiment-xyz'
+    const variant = selectVariant(variants, guid, experimentId)
     const variantNames = variants.map(v => v.name)
     expect(variantNames).toContain(variant.selected.name)
     expect(variant.control).toBeUndefined()
@@ -20,13 +20,13 @@ describe('selectVariant (default export)', () => {
       { name: 'A', control: true }, // weight defaults to 5
       { name: 'B', weight: 2 },
     ]
-    const projectId = 'project1'
+    const experimentId = 'experiment1'
 
-    let variant = selectVariant(variants, 'guid1', projectId)
+    let variant = selectVariant(variants, 'guid1', experimentId)
     expect(variant.selected.name).toEqual('A')
     expect(variant.control.name).toEqual('A')
 
-    variant = selectVariant(variants, 'zzzzz', projectId)
+    variant = selectVariant(variants, 'qqqqq', experimentId)
     expect(variant.selected.name).toEqual('B')
     expect(variant.control.name).toEqual('A')
   })
@@ -37,9 +37,9 @@ describe('selectVariant (default export)', () => {
       { name: 'B', weight: 20 },
     ]
     const guid = 'consistency-guid'
-    const projectId = 'project-1'
-    const variant1 = selectVariant(variants, guid, projectId)
-    const variant2 = selectVariant(variants, guid, projectId)
+    const experimentId = 'experiment-1'
+    const variant1 = selectVariant(variants, guid, experimentId)
+    const variant2 = selectVariant(variants, guid, experimentId)
     expect(variant1.selected.name).toEqual(variant2.selected.name)
   })
 })

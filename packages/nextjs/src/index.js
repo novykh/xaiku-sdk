@@ -11,8 +11,8 @@ export {
   useTrackView,
   useTrackClick,
   useTrackConversion,
-  Project,
-  useProjectId,
+  Experiment,
+  useExperimentId,
 } from '@xaiku/react'
 
 export default (options = {}) =>

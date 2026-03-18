@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react'
 import { useSDK } from './provider'
-import { useProjectId } from './project'
+import { useExperimentId } from './experiment'
 import { useTrackView } from './useTrack'
 
 const useForceUpdate = () => {
@@ -17,7 +17,7 @@ const useForceUpdate = () => {
   return useCallback(() => set(i => i + 1), [])
 }
 
-export const useText = (projectId, id, fallback, control) => {
+export const useText = (experimentId, id, fallback, control) => {
   const rerender = useForceUpdate()
   const sdk = useSDK()
 
@@ -29,17 +29,17 @@ export const useText = (projectId, id, fallback, control) => {
 
   if (!sdk) return fallback
 
-  return sdk.getVariantText(projectId, id, { control }) ?? fallback
+  return sdk.getVariantText(experimentId, id, { control }) ?? fallback
 }
 
-export const Text = ({ id, projectId, children, fallback, control }) => {
-  const contextProjectId = useProjectId()
-  projectId = projectId ?? contextProjectId
+export const Text = ({ id, experimentId, children, fallback, control }) => {
+  const contextExperimentId = useExperimentId()
+  experimentId = experimentId ?? contextExperimentId
 
-  useTrackView({ projectId, partId: id })
+  useTrackView({ experimentId, partId: id })
 
-  if (!projectId) {
-    console.warn('No projectId provided, falling back to fallback prop.')
+  if (!experimentId) {
+    console.warn('No experimentId provided, falling back to fallback prop.')
     return fallback
   }
 
@@ -51,16 +51,16 @@ export const Text = ({ id, projectId, children, fallback, control }) => {
         ? ''
         : (children ?? ''))
 
-  const text = useText(projectId, id, fallback, control)
+  const text = useText(experimentId, id, fallback, control)
 
   if (typeof children === 'function') return children(text)
 
   if (isValidElement(children))
     return cloneElement(
       children,
-      { 'data-xaiku-projectid': projectId, 'data-xaiku-partid': id },
+      { 'data-xaiku-experimentid': experimentId, 'data-xaiku-partid': id },
       text
     )
 
-  return createElement('span', { 'data-xaiku-projectid': projectId, 'data-xaiku-partid': id }, text)
+  return createElement('span', { 'data-xaiku-experimentid': experimentId, 'data-xaiku-partid': id }, text)
 }

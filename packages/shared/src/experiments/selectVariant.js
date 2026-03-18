@@ -1,6 +1,6 @@
-const hashGuid = (guid, projectId) => {
+const hashGuid = (guid, experimentId) => {
   let hash = 0
-  const combined = guid + projectId
+  const combined = guid + experimentId
 
   for (let i = 0; i < combined.length; i++) {
     hash = (hash << 5) - hash + combined.charCodeAt(i)
@@ -10,9 +10,9 @@ const hashGuid = (guid, projectId) => {
   return Math.abs(hash)
 }
 
-export default (variants, guid, projectId) => {
+export default (variants, guid, experimentId) => {
   const totalWeight = variants.reduce((sum, v) => sum + (v.weight ?? 5), 0)
-  const hashValue = hashGuid(guid, projectId) % totalWeight
+  const hashValue = hashGuid(guid, experimentId) % totalWeight
   let cumulativeWeight = 0
 
   const selected = variants.find(variant => {

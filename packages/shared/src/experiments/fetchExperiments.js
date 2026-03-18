@@ -4,11 +4,11 @@ import isTestMode from '~/isTestMode'
 
 export default async (sdk, ids) => {
   try {
-    const url = ensureOneSlash(`${sdk.apiUrl}/projects`)
+    const url = ensureOneSlash(`${sdk.apiUrl}/experiments`)
     const headers = {
       Accept: 'application/json',
       'X-public-key': sdk.pkey,
-      'X-project-ids': (ids ?? sdk.projectIds).join(','),
+      'X-experiment-ids': (ids ?? sdk.experimentIds).join(','),
     }
 
     if (isTestMode()) {
@@ -17,7 +17,7 @@ export default async (sdk, ids) => {
 
     const response = await request(url, { headers })
 
-    return response.projects
+    return response.experiments
   } catch (error) {
     console.error(error)
   }
