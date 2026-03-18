@@ -1,0 +1,118 @@
+---
+title: Web Vitals
+sidebar_label: Web Vitals
+---
+
+# Web Vitals
+
+`@xaiku/browser` automatically collects Core Web Vitals and other performance metrics using the browser's `PerformanceObserver` API. No additional code is required beyond initializing the SDK.
+
+## Collected metrics
+
+| Metric | Full name | What it measures | Good | Needs improvement | Poor |
+|--------|-----------|-----------------|------|-------------------|------|
+| **CLS** | Cumulative Layout Shift | Visual stability -- unexpected layout shifts during the page lifecycle | &le; 0.1 | 0.1 -- 0.25 | &gt; 0.25 |
+| **LCP** | Largest Contentful Paint | Loading performance -- time to render the largest visible element | &le; 2500ms | 2500 -- 4000ms | &gt; 4000ms |
+| **FCP** | First Contentful Paint | Loading performance -- time to render the first piece of DOM content | &le; 1800ms | 1800 -- 3000ms | &gt; 3000ms |
+| **INP** | Interaction to Next Paint | Responsiveness -- delay between user input and the next paint | Measured via first-input delay | -- | -- |
+| **TTFB** | Time to First Byte | Server responsiveness -- time from the request to the first byte of the response | &le; 800ms | 800 -- 1800ms | &gt; 1800ms |
+
+Each metric is automatically rated as `good`, `needs-improvement`, or `poor` based on the thresholds above.
+
+## How it works
+
+When you initialize `@xaiku/browser`, the SDK:
+
+1. Creates a set of `PerformanceObserver` instances via `makePerformanceObserver()`.
+2. Subscribes to the relevant entry types: `layout-shift`, `largest-contentful-paint`, `paint`, `first-input`, and `navigation`.
+3. Processes entries as they arrive and computes metric values.
+4. Reports each metric through the SDK event system with a rating.
+
+```js
+import xaiku from '@xaiku/browser'
+
+const sdk = xaiku({ pkey: 'pk_your_public_key' })
+```
+
+That is all you need. Web vitals are collected and reported automatically.
+
+## Metric details
+
+### CLS (Cumulative Layout Shift)
+
+Observes `layout-shift` entries and accumulates shift values, excluding entries caused by recent user input (`hadRecentInput`). Layout shifts are grouped into sessions: shifts within 1 second of each other and within 5 seconds of the first shift in the session are combined. The metric re-initializes on back/forward cache restoration (`BFCacheRestore`).
+
+### LCP (Largest Contentful Paint)
+
+Observes `largest-contentful-paint` entries and takes the last entry's `startTime`, adjusted for the navigation's `activationStart`. LCP observation stops after the first user interaction (`keydown` or `click`) or when the page becomes hidden, since LCP should only measure the loading phase. Re-reports on `BFCacheRestore`.
+
+### FCP (First Contentful Paint)
+
+Observes `paint` entries and captures the `first-contentful-paint` entry. The value is the entry's `startTime` minus the navigation's `activationStart`. Only reported if the paint occurred before the page was first hidden. Re-reports on `BFCacheRestore`.
+
+### INP (Interaction to Next Paint)
+
+Observes `first-input` entries and computes the input delay as `processingStart - startTime`. Only reported if the input occurred before the page was first hidden.
+
+### TTFB (Time to First Byte)
+
+Observes `navigation` entries and uses `responseStart` minus the navigation's `activationStart`. Validates that `responseStart` is a positive number not in the future. Reports `0` on `BFCacheRestore` since cached pages have no server round-trip.
+
+## Listening to metrics
+
+You can subscribe to metric events using the SDK's event system:
+
+```js
+sdk.on('cls', (metric) => {
+  console.log('CLS:', metric.value, metric.rating)
+})
+
+sdk.on('lcp', (metric) => {
+  console.log('LCP:', metric.value, 'ms', metric.rating)
+})
+
+sdk.on('fcp', (metric) => {
+  console.log('FCP:', metric.value, 'ms', metric.rating)
+})
+
+sdk.on('ttfb', (metric) => {
+  console.log('TTFB:', metric.value, 'ms', metric.rating)
+})
+```
+
+You can also listen to lifecycle events for any metric:
+
+```js
+sdk.on('metric:cls:init', (metric) => { /* metric initialized */ })
+sdk.on('metric:cls:update', (metric) => { /* metric value changed */ })
+sdk.on('metric:cls:report', (metric) => { /* metric reported */ })
+```
+
+## Metric object shape
+
+Each reported metric contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | `string` | Metric name (`cls`, `lcp`, `fcp`, `inp`, `ttfb`). |
+| `id` | `string` | Unique identifier for this measurement (e.g., `xaiku-cls-1709312000000`). |
+| `value` | `number` | The metric value. |
+| `rating` | `string` | `'good'`, `'needs-improvement'`, or `'poor'`. |
+| `entries` | `PerformanceEntry[]` | The raw `PerformanceObserver` entries used to compute the value. |
+| `type` | `string` | `'timeseries'` |
+| `context` | `string` | `'browser.web_performance.web_vitals'` |
+| `group` | `string` | `'web_performance'` |
+
+## Browser compatibility
+
+Web vitals require browser support for the `PerformanceObserver` API with the relevant entry types. All modern browsers (Chrome, Edge, Firefox, Safari) support the core metrics. If a particular observer is not available, that metric is silently skipped.
+
+## Server-side rendering
+
+Web vitals are only collected in browser environments. The `@xaiku/node` and `@xaiku/nextjs` server packages do not collect web vitals. When using Next.js, web vitals are collected on the client side after hydration.
+
+## Next steps
+
+- [Tracking Events](/docs/guides/tracking-events) -- manually tracked events alongside automatic web vitals
+- [Architecture](/docs/guides/architecture) -- how the browser package extends the core SDK
+- [Configuration](/docs/guides/configuration) -- storage and API settings

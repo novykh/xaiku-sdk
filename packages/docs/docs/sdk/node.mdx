@@ -1,0 +1,140 @@
+---
+title: "@xaiku/node"
+sidebar_label: "@xaiku/node"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# @xaiku/node
+
+Server-side SDK for Node.js environments. Built on [@xaiku/core](/docs/sdk/core) with an async factory that pre-fetches experiments during initialization. Uses in-memory storage by default since `localStorage` and cookies are not available server-side.
+
+This package is used directly for custom Node.js servers. For Next.js, use [@xaiku/nextjs](/docs/sdk/nextjs) which wraps this package with Next.js-specific defaults.
+
+## Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @xaiku/node
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm add @xaiku/node
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn add @xaiku/node
+```
+</TabItem>
+</Tabs>
+
+## Usage
+
+```js
+import makeSDK from '@xaiku/node';
+
+const sdk = await makeSDK({
+  pkey: 'pk_your_public_key',
+  guid: 'user-session-id',
+});
+
+const experiments = await sdk.getExperiments();
+const variant = sdk.getVariant('exp_1');
+```
+
+## Factory Function
+
+```ts
+makeSDK(options?: NodeSDKOptions): Promise<SDKInstance>
+```
+
+Creates a server-side SDK instance. The factory is **async** because it pre-fetches experiments during initialization (unless `skipExperiments` is `true`).
+
+Throws an error if called in a browser environment.
+
+## Default Options
+
+| Option | Default | Description |
+|---|---|---|
+| `framework` | `'node'` | Framework identifier. |
+| `store.name` | `'memory'` | Uses in-memory storage (no persistent storage server-side). |
+| `store.custom` | `null` | Custom store override. |
+
+All other options are inherited from [@xaiku/core](/docs/sdk/core#options).
+
+## Key Differences from Browser SDK
+
+| Behavior | Browser | Node |
+|---|---|---|
+| **Factory** | Synchronous | Async (`await makeSDK(...)`) |
+| **Environment** | Browser only | Server only |
+| **Storage** | `localStorage` by default | `memory` by default |
+| **Experiments** | Fetched on demand | Pre-fetched during initialization |
+| **DOM proxy** | Yes | No |
+| **Performance observers** | Yes | No |
+| **Track system** | Yes | No (use `skipClient` or server-side reporting) |
+
+## Options
+
+In addition to all [@xaiku/core options](/docs/sdk/core#options), the following are particularly relevant for server usage:
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `guid` | `string` | — | Visitor GUID. On the server, you must provide this explicitly (e.g., from a cookie or session). |
+| `userId` | `string` | — | User identifier passed to client attributes. |
+| `skipClient` | `boolean` | `false` | Skip client creation. |
+| `skipExperiments` | `boolean` | `false` | Skip automatic experiment fetching during initialization. |
+| `experimentIds` | `string \| string[]` | `[]` | Experiment IDs to fetch on init. |
+
+## Instance Properties
+
+The node SDK instance includes everything from the [core instance](/docs/sdk/core#instance-properties), plus the methods added by `makeExperiments`:
+
+| Method | Signature | Description |
+|---|---|---|
+| `getExperiments` | `(ids?, options?) => Promise<object>` | Fetch experiments from the API or cache. Pass `{ force: true }` to bypass cache. |
+| `setExperiments` | `(experiments) => void` | Store experiments in memory. |
+| `getVariants` | `() => object \| null` | Get all selected variants. |
+| `setVariants` | `(variants) => void` | Store variant selections. |
+| `selectVariants` | `(experiments, options?) => object` | Run variant selection. Pass `{ force: true }` to re-select. |
+| `getVariant` | `(experimentId, options?) => object \| null` | Get the selected variant. Pass `{ control: true }` for the control variant. |
+| `getVariantId` | `(experimentId) => string \| null` | Get the selected variant ID. |
+| `getVariantText` | `(experimentId, partId, options?) => string \| null` | Get text for a specific variant part. |
+
+## Example: Express Server
+
+```js
+import express from 'express';
+import makeSDK from '@xaiku/node';
+
+const app = express();
+
+app.get('/api/variant', async (req, res) => {
+  const sdk = await makeSDK({
+    pkey: process.env.XAIKU_PUBLIC_KEY,
+    guid: req.cookies['__xaiku__guid__'] || req.sessionID,
+  });
+
+  const variant = sdk.getVariant('exp_1');
+
+  res.json({ variant });
+
+  sdk.destroy();
+});
+
+app.listen(3000);
+```
+
+## destroy()
+
+Cleans up the SDK instance, destroys the client, and releases resources.
+
+```js
+sdk.destroy();
+```
+
+Since the Node SDK uses in-memory storage, destroying the instance also discards all cached experiments and variants. Create a new instance for each request or manage instance lifecycle carefully in long-running processes.

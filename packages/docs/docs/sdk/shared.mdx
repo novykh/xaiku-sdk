@@ -1,0 +1,270 @@
+---
+title: "@xaiku/shared"
+sidebar_label: "@xaiku/shared"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# @xaiku/shared
+
+Low-level utilities and helpers used by all other Xaiku packages. This package provides storage adapters, event listeners, performance observers, function proxying, GUID generation, and environment detection.
+
+:::tip
+Most users will never import from `@xaiku/shared` directly. These utilities are consumed internally by [@xaiku/core](/docs/sdk/core), [@xaiku/browser](/docs/sdk/browser), and other packages. This reference is intended for contributors and advanced integrations.
+:::
+
+## Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @xaiku/shared
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm add @xaiku/shared
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn add @xaiku/shared
+```
+</TabItem>
+</Tabs>
+
+## Exports
+
+### `makeStorage(sdk)`
+
+Creates a storage adapter based on the SDK's `options.store` configuration.
+
+```js
+import { makeStorage } from '@xaiku/shared';
+
+const storage = makeStorage(sdk);
+storage.set('key', { data: true });
+storage.get('key'); // { data: true }
+storage.delete('key');
+```
+
+**Resolution order:**
+
+1. If `store.custom` is a valid store (has `get`, `set`, `delete`), use it.
+2. Create a store from `store.name` — one of `'cookie'`, `'localStorage'`, `'sessionStorage'`, or `'memory'`.
+3. If the store is not supported in the environment, fall back to `'memory'`.
+
+**Also exported:**
+
+| Export | Description |
+|---|---|
+| `stores` | Object containing all store factory functions: `cookie`, `localStorage`, `sessionStorage`, `memory`. |
+| `storeNames` | Object mapping store keys to their internal name strings. |
+
+### `makeListeners()`
+
+Creates an event emitter instance.
+
+```js
+import { makeListeners } from '@xaiku/shared';
+
+const listeners = makeListeners();
+```
+
+**Returns:**
+
+| Method | Signature | Description |
+|---|---|---|
+| `on` | `(eventName, handler) => off` | Subscribe to an event. Returns an unsubscribe function with a chainable `.on()` method. |
+| `once` | `(eventName, handler) => off` | Subscribe once — the handler is removed after the first call. |
+| `off` | `(eventName, handler) => void` | Remove a specific handler. |
+| `trigger` | `(eventName, ...args) => void` | Emit an event to all subscribers. |
+| `offAll` | `() => void` | Remove all listeners for all events. |
+
+### `makeTrack(sdk)`
+
+Creates a tracking system that buffers metrics and flushes them to the API periodically or on page unload.
+
+```js
+import { makeTrack } from '@xaiku/shared';
+
+const track = makeTrack(sdk);
+```
+
+**Returns:**
+
+| Property | Type | Description |
+|---|---|---|
+| `addMetric` | `(metric) => void` | Add a metric to the buffer. Triggers a flush when the batch size is reached. |
+| `flush` | `(isUnload?) => void` | Flush all buffered metrics. Uses `navigator.sendBeacon` when `isUnload` is `true`. |
+| `destroy` | `() => void` | Flush remaining metrics, remove listeners, and stop the flush timer. |
+| `events` | `object` | Tracking event helpers. See [Track Events](#track-events). |
+
+**Behavior:**
+
+- Buffers metrics and flushes every 5 seconds or when 5 metrics accumulate.
+- Listens to the SDK `metric:report` event to enrich metrics with client attributes, pathname, referrer, and configured search params.
+- Flushes via `sendBeacon` on page `unload`.
+
+#### Track Events
+
+The `events` object provides convenience methods for common tracking scenarios:
+
+| Method | Signature | Description |
+|---|---|---|
+| `trackView` | `(extraData?) => void` | Track a variant impression. |
+| `trackClick` | `(extraData?) => void` | Track a click on a variant. |
+| `trackConversion` | `(extraData?) => void` | Track a conversion event. |
+| `trackTimeToConversion` | `(impressionTimestamp, extraData?) => void` | Track time from impression to conversion. |
+| `trackDwellTime` | `(extraData?) => { start, stop }` | Returns `start`/`stop` functions for measuring time on page. |
+| `trackScrollDepth` | `(extraData?) => void` | Track maximum scroll depth (reported on `beforeunload`). |
+| `trackBounce` | `(extraData?) => void` | Detect and report bounces (under 5 seconds). |
+| `trackHover` | `(element, extraData?) => void` | Track hover duration on a DOM element. |
+| `trackFeedback` | `(rating, extraData?) => void` | Track user feedback/sentiment. |
+| `trackPerformanceMetrics` | `(extraData?) => void` | Capture page load timing. |
+| `trackError` | `(error, extraData?) => void` | Track a JavaScript error. |
+| `trackNumericMetric` | `(metricName, value, extraData?) => void` | Record an arbitrary numeric value. |
+
+### `makeExperiments(sdk)`
+
+Asynchronous function that augments the SDK instance with experiment and variant management.
+
+```js
+import { makeExperiments } from '@xaiku/shared';
+
+await makeExperiments(sdk);
+
+const experiments = await sdk.getExperiments();
+const variant = sdk.getVariant('experiment_id');
+```
+
+**Methods added to sdk:**
+
+| Method | Signature | Description |
+|---|---|---|
+| `setExperiments` | `(experiments) => void` | Persist experiments to storage. |
+| `getExperiments` | `(ids?, options?) => Promise<object>` | Fetch experiments from the API or storage. Pass `{ force: true }` to bypass cache. |
+| `getVariants` | `() => object \| null` | Get all selected variants. |
+| `setVariants` | `(variants) => void` | Persist variant selections. |
+| `selectVariants` | `(experiments, options?) => object` | Run variant selection for each experiment. Pass `{ force: true }` to re-select. |
+| `getVariant` | `(experimentId, options?) => object \| null` | Get the selected (or control) variant for a experiment. Pass `{ control: true }` for the control variant. |
+| `getVariantId` | `(experimentId) => string \| null` | Get the selected variant ID for a experiment. |
+| `getVariantText` | `(experimentId, partId, options?) => string \| null` | Get text content for a specific part of a variant. Pass `{ control: true }` for the control version. |
+
+### `makePerformanceObserver(trigger, options?)`
+
+Creates a wrapper around the browser `PerformanceObserver` API that connects to all supported entry types and emits events through the provided `trigger` function.
+
+```js
+import { makePerformanceObserver } from '@xaiku/shared';
+
+const pos = makePerformanceObserver(sdk.trigger);
+pos.connect();
+
+pos.disconnect();
+```
+
+**Returns:**
+
+| Method | Signature | Description |
+|---|---|---|
+| `connect` | `(key?) => void` | Start observing. Pass a specific entry type or omit to observe all supported types. |
+| `disconnect` | `(key?) => void` | Stop observing. Pass a specific entry type or omit to disconnect all. |
+| `get` | `(key) => PerformanceObserver` | Get the observer for a specific entry type. |
+| `all` | `object` | Map of entry type to `PerformanceObserver` instance. |
+
+**Supported entry types:** `element`, `event`, `first-input`, `largest-contentful-paint`, `layout-shift`, `longtask`, `mark`, `measure`, `navigation`, `paint`, `resource`.
+
+### `makeFnProxy(trigger)`
+
+Creates utilities for wrapping functions with a `Proxy` that emits lifecycle events (`start`, `end`, `error`) through the provided `trigger` function.
+
+```js
+import { makeFnProxy } from '@xaiku/shared';
+
+const { proxy, proxyFn } = makeFnProxy(trigger);
+
+proxy(document, ['addEventListener', 'removeEventListener'], callback, 'dom');
+```
+
+**Returns:**
+
+| Property | Type | Description |
+|---|---|---|
+| `canProxyFn` | `(fn) => boolean` | Check if a function can be proxied (not already proxied, is a function). |
+| `proxy` | `(obj, fnNames, callback?, context?) => void` | Proxy one or more methods on an object. |
+| `proxyFn` | `(name, fn, callback?, context?, obj?) => Proxy` | Proxy a single function. |
+| `xaikuFnSymbol` | `Symbol` | Symbol used to mark already-proxied functions. |
+| `proxyStates` | `object` | `{ start: 'start', end: 'end', error: 'error' }` |
+
+### `getGuid(sdk)`
+
+Retrieves or generates a GUID (UUID v4 format) for the current visitor. If a GUID exists in storage, it is reused. Otherwise, a new one is generated from `sdk.options.guid` (deterministic hash) or randomly.
+
+```js
+import { getGuid } from '@xaiku/shared';
+
+const guid = getGuid(sdk);
+```
+
+**Also exported:**
+
+| Export | Description |
+|---|---|
+| `guidStorageKey` | The storage key string (`'__xaiku__guid__'`) used to persist the GUID. |
+
+### `parsePublicKey(sdk)`
+
+Validates the public key on the SDK instance and resolves the API URL.
+
+```js
+import { parsePublicKey } from '@xaiku/shared';
+
+const { apiUrl, token } = parsePublicKey(sdk);
+```
+
+Throws an error if `pkey` is missing or does not start with `pk_`.
+
+**Returns:**
+
+| Property | Type | Description |
+|---|---|---|
+| `apiUrl` | `string` | Resolved API URL based on `dev` and `proxyApiUrl` options. |
+| `token` | `string` | The key with the `pk_` prefix removed. |
+
+### `isTestMode()`
+
+Returns `true` when `localStorage` contains `xaiku_test` set to `'true'`.
+
+```js
+import { isTestMode } from '@xaiku/shared';
+
+if (isTestMode()) {
+  console.log('Running in test mode');
+}
+```
+
+### `isBrowser()`
+
+Returns `true` when running in a browser environment (`window` and `document` both exist).
+
+```js
+import { isBrowser } from '@xaiku/shared';
+
+if (isBrowser()) {
+  ...
+}
+```
+
+### `hasDocument()`
+
+Returns `true` when `document` is defined.
+
+```js
+import { hasDocument } from '@xaiku/shared';
+
+if (hasDocument()) {
+  ...
+}
+```

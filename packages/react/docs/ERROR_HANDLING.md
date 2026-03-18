@@ -17,7 +17,7 @@ import { XaikuErrorBoundary } from '@xaiku/react'
 function App() {
   return (
     <XaikuErrorBoundary
-      projectId="hero-test"
+      experimentId="hero-test"
       variantId="variant-a"
       partId="hero-section"
       fallback={<div>Something went wrong. Please try again.</div>}
@@ -34,7 +34,7 @@ function App() {
 ```
 
 **Props:**
-- `projectId` - A/B test project identifier
+- `experimentId` - A/B test experiment identifier
 - `variantId` - Specific variant (optional, auto-detected)
 - `partId` - Component part identifier
 - `fallback` - Custom fallback JSX element
@@ -51,7 +51,7 @@ function ProductCard() {
   return (
     <div className="product-card">
       <SafeText
-        projectId="product-names"
+        experimentId="product-names"
         id="product-title"
         fallback="Product Name"
         errorFallback={<h3>Product</h3>}
@@ -59,7 +59,7 @@ function ProductCard() {
       />
       
       <SafeText
-        projectId="product-descriptions"
+        experimentId="product-descriptions"
         id="product-desc"
         fallback="Product description"
         errorFallback={<p>Description coming soon</p>}
@@ -83,7 +83,7 @@ import { useXaikuErrorBoundary } from '@xaiku/react'
 
 function CustomComponent() {
   const handleError = useXaikuErrorBoundary({
-    projectId: "custom-widget",
+    experimentId: "custom-widget",
     partId: "data-visualization"
   })
 
@@ -111,7 +111,7 @@ import { useTrackPerformanceImpact } from '@xaiku/react'
 
 function MonitoredComponent() {
   const { trackError } = useTrackPerformanceImpact({
-    projectId: "performance-test",
+    experimentId: "performance-test",
     partId: "heavy-component"
   })
 
@@ -142,7 +142,7 @@ function ProblematicVariant() {
 
 // Wrap with error boundary
 <XaikuErrorBoundary 
-  projectId="json-test" 
+  experimentId="json-test" 
   fallback={<div>Data unavailable</div>}
 >
   <ProblematicVariant />
@@ -156,7 +156,7 @@ API failures when fetching variant data:
 function NetworkErrorHandler() {
   const [error, setError] = useState(null)
   const handleError = useXaikuErrorBoundary({
-    projectId: "api-test",
+    experimentId: "api-test",
     partId: "data-fetch"
   })
 
@@ -183,7 +183,7 @@ Invalid or missing variant configurations:
 function ConfigErrorExample() {
   return (
     <SafeText
-      projectId="nonexistent-project"
+      experimentId="nonexistent-experiment"
       id="invalid-variant"
       fallback="Safe fallback content"
       errorFallback={<span>Configuration error - using default</span>}
@@ -203,7 +203,7 @@ function RetryableComponent() {
   const maxRetries = 3
 
   const handleError = useXaikuErrorBoundary({
-    projectId: "retry-test",
+    experimentId: "retry-test",
     partId: "retryable-content"
   })
 
@@ -247,7 +247,7 @@ function ProgressiveFallback() {
 
   return (
     <XaikuErrorBoundary
-      projectId="progressive-test"
+      experimentId="progressive-test"
       onError={() => {
         if (fallbackLevel < fallbacks.length - 1) {
           setFallbackLevel(prev => prev + 1)
@@ -275,7 +275,7 @@ function ErrorRateMonitor() {
   })
 
   const handleError = useXaikuErrorBoundary({
-    projectId: "error-monitoring",
+    experimentId: "error-monitoring",
     partId: "error-prone-component"
   })
 
@@ -306,7 +306,7 @@ Add contextual information to error reports:
 ```jsx
 function EnrichedErrorReporting() {
   const handleError = useXaikuErrorBoundary({
-    projectId: "context-test",
+    experimentId: "context-test",
     partId: "enriched-component"
   })
 
@@ -340,7 +340,7 @@ function EnrichedErrorReporting() {
 
   return (
     <XaikuErrorBoundary 
-      projectId="enriched-test"
+      experimentId="enriched-test"
       onError={enrichedErrorHandler}
     >
       <ComplexVariantComponent />
@@ -359,15 +359,15 @@ Place error boundaries at component level for isolation:
 function ProductPage() {
   return (
     <div>
-      <XaikuErrorBoundary projectId="product-header">
+      <XaikuErrorBoundary experimentId="product-header">
         <ProductHeader />
       </XaikuErrorBoundary>
       
-      <XaikuErrorBoundary projectId="product-details">
+      <XaikuErrorBoundary experimentId="product-details">
         <ProductDetails />
       </XaikuErrorBoundary>
       
-      <XaikuErrorBoundary projectId="product-reviews">
+      <XaikuErrorBoundary experimentId="product-reviews">
         <ProductReviews />
       </XaikuErrorBoundary>
     </div>
@@ -377,7 +377,7 @@ function ProductPage() {
 // Avoid - one boundary affects entire page
 function ProductPage() {
   return (
-    <XaikuErrorBoundary projectId="product-page">
+    <XaikuErrorBoundary experimentId="product-page">
       <div>
         <ProductHeader />
         <ProductDetails />
@@ -413,7 +413,7 @@ Integrate with error tracking services:
 ```jsx
 function ErrorTrackingSetup() {
   const handleError = useXaikuErrorBoundary({
-    projectId: "error-tracking",
+    experimentId: "error-tracking",
     partId: "monitored-component"
   })
 
@@ -434,7 +434,7 @@ function ErrorTrackingSetup() {
       
       // Custom analytics
       window.analytics?.track('Variant Error', {
-        projectId: context.projectId,
+        experimentId: context.experimentId,
         variantId: context.variantId,
         error: error.message
       })
@@ -480,7 +480,7 @@ function ErrorBoundaryTest() {
       </button>
       
       <XaikuErrorBoundary 
-        projectId="error-test"
+        experimentId="error-test"
         fallback={<div>Error handled gracefully</div>}
       >
         <ErrorSimulator shouldError={simulateError} />
@@ -500,7 +500,7 @@ function ErrorMonitoringDashboard() {
   const [errorStats, setErrorStats] = useState({
     totalErrors: 0,
     errorsByVariant: {},
-    errorsByProject: {},
+    errorsByExperiment: {},
     recentErrors: []
   })
 
@@ -511,9 +511,9 @@ function ErrorMonitoringDashboard() {
         ...prev.errorsByVariant,
         [context.variantId]: (prev.errorsByVariant[context.variantId] || 0) + 1
       },
-      errorsByProject: {
-        ...prev.errorsByProject,
-        [context.projectId]: (prev.errorsByProject[context.projectId] || 0) + 1
+      errorsByExperiment: {
+        ...prev.errorsByExperiment,
+        [context.experimentId]: (prev.errorsByExperiment[context.experimentId] || 0) + 1
       },
       recentErrors: [
         { error: error.message, context, timestamp: Date.now() },
@@ -527,10 +527,10 @@ function ErrorMonitoringDashboard() {
       <h3>Error Statistics</h3>
       <p>Total Errors: {errorStats.totalErrors}</p>
       
-      <h4>Errors by Project</h4>
+      <h4>Errors by Experiment</h4>
       <ul>
-        {Object.entries(errorStats.errorsByProject).map(([project, count]) => (
-          <li key={project}>{project}: {count} errors</li>
+        {Object.entries(errorStats.errorsByExperiment).map(([experiment, count]) => (
+          <li key={experiment}>{experiment}: {count} errors</li>
         ))}
       </ul>
 
@@ -538,7 +538,7 @@ function ErrorMonitoringDashboard() {
       <ul>
         {errorStats.recentErrors.map((err, index) => (
           <li key={index}>
-            {err.error} - {err.context.projectId} - {new Date(err.timestamp).toLocaleTimeString()}
+            {err.error} - {err.context.experimentId} - {new Date(err.timestamp).toLocaleTimeString()}
           </li>
         ))}
       </ul>

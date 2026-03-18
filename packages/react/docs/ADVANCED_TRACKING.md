@@ -13,7 +13,7 @@ import { useTrackViewportImpression } from '@xaiku/react'
 
 function HeroBanner() {
   const elementRef = useTrackViewportImpression({
-    projectId: "hero-test",
+    experimentId: "hero-test",
     partId: "banner",
     threshold: 0.7,      // 70% visible
     minTime: 2000        // Visible for 2 seconds
@@ -30,7 +30,7 @@ function HeroBanner() {
 **Configuration Options:**
 - `threshold` (0-1): Percentage of element that must be visible
 - `minTime` (ms): Minimum time element must stay visible
-- Standard tracking options: `projectId`, `variantId`, `partId`
+- Standard tracking options: `experimentId`, `variantId`, `partId`
 
 **Use Cases:**
 - Above-the-fold content tracking
@@ -49,7 +49,7 @@ import { useTrackEngagement } from '@xaiku/react'
 
 function ArticlePage() {
   const { isTracking, trackEngagement } = useTrackEngagement({
-    projectId: "content-test",
+    experimentId: "content-test",
     partId: "article-body",
     idleThreshold: 30000  // 30 seconds idle = end session
   })
@@ -89,7 +89,7 @@ import { useTrackScrollDepth } from '@xaiku/react'
 
 function LongFormContent() {
   const currentScrollDepth = useTrackScrollDepth({
-    projectId: "content-engagement",
+    experimentId: "content-engagement",
     partId: "blog-post",
     milestones: [25, 50, 75, 90, 100]  // Percentage milestones
   })
@@ -122,7 +122,7 @@ import { useTrackConversion } from '@xaiku/react'
 
 function CheckoutFlow() {
   const { trackFunnelStep, trackConversion } = useTrackConversion({
-    projectId: "checkout-optimization",
+    experimentId: "checkout-optimization",
     partId: "checkout-flow"
   })
 
@@ -177,7 +177,7 @@ import { useTrackPerformanceImpact } from '@xaiku/react'
 
 function ExpensiveComponent() {
   const { trackError } = useTrackPerformanceImpact({
-    projectId: "performance-test",
+    experimentId: "performance-test",
     partId: "heavy-widget"
   })
 
@@ -216,7 +216,7 @@ function ProductCard() {
     trackInteraction, 
     trackBusinessMetric 
   } = useTrackABTestMetrics({
-    projectId: "product-card-test",
+    experimentId: "product-card-test",
     partId: "card-layout"
   })
 
@@ -262,7 +262,7 @@ function ProductCard() {
 function ProductPage({ productId }) {
   // Visibility tracking for product images
   const imageRef = useTrackViewportImpression({
-    projectId: "product-images",
+    experimentId: "product-images",
     partId: `product-${productId}`,
     threshold: 0.5,
     minTime: 1000
@@ -270,19 +270,19 @@ function ProductPage({ productId }) {
 
   // Engagement tracking for product description
   const { isTracking } = useTrackEngagement({
-    projectId: "product-engagement",
+    experimentId: "product-engagement",
     partId: "description"
   })
 
   // Conversion funnel for purchase flow
   const { trackFunnelStep, trackConversion } = useTrackConversion({
-    projectId: "purchase-funnel",
+    experimentId: "purchase-funnel",
     partId: `product-${productId}`
   })
 
   // A/B test metrics for business impact
   const { trackBusinessMetric } = useTrackABTestMetrics({
-    projectId: "revenue-optimization",
+    experimentId: "revenue-optimization",
     partId: "product-page"
   })
 
@@ -315,20 +315,20 @@ function ProductPage({ productId }) {
 function BlogPost() {
   // Scroll depth for content engagement
   const scrollDepth = useTrackScrollDepth({
-    projectId: "content-engagement",
+    experimentId: "content-engagement",
     partId: "blog-post",
     milestones: [10, 25, 50, 75, 90, 100]
   })
 
   // Performance monitoring for content loading
   const { trackError } = useTrackPerformanceImpact({
-    projectId: "content-performance",
+    experimentId: "content-performance",
     partId: "blog-content"
   })
 
   // Engagement time tracking
   const { isTracking } = useTrackEngagement({
-    projectId: "reading-time",
+    experimentId: "reading-time",
     partId: "article-body",
     idleThreshold: 15000  // 15 seconds
   })

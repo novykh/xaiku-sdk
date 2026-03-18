@@ -22,7 +22,7 @@ import { XaikuProvider, Text } from '@xaiku/nextjs'
 export default function HomePage() {
   return (
     <XaikuProvider pkey="your-public-key">
-      <Text projectId="homepage-hero" id="headline" fallback="Welcome to our site!">
+      <Text experimentId="homepage-hero" id="headline" fallback="Welcome to our site!">
         {(text) => <h1>{text}</h1>}
       </Text>
     </XaikuProvider>
@@ -56,11 +56,11 @@ import { Text } from '@xaiku/nextjs'
 export default function HomePage() {
   return (
     <div>
-      <Text projectId="homepage" id="hero-title" fallback="Welcome">
+      <Text experimentId="homepage" id="hero-title" fallback="Welcome">
         {(text) => <h1>{text}</h1>}
       </Text>
       
-      <Text projectId="homepage" id="hero-subtitle" fallback="Get started today">
+      <Text experimentId="homepage" id="hero-subtitle" fallback="Get started today">
         {(text) => <p className="text-lg">{text}</p>}
       </Text>
     </div>
@@ -76,8 +76,8 @@ export default function HomePage() {
 import { Text, useTrackClick, useTrackConversion } from '@xaiku/nextjs'
 
 export default function LandingPage() {
-  const trackCTAClick = useTrackClick({ projectId: "landing", partId: "hero-cta" })
-  const trackSignup = useTrackConversion({ projectId: "landing", partId: "signup", value: 29.99 })
+  const trackCTAClick = useTrackClick({ experimentId: "landing", partId: "hero-cta" })
+  const trackSignup = useTrackConversion({ experimentId: "landing", partId: "signup", value: 29.99 })
 
   const handleSignup = async () => {
     try {
@@ -94,16 +94,16 @@ export default function LandingPage() {
   return (
     <div className="hero-section">
       {/* Automatic view tracking */}
-      <Text projectId="landing" id="headline" fallback="Transform Your Business">
+      <Text experimentId="landing" id="headline" fallback="Transform Your Business">
         {(text) => <h1 className="text-4xl font-bold">{text}</h1>}
       </Text>
       
-      <Text projectId="landing" id="description" fallback="Join thousands of satisfied customers">
+      <Text experimentId="landing" id="description" fallback="Join thousands of satisfied customers">
         {(text) => <p className="text-xl text-gray-600">{text}</p>}
       </Text>
       
       {/* Manual click and conversion tracking */}
-      <Text projectId="landing" id="cta-button" fallback="Start Free Trial">
+      <Text experimentId="landing" id="cta-button" fallback="Start Free Trial">
         {(text) => (
           <button 
             className="bg-blue-600 text-white px-8 py-3 rounded-lg"
@@ -141,11 +141,11 @@ export default function App({ Component, pageProps }) {
 import { Text, useTrackClick } from '@xaiku/nextjs'
 
 export default function HomePage() {
-  const trackClick = useTrackClick({ projectId: "home", partId: "hero" })
+  const trackClick = useTrackClick({ experimentId: "home", partId: "hero" })
   
   return (
     <div>
-      <Text projectId="home" id="title" fallback="Welcome">
+      <Text experimentId="home" id="title" fallback="Welcome">
         {(text) => <h1>{text}</h1>}
       </Text>
       
@@ -166,13 +166,13 @@ import { Text, useTrackClick, useTrackConversion } from '@xaiku/nextjs'
 
 export default function ProductCard({ productId, price }) {
   const trackAddToCart = useTrackClick({ 
-    projectId: "ecommerce", 
+    experimentId: "ecommerce", 
     partId: `product-${productId}`,
     variantId: "add-to-cart-button"
   })
   
   const trackPurchase = useTrackConversion({ 
-    projectId: "ecommerce", 
+    experimentId: "ecommerce", 
     partId: `product-${productId}`,
     value: price 
   })
@@ -189,11 +189,11 @@ export default function ProductCard({ productId, price }) {
 
   return (
     <div className="product-card">
-      <Text projectId="ecommerce" id={`product-title-${productId}`} fallback="Amazing Product">
+      <Text experimentId="ecommerce" id={`product-title-${productId}`} fallback="Amazing Product">
         {(text) => <h3>{text}</h3>}
       </Text>
       
-      <Text projectId="ecommerce" id={`add-to-cart-${productId}`} fallback="Add to Cart">
+      <Text experimentId="ecommerce" id={`add-to-cart-${productId}`} fallback="Add to Cart">
         {(text) => (
           <button onClick={handleAddToCart} className="btn-secondary">
             {text}
@@ -201,7 +201,7 @@ export default function ProductCard({ productId, price }) {
         )}
       </Text>
       
-      <Text projectId="ecommerce" id={`buy-now-${productId}`} fallback="Buy Now">
+      <Text experimentId="ecommerce" id={`buy-now-${productId}`} fallback="Buy Now">
         {(text) => (
           <button onClick={handleBuyNow} className="btn-primary">
             {text}
@@ -225,7 +225,7 @@ The Next.js package re-exports all React components and hooks with Next.js-speci
 - `useTrackView(options)` - Track impressions
 - `useTrackClick(options)` - Track clicks
 - `useTrackConversion(options)` - Track conversions
-- `useText(projectId, id, fallback, control)` - Get variant text
+- `useText(experimentId, id, fallback, control)` - Get variant text
 
 ## Features
 

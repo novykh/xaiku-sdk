@@ -19,7 +19,7 @@ import { XaikuProvider, Text } from '@xaiku/react'
 function App() {
   return (
     <XaikuProvider apiUrl="https://api.xaiku.com" pkey="your-public-key">
-      <Text projectId="homepage-hero" id="headline" fallback="Welcome!">
+      <Text experimentId="homepage-hero" id="headline" fallback="Welcome!">
         {(text) => <h1>{text}</h1>}
       </Text>
     </XaikuProvider>
@@ -36,7 +36,7 @@ Provides SDK context to child components.
 <XaikuProvider 
   apiUrl="https://api.xaiku.com"
   pkey="your-public-key"
-  projectIds={["project-1", "project-2"]}
+  experimentIds={["experiment-1", "experiment-2"]}
 >
   {/* Your app */}
 </XaikuProvider>
@@ -47,29 +47,29 @@ Displays A/B test variants with automatic view tracking and fallback handling.
 
 ```jsx
 // Basic usage
-<Text projectId="test-123" id="button-text" fallback="Click Here" />
+<Text experimentId="test-123" id="button-text" fallback="Click Here" />
 
 // With render prop
-<Text projectId="test-123" id="headline" fallback="Default Headline">
+<Text experimentId="test-123" id="headline" fallback="Default Headline">
   {(text) => <h1 className="hero-title">{text}</h1>}
 </Text>
 
 // With custom element
-<Text projectId="test-123" id="cta" fallback="Sign Up">
+<Text experimentId="test-123" id="cta" fallback="Sign Up">
   <button className="btn-primary" />
 </Text>
 ```
 
-### Project Context
-Group related variants under a project context.
+### Experiment Context
+Group related variants under a experiment context.
 
 ```jsx
-import { Project } from '@xaiku/react'
+import { Experiment } from '@xaiku/react'
 
-<Project id="homepage-test">
+<Experiment id="homepage-test">
   <Text id="headline" fallback="Welcome" />
   <Text id="subtitle" fallback="Get started today" />
-</Project>
+</Experiment>
 ```
 
 ## Tracking Hooks
@@ -81,7 +81,7 @@ Track when variants are viewed (automatic with Text component).
 import { useTrackView } from '@xaiku/react'
 
 function MyComponent() {
-  useTrackView({ projectId: "test-123", partId: "custom-section" })
+  useTrackView({ experimentId: "test-123", partId: "custom-section" })
   return <div>Custom content</div>
 }
 ```
@@ -93,7 +93,7 @@ Track user interactions.
 import { useTrackClick } from '@xaiku/react'
 
 function Button() {
-  const trackClick = useTrackClick({ projectId: "test-123", partId: "cta" })
+  const trackClick = useTrackClick({ experimentId: "test-123", partId: "cta" })
   
   return <button onClick={trackClick}>Click me</button>
 }
@@ -107,7 +107,7 @@ import { useTrackConversion } from '@xaiku/react'
 
 function CheckoutButton() {
   const trackConversion = useTrackConversion({ 
-    projectId: "test-123", 
+    experimentId: "test-123", 
     partId: "checkout",
     value: 99.99 
   })
@@ -125,11 +125,11 @@ function CheckoutButton() {
 
 ```jsx
 import React from 'react'
-import { XaikuProvider, Project, Text, useTrackClick, useTrackConversion } from '@xaiku/react'
+import { XaikuProvider, Experiment, Text, useTrackClick, useTrackConversion } from '@xaiku/react'
 
 function HomePage() {
-  const trackCTAClick = useTrackClick({ projectId: "homepage", partId: "hero-cta" })
-  const trackSignup = useTrackConversion({ projectId: "homepage", partId: "signup" })
+  const trackCTAClick = useTrackClick({ experimentId: "homepage", partId: "hero-cta" })
+  const trackSignup = useTrackConversion({ experimentId: "homepage", partId: "signup" })
 
   const handleSignup = () => {
     // Handle signup logic...
@@ -138,7 +138,7 @@ function HomePage() {
 
   return (
     <XaikuProvider pkey="your-public-key">
-      <Project id="homepage">
+      <Experiment id="homepage">
         {/* Automatic view tracking */}
         <Text id="headline" fallback="Welcome to our platform">
           {(text) => <h1>{text}</h1>}
@@ -161,7 +161,7 @@ function HomePage() {
             </button>
           )}
         </Text>
-      </Project>
+      </Experiment>
     </XaikuProvider>
   )
 }
@@ -172,7 +172,7 @@ function HomePage() {
 - **Automatic view tracking** - Text components track views once per variant
 - **Fallback handling** - Gracefully handles variant loading failures  
 - **Deduplication** - Prevents duplicate tracking on re-renders
-- **Project context** - Groups related variants together
+- **Experiment context** - Groups related variants together
 - **Simple API** - Minimal setup for A/B testing
 
 ## Development
@@ -196,12 +196,12 @@ pnpm lint
 ### Components
 - `XaikuProvider` - SDK context provider
 - `Text` - A/B test variant display with automatic tracking
-- `Project` - Project context wrapper
+- `Experiment` - Experiment context wrapper
 
 ### Hooks
 - `useSDK()` - Access SDK instance
-- `useProjectId()` - Get current project context
-- `useText(projectId, id, fallback, control)` - Get variant text
+- `useExperimentId()` - Get current experiment context
+- `useText(experimentId, id, fallback, control)` - Get variant text
 - `useTrackView(options)` - Track impressions
 - `useTrackClick(options)` - Track clicks
 - `useTrackConversion(options)` - Track conversions

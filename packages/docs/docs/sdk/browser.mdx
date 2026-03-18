@@ -1,0 +1,173 @@
+---
+title: "@xaiku/browser"
+sidebar_label: "@xaiku/browser"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# @xaiku/browser
+
+Browser-specific SDK that extends [@xaiku/core](/docs/sdk/core) with DOM event interception, Web Vitals collection, metric tracking, and automatic browser attribute detection. This is the recommended package for vanilla JavaScript browser applications.
+
+For React applications, use [@xaiku/react](/docs/sdk/react) instead. For Next.js, use [@xaiku/nextjs](/docs/sdk/nextjs).
+
+## Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @xaiku/browser
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm add @xaiku/browser
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn add @xaiku/browser
+```
+</TabItem>
+</Tabs>
+
+## Usage
+
+```js
+import makeSDK from '@xaiku/browser';
+
+const sdk = makeSDK({
+  pkey: 'pk_your_public_key',
+});
+
+sdk.track.events.trackView({ experimentId: 'exp_1', variantId: 'var_a' });
+
+sdk.track.events.trackClick({ experimentId: 'exp_1', variantId: 'var_a' });
+
+sdk.track.events.trackConversion({ experimentId: 'exp_1', variantId: 'var_a', value: 49.99 });
+```
+
+## Factory Function
+
+```ts
+makeSDK(options?: BrowserSDKOptions): BrowserSDKInstance
+```
+
+Creates a browser SDK instance. Throws an error if called outside a browser environment.
+
+## Default Options
+
+The browser SDK applies these defaults before passing options to `@xaiku/core`:
+
+| Option | Default | Description |
+|---|---|---|
+| `framework` | `'browser'` | Framework identifier. |
+| `store.name` | `'localStorage'` | Uses `localStorage` for persistence (core defaults to `memory`). |
+| `store.custom` | `null` | Custom store override. |
+
+All other options are inherited from [@xaiku/core](/docs/sdk/core#options).
+
+## Instance Properties
+
+The browser SDK instance includes everything from the [core instance](/docs/sdk/core#instance-properties), plus:
+
+| Property | Type | Description |
+|---|---|---|
+| `track` | `object` | Tracking system with buffered metric reporting and event helpers. |
+| `pos` | `object` | Performance observer manager. |
+| `getExperiments` | `(ids?, options?) => Promise` | Fetch experiments from the API or storage. |
+| `getVariant` | `(experimentId, options?) => object` | Get the selected variant for a experiment. |
+| `getVariantId` | `(experimentId) => string` | Get the selected variant ID. |
+| `getVariantText` | `(experimentId, partId, options?) => string` | Get variant text for a specific part. |
+| `selectVariants` | `(experiments, options?) => object` | Run variant selection. |
+
+## DOM Proxy
+
+The browser SDK automatically intercepts `addEventListener` and `removeEventListener` on `EventTarget` and `Node` prototypes. This allows the SDK to observe DOM events (clicks, keypresses, etc.) without requiring manual instrumentation.
+
+Events are debounced (default 1 second) and reported as `browser.dom.events` metrics with the event type as the name.
+
+## Web Vitals Collection
+
+On initialization, the SDK connects to the browser `PerformanceObserver` API and begins collecting all supported entry types. Performance entries are emitted through the SDK event system for processing.
+
+The observer is automatically disconnected when the SDK emits a `hide` event (e.g., page visibility change).
+
+**Collected metrics include:**
+
+- **CLS** — Cumulative Layout Shift
+- **FCP** — First Contentful Paint
+- **LCP** — Largest Contentful Paint
+- **FID** — First Input Delay
+- **TTFB** — Time to First Byte
+
+Each metric is rated as `good`, `needs-improvement`, or `poor` based on [Web Vitals thresholds](https://web.dev/vitals/).
+
+## Automatic Browser Attributes
+
+On `DOMContentLoaded`, the browser client automatically sets these attributes:
+
+| Attribute | Source |
+|---|---|
+| `domain` | `window.location.hostname` |
+| `userAgent` | `navigator.userAgent` |
+| `windowDimensions` | `[innerWidth, innerHeight]` |
+| `screenResolution` | `screen.width x screen.height` |
+| `country` | `options.country` or detected from locale |
+| `language` | `options.language` or detected from locale |
+
+## Track API
+
+The `sdk.track` property provides metric buffering and event tracking.
+
+### Metric Buffering
+
+Metrics are buffered in memory and flushed:
+- Every 5 seconds on a timer
+- When the buffer reaches 5 metrics
+- On page `unload` (via `navigator.sendBeacon`)
+
+If `options.onReport` is set, it is called with the buffer contents before each flush.
+
+### Event Methods
+
+All event methods are available on `sdk.track.events`:
+
+| Method | Description |
+|---|---|
+| `trackView(data?)` | Record a variant impression. |
+| `trackClick(data?)` | Record a click. |
+| `trackConversion(data?)` | Record a conversion. |
+| `trackTimeToConversion(timestamp, data?)` | Record time from impression to conversion. |
+| `trackDwellTime(data?)` | Returns `{ start, stop }` for measuring time on page. |
+| `trackScrollDepth(data?)` | Track maximum scroll depth (reported on `beforeunload`). |
+| `trackBounce(data?)` | Detect bounces (page exit under 5 seconds). |
+| `trackHover(element, data?)` | Track hover duration on a DOM element. |
+| `trackFeedback(rating, data?)` | Record user feedback. |
+| `trackPerformanceMetrics(data?)` | Capture page load timing. |
+| `trackError(error, data?)` | Record a JavaScript error with message and stack. |
+| `trackNumericMetric(name, value, data?)` | Record an arbitrary numeric metric. |
+
+The `data` parameter on each method accepts an object with `experimentId`, `variantId`, `partId`, and any additional properties:
+
+```js
+sdk.track.events.trackView({
+  experimentId: 'exp_1',
+  variantId: 'var_a',
+  partId: 'headline',
+});
+```
+
+## destroy()
+
+Cleans up all browser SDK resources:
+
+- Flushes remaining buffered metrics
+- Disconnects performance observers
+- Removes event listeners
+- Destroys the client and core instance
+
+```js
+sdk.destroy();
+```

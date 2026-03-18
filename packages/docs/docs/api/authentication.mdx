@@ -1,0 +1,47 @@
+---
+title: Authentication
+sidebar_label: Authentication
+---
+
+# Authentication
+
+All requests to the Xaiku API are authenticated using a **public key**. No secret keys are required for client-side SDK usage.
+
+## Public Key Format
+
+Public keys use the prefix `pk_` followed by a base64url-encoded token:
+
+```
+pk_dGhpcyBpcyBhIHRlc3Q
+```
+
+The SDK validates that the key starts with `pk_` before making any API request. If the key is missing or does not match the expected format, the SDK throws an error.
+
+## How Keys Are Sent
+
+Every SDK request includes the full public key in the `X-public-key` HTTP header:
+
+```
+X-public-key: pk_dGhpcyBpcyBhIHRlc3Q
+```
+
+The SDK strips the `pk_` prefix internally when constructing the token, but the header always carries the original key value.
+
+## Secret Keys
+
+Secret keys (`sk_` prefix) are intended for server-to-server communication outside the SDK and are **never** used in client-side code. Do not embed secret keys in browser bundles.
+
+## Where to Find Your Keys
+
+You can access your public key from the Xaiku dashboard:
+
+**[Dashboard &rarr; Settings &rarr; Keys](https://xaiku.com/dashboard/settings/keys)**
+
+## API Base URL
+
+| Environment | URL |
+|-------------|-----|
+| Production | `https://xaiku.com/api/v1/` |
+| Development | `http://localhost:3000/api/v1/` |
+
+You can override the production URL by passing a `proxyApiUrl` option when initializing the SDK. Setting `dev: true` switches to the development URL.

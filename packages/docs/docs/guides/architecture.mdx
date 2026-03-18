@@ -1,0 +1,137 @@
+---
+title: Architecture
+sidebar_label: Architecture
+---
+
+# Architecture
+
+The Xaiku SDK is organized as a monorepo of layered packages. Each package builds on top of the ones below it, and higher-level packages re-export their dependencies so you only need a single install.
+
+## Package dependency tree
+
+```
+@xaiku/shared          (no dependencies)
+└── @xaiku/core        (depends on shared)
+    ├── @xaiku/browser (depends on core + shared)
+    │   └── @xaiku/react   (depends on browser)
+    │       └── @xaiku/nextjs (client entry)
+    └── @xaiku/node    (depends on core + shared)
+        └── @xaiku/nextjs (server entry)
+```
+
+### Layer responsibilities
+
+| Package | Role |
+|---------|------|
+| **@xaiku/shared** | Core utilities: storage adapters, event system (`makeListeners`), tracking module, experiment/variant management, GUID generation, performance observers, key parsing, and environment helpers. |
+| **@xaiku/core** | SDK factory that wires together options, storage, listeners, client attributes, and public key parsing. Produces the base instance shape all other packages extend. |
+| **@xaiku/browser** | Extends core with browser-specific capabilities: DOM event proxy, history interception, web vitals collection (CLS, LCP, FCP, INP, TTFB), window context tracking, and the tracking module (`sdk.track`). |
+| **@xaiku/react** | React bindings: `XaikuProvider`, `Experiment`, `Text` components, and `useTrackView`/`useTrackClick`/`useTrackConversion`/`useText` hooks. Wraps `@xaiku/browser` internally. |
+| **@xaiku/node** | Server-side SDK factory. Async (awaits experiment fetch), guards against browser environments, uses memory storage, captures server context (hostname, CPU, memory). |
+| **@xaiku/nextjs** | Two entry points. Client (`@xaiku/nextjs`) re-exports `@xaiku/react`. Server (`@xaiku/nextjs/server`) provides an async provider that fetches variants server-side, a middleware for GUID cookie management, and a server SDK factory built on `@xaiku/node`. |
+
+## Which package should I use?
+
+```
+Is this server-side only?
+├── Yes → Are you using Next.js?
+│         ├── Yes → @xaiku/nextjs
+│         └── No  → @xaiku/node
+└── No  → Are you using React?
+          ├── Yes → Are you using Next.js?
+          │         ├── Yes → @xaiku/nextjs
+          │         └── No  → @xaiku/react
+          └── No  → @xaiku/browser
+```
+
+| Use case | Package |
+|----------|---------|
+| Static site, vanilla JavaScript, any website | `@xaiku/browser` |
+| React single-page application | `@xaiku/react` |
+| Next.js (App Router, server + client) | `@xaiku/nextjs` |
+| Node.js server (Express, Fastify, Hono, etc.) | `@xaiku/node` |
+| Building a custom framework adapter | `@xaiku/core` + `@xaiku/shared` |
+
+## Core concepts
+
+### Event system
+
+All packages share the same event system, implemented by `makeListeners()` in `@xaiku/shared`. It provides:
+
+- `on(event, handler)` -- subscribe to an event; returns an unsubscribe function
+- `once(event, handler)` -- subscribe to an event, auto-removed after first call
+- `off(event, handler)` -- manually unsubscribe
+- `trigger(event, ...args)` -- emit an event to all listeners
+
+The `on` method supports chaining for subscribing to multiple events that are cleaned up together:
+
+```js
+const unsubscribe = sdk.on('cls', handleCLS)
+  .on('lcp', handleLCP)
+  .on('fcp', handleFCP)
+
+unsubscribe()
+```
+
+### Proxy pattern
+
+`@xaiku/browser` intercepts native browser APIs to automatically capture user interactions:
+
+- **DOM proxy** -- wraps `addEventListener` to observe DOM events
+- **History proxy** -- wraps `history.pushState` and `history.replaceState` to detect SPA navigations
+
+These proxies fire SDK events that the tracking system and web vitals collectors listen to, enabling automatic data collection without manual instrumentation.
+
+### Storage abstraction
+
+The SDK supports pluggable storage backends so the same code works in different environments:
+
+| Backend | Identifier | Where it works |
+|---------|-----------|----------------|
+| localStorage | `'localStorage'` | Browsers |
+| sessionStorage | `'sessionStorage'` | Browsers |
+| Cookie | `'cookie'` | Browsers |
+| Memory | `'memory'` | Everywhere (default on server) |
+| Custom | `store.custom` | Anywhere |
+
+Storage is used for persisting the user GUID, fetched experiment data, and selected variants. If the chosen backend is unavailable (e.g., `localStorage` in a server environment), the SDK falls back to memory storage automatically.
+
+When experiment data exceeds the size limits of cookie or localStorage, the SDK warns and falls back to a backend that can accommodate the data.
+
+### Client attributes
+
+The core factory creates a client instance that manages attributes attached to every event:
+
+- `framework` and `frameworkVersion`
+- `sessionId` (the GUID)
+- `userId` and `orgId`
+
+In the browser, additional attributes are collected after `DOMContentLoaded`: `domain`, `userAgent`, `windowDimensions`, `screenResolution`, `country`, and `language`.
+
+On the server (`@xaiku/node`), the client captures server context: `hostname`, `platform`, `arch`, `cpuCount`, `totalMemory`, `freeMemory`, `uptime`, and `environment`.
+
+### Tracking and batching
+
+The tracking module (`makeTrack` in `@xaiku/shared`) manages event buffering and delivery:
+
+1. Tracking functions (e.g., `trackView`, `trackClick`) call `sdk.trigger('metric:report', eventName, data)`.
+2. The track module listens for `metric:report`, enriches the event with client attributes and page context, then adds it to a buffer.
+3. The buffer flushes when it reaches 5 events, every 5 seconds on a timer, or on page `unload` via `navigator.sendBeacon`.
+4. If an `onReport` callback is configured, it receives the buffer before each flush.
+
+## Build output
+
+All packages are compiled with Babel and produce dual builds:
+
+| Format | Output path | Module system |
+|--------|-------------|---------------|
+| CommonJS | `dist/index.js` | `require()` |
+| ES Modules | `dist/es6/index.js` | `import` |
+
+TypeScript type definitions (`.d.ts` files) are generated alongside the builds. TypeScript is used for types only; source code is plain JavaScript.
+
+## Next steps
+
+- [Installation](/docs/guides/installation) -- install the right package for your use case
+- [Configuration](/docs/guides/configuration) -- all factory options
+- [Server-side Usage](/docs/guides/server-side) -- Node.js and Next.js patterns

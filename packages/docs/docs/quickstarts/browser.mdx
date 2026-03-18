@@ -1,0 +1,83 @@
+---
+title: Browser
+sidebar_label: Browser
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Browser Quickstart
+
+Add Xaiku tracking to any website with vanilla JavaScript.
+
+## Prerequisites
+
+- A Xaiku account with a public key (`pk_*`)
+- A experiment created in the Xaiku dashboard
+
+## 1. Install
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/browser
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/browser
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/browser
+```
+
+</TabItem>
+</Tabs>
+
+## 2. Initialize the SDK
+
+```js
+import xaiku from '@xaiku/browser'
+
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['your_experiment_id'],
+})
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `pkey` | `string` | — | Your public key (required). Starts with `pk_`. |
+| `experimentIds` | `string[]` | `[]` | Experiment IDs to fetch variants for. |
+| `store` | `object` | `{ name: 'localStorage' }` | Storage backend. Options: `localStorage`, `sessionStorage`, `cookie`, `memory`. |
+| `dev` | `boolean` | `false` | Use local development API (`localhost:3000`). |
+| `proxyApiUrl` | `string` | — | Custom API URL for proxied setups. |
+| `onReport` | `function` | `null` | Callback called with event buffer on each flush. |
+
+## 3. Track your first event
+
+```js
+const { events } = sdk.track
+
+events.trackView()
+
+events.trackClick({ label: 'signup-button' })
+
+events.trackConversion({ value: 49.99 })
+```
+
+## Next steps
+
+- [Tracking Events](/docs/guides/tracking-events) — full list of tracking functions
+- [A/B Testing](/docs/guides/ab-testing) — variant weights and selection
+- [Configuration](/docs/guides/configuration) — storage, proxying, and more
+- [@xaiku/browser reference](/docs/sdk/browser) — full API
