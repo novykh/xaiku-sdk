@@ -1,0 +1,180 @@
+---
+title: Configuration
+sidebar_label: Configuration
+---
+
+# Configuration
+
+Every Xaiku SDK package accepts a configuration object when initialized. The higher-level packages (`@xaiku/browser`, `@xaiku/react`, `@xaiku/nextjs`, `@xaiku/node`) extend the base options from `@xaiku/core` with framework-specific defaults.
+
+## Factory options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `pkey` | `string` | -- | **Required.** Your public key. Must start with `pk_`. |
+| `experimentIds` | `string \| string[]` | `[]` | Experiment IDs to fetch variants for at initialization. |
+| `appName` | `string` | `'xaiku'` | Application name attached to all events. |
+| `version` | `string` | `'N/A'` | Application version string. |
+| `store` | `object` | varies by package | Storage backend configuration. See [Storage backends](#storage-backends). |
+| `guid` | `string` | auto-generated | User identifier for deterministic variant assignment. If not provided, a UUID v4 is generated and persisted in storage. |
+| `userId` | `string` | `''` | Your application's user ID, attached to all events. |
+| `orgId` | `string` | `''` | Organization ID, attached to all events. |
+| `dev` | `boolean` | `false` | Use the local development API at `http://localhost:3000/api/v1/`. |
+| `proxyApiUrl` | `string` | -- | Custom API base URL. Useful when proxying API calls through your own domain. |
+| `onReport` | `function` | `null` | Callback invoked with the event buffer array on each flush. |
+| `skipClient` | `boolean` | `false` | Skip client initialization. Useful for server-side rendering where you only need variant data. |
+| `searchParams` | `string[]` | -- | URL query parameter names to capture and attach to events (e.g., UTM parameters). |
+| `country` | `string` | auto-detected | Override the auto-detected country. |
+| `language` | `string` | auto-detected | Override the auto-detected language. |
+
+```js
+import xaiku from '@xaiku/browser'
+
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['experiment_abc', 'experiment_xyz'],
+  appName: 'my-app',
+  version: '2.1.0',
+  userId: 'user_123',
+  store: { name: 'localStorage' },
+  searchParams: ['utm_source', 'utm_medium', 'utm_campaign'],
+  onReport: (events) => {
+    console.log('Flushing events:', events)
+  },
+})
+```
+
+## Storage backends
+
+The `store` option controls where the SDK persists data such as the user GUID, fetched experiments, and selected variants.
+
+| Backend | `store.name` | Environment | Notes |
+|---------|-------------|-------------|-------|
+| localStorage | `'localStorage'` | Browser | Default for `@xaiku/browser` and `@xaiku/react`. Persists across tabs and sessions. |
+| sessionStorage | `'sessionStorage'` | Browser | Cleared when the tab closes. |
+| Cookie | `'cookie'` | Browser | Cross-subdomain by default. Configurable expiration (default 7 days). |
+| Memory | `'memory'` | Any | Default for `@xaiku/node`. Data lives only in process memory. |
+| Custom | `store.custom` | Any | Provide your own store object. |
+
+### Configuring a storage backend
+
+```js
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  store: { name: 'sessionStorage' },
+})
+```
+
+### Cookie options
+
+When using `cookie` storage, additional options are read from the `store` object:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `crossSubdomain` | `boolean` | `true` | Set cookie on the root domain (e.g., `.example.com`). |
+| `secure` | `boolean` | `true` | Send cookie only over HTTPS. |
+| `expiresAfterDays` | `number` | `7` | Cookie expiration in days. |
+
+```js
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  store: {
+    name: 'cookie',
+    crossSubdomain: true,
+    secure: true,
+    expiresAfterDays: 30,
+  },
+})
+```
+
+### Custom storage
+
+Provide a `store.custom` object that implements `get`, `set`, and `delete`:
+
+```js
+const myStore = {
+  name: 'my-custom-store',
+  supported: true,
+  get: (key) => { /* return value */ },
+  set: (key, value) => { /* persist value */ },
+  delete: (key) => { /* remove value */ },
+}
+
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  store: { custom: myStore },
+})
+```
+
+If `store.custom` is provided and passes validation, it takes priority over the named backend. If the chosen backend is not supported in the current environment (e.g., `localStorage` on a server), the SDK automatically falls back to `memory` storage.
+
+## API URL configuration
+
+By default the SDK sends requests to `https://xaiku.com/api/v1/`. You can override this in two ways:
+
+### Development mode
+
+Set `dev: true` to point all requests to `http://localhost:3000/api/v1/`:
+
+```js
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  dev: true,
+})
+```
+
+### Proxy URL
+
+Use `proxyApiUrl` to route SDK traffic through your own domain. This is useful for avoiding ad-blockers or satisfying CSP policies:
+
+```js
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  proxyApiUrl: 'https://analytics.yourdomain.com/api/v1/',
+})
+```
+
+The `proxyApiUrl` takes precedence when `dev` is not set. When `dev: true` is set, the development URL is always used regardless of `proxyApiUrl`.
+
+## The `onReport` callback
+
+The `onReport` callback fires every time the event buffer is flushed, receiving the array of event objects about to be sent to the API. This is useful for debugging, logging, or piping events to a secondary analytics system.
+
+```js
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  onReport: (events) => {
+    events.forEach(event => {
+      console.log(`[${event.eventName}]`, event)
+    })
+  },
+})
+```
+
+Events are flushed when the buffer reaches 5 events, every 5 seconds on a timer, or on page unload via `navigator.sendBeacon`.
+
+## Environment variables (Next.js)
+
+`@xaiku/nextjs` reads the public key from the `NEXT_PUBLIC_XAIKU_API_KEY` environment variable by default. Set it in your `.env.local`:
+
+```bash title=".env.local"
+NEXT_PUBLIC_XAIKU_API_KEY=pk_your_public_key
+```
+
+Both the server-side middleware and the client-side provider use this variable automatically. You can override it by passing `pkey` directly to the provider or middleware.
+
+## Package-specific defaults
+
+| Package | `store.name` default | `framework` | Notes |
+|---------|---------------------|-------------|-------|
+| `@xaiku/core` | `'memory'` | -- | Base factory |
+| `@xaiku/browser` | `'localStorage'` | `'browser'` | Adds web vitals, DOM proxy |
+| `@xaiku/react` | `'localStorage'` | `'react'` | Wraps browser SDK |
+| `@xaiku/node` | `'memory'` | `'node'` | Async factory, server-only |
+| `@xaiku/nextjs` | `'memory'` (server) | `'nextjs'` | Uses `@xaiku/node` on server, `@xaiku/react` on client |
+
+## Next steps
+
+- [Tracking Events](/docs/guides/tracking-events) -- all 12 tracking functions
+- [A/B Testing](/docs/guides/ab-testing) -- variant selection and weights
+- [Test Mode](/docs/guides/test-mode) -- testing variants before going live

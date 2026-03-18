@@ -1,0 +1,78 @@
+---
+title: Test Mode
+sidebar_label: Test Mode
+---
+
+# Test Mode
+
+Test mode lets you preview and test A/B test variants before they are published as "live" in the Xaiku dashboard. When active, it bypasses the live status gate on experiments and tags all events so they can be filtered out of production analytics.
+
+## Enabling test mode
+
+Set the `xaiku_test` flag in `localStorage`:
+
+```js
+localStorage.setItem('xaiku_test', 'true')
+```
+
+Test mode is now active for all Xaiku SDK instances on this origin.
+
+## Disabling test mode
+
+Remove the flag:
+
+```js
+localStorage.removeItem('xaiku_test')
+```
+
+Or set it to any value other than `'true'`:
+
+```js
+localStorage.setItem('xaiku_test', 'false')
+```
+
+## What test mode does
+
+When `isTestMode()` returns `true`, two things happen:
+
+### 1. Experiment fetching bypasses the live gate
+
+The SDK adds an `X-xaiku-test: 'true'` header to the `GET /api/v1/experiments` request. The Xaiku API uses this header to return experiments that are in draft or testing status, not just those marked as live. This lets you verify variant content and selection before publishing.
+
+### 2. Tracked events are tagged
+
+Every event flushed by the tracking module includes a `test: true` field in its payload. This allows the Xaiku analytics dashboard to filter test traffic from real user data, ensuring your production metrics stay clean.
+
+## How detection works
+
+The SDK checks test mode by reading from `localStorage`:
+
+```js
+typeof localStorage !== 'undefined'
+  && localStorage.getItem('xaiku_test') === 'true'
+```
+
+The check is wrapped in a `try/catch` so it returns `false` in environments where `localStorage` is unavailable (server-side, web workers, etc.). The check runs on every experiment fetch and every event flush, so toggling the flag takes effect immediately without reinitializing the SDK.
+
+## Browser DevTools workflow
+
+A typical testing workflow:
+
+1. Open your application in the browser.
+2. Open DevTools and go to the Console.
+3. Run `localStorage.setItem('xaiku_test', 'true')`.
+4. Reload the page. The SDK now fetches draft experiments and shows test variants.
+5. Verify that the correct variant text appears and that events are being tracked.
+6. When done, run `localStorage.removeItem('xaiku_test')` and reload.
+
+## Server-side considerations
+
+Test mode relies on `localStorage`, which is only available in browser environments. On the server (`@xaiku/node`, `@xaiku/nextjs/server`), `isTestMode()` always returns `false`.
+
+To test variants server-side, pass draft experiment data directly through the SDK options rather than relying on the test mode flag.
+
+## Next steps
+
+- [A/B Testing](/docs/guides/ab-testing) -- variant selection and weights
+- [Configuration](/docs/guides/configuration) -- all SDK options
+- [Tracking Events](/docs/guides/tracking-events) -- how events are batched and sent

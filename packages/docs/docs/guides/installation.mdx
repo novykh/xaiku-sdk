@@ -1,0 +1,205 @@
+---
+title: Installation
+sidebar_label: Installation
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Installation
+
+Xaiku provides framework-specific packages so you only ship the code you need. Each higher-level package re-exports its dependencies, so a single install is all that is required.
+
+## Which package should I install?
+
+| Use case | Package | Includes |
+|----------|---------|----------|
+| Vanilla JavaScript / any website | `@xaiku/browser` | `@xaiku/core`, `@xaiku/shared` |
+| React single-page app | `@xaiku/react` | `@xaiku/browser`, `@xaiku/core`, `@xaiku/shared` |
+| Next.js (App Router) | `@xaiku/nextjs` | `@xaiku/react`, `@xaiku/browser`, `@xaiku/node`, `@xaiku/core`, `@xaiku/shared` |
+| Node.js server (Express, Fastify, etc.) | `@xaiku/node` | `@xaiku/core`, `@xaiku/shared` |
+| Custom integration / library author | `@xaiku/core` | `@xaiku/shared` |
+
+You never need to install transitive dependencies yourself. For example, installing `@xaiku/react` automatically brings in `@xaiku/browser`, `@xaiku/core`, and `@xaiku/shared`.
+
+## Browser
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/browser
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/browser
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/browser
+```
+
+</TabItem>
+</Tabs>
+
+```js
+import xaiku from '@xaiku/browser'
+
+const sdk = xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['your_experiment_id'],
+})
+```
+
+## React
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/react
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/react
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/react
+```
+
+</TabItem>
+</Tabs>
+
+```jsx
+import { XaikuProvider } from '@xaiku/react'
+
+function App() {
+  return (
+    <XaikuProvider pkey="pk_your_public_key">
+      {/* your app */}
+    </XaikuProvider>
+  )
+}
+```
+
+React 18 or 19 is required as a peer dependency.
+
+## Next.js
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/nextjs
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/nextjs
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/nextjs
+```
+
+</TabItem>
+</Tabs>
+
+`@xaiku/nextjs` provides two entry points:
+
+- `@xaiku/nextjs` -- client-side React components and hooks
+- `@xaiku/nextjs/server` -- server-side provider, middleware, and SDK factory
+
+```bash title=".env.local"
+NEXT_PUBLIC_XAIKU_API_KEY=pk_your_public_key
+```
+
+See the [Next.js quickstart](/docs/quickstarts/nextjs) for the full setup.
+
+## Node.js
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/node
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/node
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/node
+```
+
+</TabItem>
+</Tabs>
+
+```js
+import xaiku from '@xaiku/node'
+
+const sdk = await xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['your_experiment_id'],
+})
+```
+
+The Node.js factory is `async` because it fetches experiment variants during initialization.
+
+## Core (advanced)
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/core
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/core
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/core
+```
+
+</TabItem>
+</Tabs>
+
+`@xaiku/core` is the base factory that all other packages build on. Use it directly only if you are building a custom integration or a new framework adapter. For standard use cases, prefer one of the higher-level packages above.
+
+## Next steps
+
+- [Configuration](/docs/guides/configuration) -- all factory options, storage backends, and API URL settings
+- [Architecture](/docs/guides/architecture) -- how the packages relate to each other

@@ -31,7 +31,7 @@ document.getElementById('headline').textContent = headline
 
 // Track view (automatic with getVariantText)
 sdk.track.events.trackView({
-  projectId: 'homepage-test',
+  experimentId: 'homepage-test',
   partId: 'headline'
 })
 ```
@@ -64,20 +64,20 @@ Simple tracking for marketing metrics:
 ```javascript
 // Track views (impressions)
 sdk.track.events.trackView({
-  projectId: 'homepage-test',
+  experimentId: 'homepage-test',
   variantId: 'variant-a', // optional, auto-detected
   partId: 'hero-section'
 })
 
 // Track clicks
 sdk.track.events.trackClick({
-  projectId: 'cta-test',
+  experimentId: 'cta-test',
   partId: 'signup-button'
 })
 
 // Track conversions with value
 sdk.track.events.trackConversion({
-  projectId: 'checkout-flow',
+  experimentId: 'checkout-flow',
   partId: 'purchase',
   value: 99.99
 })
@@ -126,11 +126,11 @@ sdk.track.events.trackConversion({
 
     // Track views (automatic with getVariantText)
     sdk.track.events.trackView({
-      projectId: 'landing',
+      experimentId: 'landing',
       partId: 'headline'
     })
     sdk.track.events.trackView({
-      projectId: 'landing', 
+      experimentId: 'landing', 
       partId: 'subtitle'
     })
 
@@ -138,7 +138,7 @@ sdk.track.events.trackConversion({
     document.getElementById('cta-button').addEventListener('click', () => {
       // Track click
       sdk.track.events.trackClick({
-        projectId: 'landing',
+        experimentId: 'landing',
         partId: 'cta'
       })
 
@@ -152,7 +152,7 @@ sdk.track.events.trackConversion({
         if (response.ok) {
           // Track successful conversion
           sdk.track.events.trackConversion({
-            projectId: 'landing',
+            experimentId: 'landing',
             partId: 'signup',
             value: 29.99
           })
@@ -196,7 +196,7 @@ function updateProductPage(productId) {
 
   // Track product view
   sdk.track.events.trackView({
-    projectId: 'product',
+    experimentId: 'product',
     partId: 'product-page',
     productId
   })
@@ -204,7 +204,7 @@ function updateProductPage(productId) {
   // Track add to cart
   document.querySelector('.add-to-cart-btn').addEventListener('click', () => {
     sdk.track.events.trackClick({
-      projectId: 'product',
+      experimentId: 'product',
       partId: 'add-to-cart',
       productId
     })
@@ -214,7 +214,7 @@ function updateProductPage(productId) {
   // Track purchase conversion
   document.querySelector('.buy-now-btn').addEventListener('click', () => {
     sdk.track.events.trackConversion({
-      projectId: 'product',
+      experimentId: 'product',
       partId: 'purchase',
       productId,
       value: getProductPrice(productId)
@@ -262,7 +262,7 @@ function updateHomePage() {
 
   // Track page view
   sdk.track.events.trackView({
-    projectId: 'homepage',
+    experimentId: 'homepage',
     partId: 'hero'
   })
 }
@@ -281,7 +281,7 @@ function updateProductsPage() {
 
   // Track page view
   sdk.track.events.trackView({
-    projectId: 'products',
+    experimentId: 'products',
     partId: 'listing'
   })
 }
@@ -305,15 +305,15 @@ const sdk = xaikuBrowser(options)
 **Options:**
 - `pkey` (string) - Your public API key
 - `apiUrl` (string) - API endpoint URL (optional)
-- `projectIds` (array) - Pre-load specific projects (optional)
+- `experimentIds` (array) - Pre-load specific experiments (optional)
 
 ### Variant Text
 ```javascript
-sdk.getVariantText(projectId, partId, options)
+sdk.getVariantText(experimentId, partId, options)
 ```
 
 **Parameters:**
-- `projectId` (string) - A/B test project ID
+- `experimentId` (string) - A/B test experiment ID
 - `partId` (string) - Specific part/component ID
 - `options.fallback` (string) - Default text if variant fails
 - `options.control` (boolean) - Force control group (optional)
@@ -331,21 +331,21 @@ sdk.track.events.trackConversion(data)
 ```
 
 **Data object:**
-- `projectId` (string) - A/B test project ID
+- `experimentId` (string) - A/B test experiment ID
 - `partId` (string) - Component ID (optional)
 - `variantId` (string) - Variant ID (auto-detected if not provided)
 - `value` (number) - Conversion value (trackConversion only)
 
 ### Utility Methods
 ```javascript
-// Get current variant for project
-const variant = sdk.getVariant('project-id')
+// Get current variant for experiment
+const variant = sdk.getVariant('experiment-id')
 
 // Get specific variant ID
-const variantId = sdk.getVariantId('project-id')
+const variantId = sdk.getVariantId('experiment-id')
 
 // Check if user is in control group
-const isControl = sdk.isControl('project-id')
+const isControl = sdk.isControl('experiment-id')
 
 // Manually flush tracking events
 sdk.track.flush()

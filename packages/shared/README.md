@@ -61,20 +61,20 @@ listeners.trigger('event:name', { payload: 'data' })
 unsubscribe()
 ```
 
-### Project Management
-Variant selection and project handling:
+### Experiment Management
+Variant selection and experiment handling:
 
 ```javascript
-import { makeProjects, selectVariant } from '@xaiku/shared'
+import { makeExperiments, selectVariant } from '@xaiku/shared'
 
-// Fetch projects from API
-const projects = await makeProjects(sdk, ['project-1', 'project-2'])
+// Fetch experiments from API
+const experiments = await makeExperiments(sdk, ['experiment-1', 'experiment-2'])
 
 // Select variant for user
 const { selected, control } = selectVariant(
   variants,        // Array of variant objects
   userGuid,        // Unique user identifier
-  projectId        // Project identifier
+  experimentId     // Experiment identifier
 )
 ```
 
@@ -284,7 +284,7 @@ import type {
   StorageOptions,
   EventListeners,
   PerformanceMetric,
-  ProjectConfig,
+  ExperimentConfig,
   VariantConfig
 } from '@xaiku/shared'
 ```
@@ -298,7 +298,7 @@ import type {
 │   ├── storage/           # Storage backends
 │   ├── request/           # HTTP utilities
 │   ├── metrics/           # Performance monitoring
-│   ├── projects/          # A/B testing logic
+│   ├── experiments/       # A/B testing logic
 │   ├── track/            # Event tracking
 │   └── types/            # TypeScript definitions
 ```
@@ -326,20 +326,20 @@ import {
   makeStorage,
   makeListeners, 
   makePerformanceObserver,
-  makeProjects
+  makeExperiments
 } from '@xaiku/shared'
 
 function createSDK(options) {
   const storage = makeStorage(options.storage)
   const listeners = makeListeners()
   const performance = makePerformanceObserver()
-  const projects = makeProjects()
+  const experiments = makeExperiments()
 
   return {
     storage,
     listeners,
     performance,
-    projects,
+    experiments,
     // Other SDK functionality
   }
 }
@@ -402,7 +402,7 @@ pnpm test
 # Run specific test suites
 pnpm test storage
 pnpm test metrics
-pnpm test projects
+pnpm test experiments
 ```
 
 ## API Reference

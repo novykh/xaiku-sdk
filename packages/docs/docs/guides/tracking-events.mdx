@@ -1,0 +1,279 @@
+---
+title: Tracking Events
+sidebar_label: Tracking Events
+---
+
+# Tracking Events
+
+The Xaiku SDK provides 12 tracking functions that cover impressions, interactions, conversions, and performance. All functions are available on the `sdk.track.events` object after initializing `@xaiku/browser` or `@xaiku/react`.
+
+## Accessing tracking functions
+
+```js
+import xaiku from '@xaiku/browser'
+
+const sdk = xaiku({ pkey: 'pk_your_public_key' })
+
+const { events } = sdk.track
+```
+
+Every tracking function accepts an optional `extraData` object that is merged into the event payload. Common fields to include are `experimentId`, `variantId`, and `partId` for attribution.
+
+## Event reference
+
+### trackView
+
+Tracks a page or component impression.
+
+```js
+events.trackView({ experimentId: 'exp_1', variantId: 'var_a' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `impression`
+
+### trackClick
+
+Tracks a click interaction.
+
+```js
+events.trackClick({ experimentId: 'exp_1', variantId: 'var_a', partId: 'cta' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `click`
+
+### trackDwellTime
+
+Measures how long a user spends viewing content. Returns `start` and `stop` functions so you control when timing begins and ends.
+
+```js
+const timer = events.trackDwellTime({ experimentId: 'exp_1' })
+
+timer.start()
+
+// Later, when the user navigates away or the section leaves viewport:
+timer.stop()
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Calling `stop()` reports a `dwell_time` event with a `timeOnPage` field (milliseconds). Calling `stop()` before `start()` is a no-op.
+
+### trackScrollDepth
+
+Tracks the maximum scroll percentage reached on the page. Attaches a `scroll` listener and reports the value on `beforeunload`.
+
+```js
+events.trackScrollDepth({ experimentId: 'exp_1' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `scroll_depth`. The payload includes `scrollDepth` (0--100).
+
+### trackConversion
+
+Tracks a conversion action such as a form submission, purchase, or sign-up.
+
+```js
+events.trackConversion({
+  experimentId: 'exp_1',
+  variantId: 'var_a',
+  value: 49.99,
+})
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `conversion`
+
+### trackTimeToConversion
+
+Records the elapsed time between an initial impression and a later conversion.
+
+```js
+const impressionTime = Date.now()
+
+// ... user interacts with the page ...
+
+events.trackTimeToConversion(impressionTime, {
+  experimentId: 'exp_1',
+  variantId: 'var_a',
+})
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `impressionTimestamp` | `number \| string` | Timestamp of the original impression. Parsed with `new Date()`. |
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `time_to_conversion`. The payload includes `timeToConversion` (milliseconds).
+
+### trackBounce
+
+Detects if a user leaves the page quickly. A `beforeunload` listener fires and reports a `bounce` event if the user spent less than 5 seconds on the page.
+
+```js
+events.trackBounce({ experimentId: 'exp_1' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `bounce`. The payload includes `timeOnPage` (milliseconds). Only reported when the dwell time is under 5,000 ms.
+
+### trackHover
+
+Measures hover duration on a specific DOM element. Attaches `mouseenter` and `mouseleave` listeners.
+
+```js
+const element = document.getElementById('pricing-card')
+events.trackHover(element, { experimentId: 'exp_1' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `element` | `HTMLElement` | **Required.** The DOM element to observe. |
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `hover`. The payload includes `hoverDuration` (milliseconds). A new event is sent each time the user hovers and then leaves the element.
+
+### trackFeedback
+
+Captures a user-submitted rating or sentiment score.
+
+```js
+events.trackFeedback(4, { experimentId: 'exp_1', comment: 'Great experience' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `rating` | `number` | **Required.** The rating value (e.g., 1--5). |
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `feedback`. The payload includes `rating`.
+
+### trackPerformanceMetrics
+
+Captures page load timing from the Navigation Timing API.
+
+```js
+events.trackPerformanceMetrics({ experimentId: 'exp_1' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `performance`. The payload includes `loadTime` (milliseconds from `navigationStart` to `loadEventEnd`). Requires `window.performance.timing` to be available.
+
+### trackError
+
+Captures a JavaScript error as an event.
+
+```js
+try {
+  riskyOperation()
+} catch (err) {
+  events.trackError(err, { experimentId: 'exp_1', context: 'checkout' })
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `error` | `Error` | **Required.** The error object. |
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+Reported event name: `error`. The payload includes `errorMessage` and `stack`.
+
+### trackNumericMetric
+
+Records an arbitrary numeric value under a custom metric name. Use this for any measurement not covered by the built-in functions.
+
+```js
+events.trackNumericMetric('checkout_items', 3, { experimentId: 'exp_1' })
+events.trackNumericMetric('load_time_ms', 842, { page: '/dashboard' })
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `metricName` | `string` | **Required.** The name used as the event name. |
+| `value` | `number` | **Required.** The numeric value to record. |
+| `extraData` | `object` | Optional. Merged into the event payload. |
+
+The `metricName` becomes the reported event name. The payload includes `value`.
+
+## Event batching
+
+Events are not sent to the API individually. Instead they are buffered and flushed in batches for performance:
+
+- **Batch size:** The buffer flushes when it reaches **5 events**.
+- **Flush interval:** A timer flushes the buffer every **5 seconds**, even if fewer than 5 events have accumulated.
+- **Page unload:** On `unload`, the remaining buffer is sent via `navigator.sendBeacon` to avoid data loss.
+
+Each flushed event is automatically enriched with client attributes including `sessionId`, `userId`, `pathname`, `referrer`, `userAgent`, `domain`, and any `searchParams` configured on the SDK.
+
+If [test mode](/docs/guides/test-mode) is active, every event is tagged with `test: true` so it can be filtered in analytics.
+
+## React hooks
+
+In React, use the tracking hooks instead of calling `sdk.track.events` directly:
+
+```jsx
+import { useTrackView, useTrackClick, useTrackConversion } from '@xaiku/react'
+
+function PricingCard({ experimentId, variantId }) {
+  useTrackView({ experimentId, variantId, partId: 'pricing' })
+
+  const trackClick = useTrackClick({ experimentId, variantId, partId: 'pricing' })
+  const trackConversion = useTrackConversion({ experimentId, variantId, partId: 'pricing' })
+
+  return (
+    <div>
+      <button onClick={trackClick}>Learn More</button>
+      <button onClick={() => { trackClick(); trackConversion(); }}>
+        Buy Now
+      </button>
+    </div>
+  )
+}
+```
+
+`useTrackView` fires once per unique combination of `experimentId`, `variantId`, and `partId`. The click and conversion hooks return stable callback functions.
+
+## Summary table
+
+| Function | Event name | Key payload fields | Auto-listener? |
+|----------|-----------|-------------------|----------------|
+| `trackView` | `impression` | -- | No |
+| `trackClick` | `click` | -- | No |
+| `trackDwellTime` | `dwell_time` | `timeOnPage` | No (manual start/stop) |
+| `trackScrollDepth` | `scroll_depth` | `scrollDepth` | Yes (scroll + beforeunload) |
+| `trackConversion` | `conversion` | -- | No |
+| `trackTimeToConversion` | `time_to_conversion` | `timeToConversion` | No |
+| `trackBounce` | `bounce` | `timeOnPage` | Yes (beforeunload, &lt;5s) |
+| `trackHover` | `hover` | `hoverDuration` | Yes (mouseenter/mouseleave) |
+| `trackFeedback` | `feedback` | `rating` | No |
+| `trackPerformanceMetrics` | `performance` | `loadTime` | No |
+| `trackError` | `error` | `errorMessage`, `stack` | No |
+| `trackNumericMetric` | custom | `value` | No |
+
+## Next steps
+
+- [A/B Testing](/docs/guides/ab-testing) -- attribute events to specific variants
+- [Web Vitals](/docs/guides/web-vitals) -- automatically collected performance metrics
+- [Configuration](/docs/guides/configuration) -- `onReport` callback and batching

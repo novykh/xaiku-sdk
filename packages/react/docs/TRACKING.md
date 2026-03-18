@@ -10,7 +10,7 @@ All `<Text>` components automatically track impressions when rendered:
 
 ```jsx
 // This automatically tracks an impression
-<Text projectId="homepage-test" id="headline" fallback="Welcome!" />
+<Text experimentId="homepage-test" id="headline" fallback="Welcome!" />
 ```
 
 **Features:**
@@ -29,7 +29,7 @@ import { useTrackView } from '@xaiku/react'
 function CustomComponent() {
   // Track impression when component mounts
   useTrackView({ 
-    projectId: "test-123", 
+    experimentId: "test-123", 
     partId: "custom-section",
     variantId: "variant-a" // optional, auto-detected if not provided
   })
@@ -47,7 +47,7 @@ import { useTrackClick } from '@xaiku/react'
 
 function CTAButton() {
   const trackClick = useTrackClick({ 
-    projectId: "cta-test", 
+    experimentId: "cta-test", 
     partId: "primary-button" 
   })
   
@@ -65,7 +65,7 @@ All tracking events include:
 
 ```javascript
 {
-  projectId: "test-123",           // A/B test project
+  experimentId: "test-123",           // A/B test experiment
   variantId: "variant-a",          // Specific variant shown
   partId: "headline",              // Component/element identifier
   timestamp: 1640995200000,        // Event timestamp
@@ -96,13 +96,13 @@ All tracking events include:
 The SDK prevents duplicate tracking using composite keys:
 
 ```
-Tracking Key Format: "{projectId}:{variantId}:{partId}"
+Tracking Key Format: "{experimentId}:{variantId}:{partId}"
 Example: "homepage-test:variant-b:headline"
 ```
 
 **Deduplication Rules:**
 - Same tracking key = No duplicate impression
-- Different variant for same project/part = New impression
+- Different variant for same experiment/part = New impression
 - Component remount with same variant = No duplicate
 - Page refresh = New impression (new session)
 
@@ -113,23 +113,23 @@ Use descriptive, consistent part IDs across variants:
 
 ```jsx
 // Good
-<Text projectId="checkout" id="submit-button" />
-<Text projectId="checkout" id="payment-form" />
+<Text experimentId="checkout" id="submit-button" />
+<Text experimentId="checkout" id="payment-form" />
 
 // Avoid
-<Text projectId="checkout" id="btn1" />
-<Text projectId="checkout" id="form" />
+<Text experimentId="checkout" id="btn1" />
+<Text experimentId="checkout" id="form" />
 ```
 
-### 2. Project Organization
-Group related variants under projects:
+### 2. Experiment Organization
+Group related variants under experiments:
 
 ```jsx
-<Project id="homepage-redesign">
+<Experiment id="homepage-redesign">
   <Text id="hero-headline" fallback="Welcome" />
   <Text id="hero-subtext" fallback="Get started today" />
   <Text id="cta-button" fallback="Sign Up" />
-</Project>
+</Experiment>
 ```
 
 ### 3. Fallback Content
@@ -177,7 +177,7 @@ window.xaikuSDK?.getTrackingHistory?.()
 ## Common Issues
 
 ### 1. No Impressions Tracked
-- Check `projectId` is provided
+- Check `experimentId` is provided
 - Verify SDK is initialized
 - Check console for errors
 
@@ -206,20 +206,20 @@ The tracking system is optimized for production:
 import React from 'react'
 import { 
   XaikuProvider, 
-  Project,
+  Experiment,
   Text, 
   useTrackClick 
 } from '@xaiku/react'
 
 function ProductPage() {
   const trackAddToCart = useTrackClick({ 
-    projectId: "product-cta", 
+    experimentId: "product-cta", 
     partId: "add-to-cart" 
   })
 
   return (
     <XaikuProvider apiUrl="https://api.xaiku.com" pkey="pk_123">
-      <Project id="product-redesign">
+      <Experiment id="product-redesign">
         <Text id="product-title" fallback="Amazing Product">
           {(title) => <h1>{title}</h1>}
         </Text>
@@ -235,7 +235,7 @@ function ProductPage() {
             </button>
           )}
         </Text>
-      </Project>
+      </Experiment>
     </XaikuProvider>
   )
 }

@@ -18,10 +18,10 @@ export default {
     layout: 'fullscreen',
     msw: {
       handlers: [
-        http.get('http://localhost:3000/api/v1/projects', async () => {
+        http.get('http://localhost:3000/api/v1/experiments', async () => {
           await delay()
           return await HttpResponse.json({
-            projects: {
+            experiments: {
               '66a7aa430d37c7d301230442': [
                 {
                   id: 11,

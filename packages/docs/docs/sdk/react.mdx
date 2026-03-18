@@ -1,0 +1,279 @@
+---
+title: "@xaiku/react"
+sidebar_label: "@xaiku/react"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# @xaiku/react
+
+React components and hooks for integrating Xaiku into React applications. Built on top of [@xaiku/browser](/docs/sdk/browser), this package provides a context-based provider, experiment scoping, text rendering with variant resolution, and tracking hooks.
+
+For Next.js applications, use [@xaiku/nextjs](/docs/sdk/nextjs) which re-exports everything from this package plus server-side support.
+
+## Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @xaiku/react
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm add @xaiku/react
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn add @xaiku/react
+```
+</TabItem>
+</Tabs>
+
+## Usage
+
+```jsx
+import makeSDK, { XaikuProvider, Experiment, Text } from '@xaiku/react';
+
+function App() {
+  return (
+    <XaikuProvider pkey="pk_your_public_key">
+      <Experiment id="exp_1">
+        <Text id="headline" fallback="Default Headline" />
+      </Experiment>
+    </XaikuProvider>
+  );
+}
+```
+
+## Factory Function
+
+```ts
+makeSDK(options?: SDKOptions): BrowserSDKInstance
+```
+
+Creates a browser SDK instance with `framework` set to `'react'` and `frameworkVersion` set to the installed React version. Accepts the same options as [@xaiku/browser](/docs/sdk/browser#default-options).
+
+```js
+import makeSDK from '@xaiku/react';
+
+const sdk = makeSDK({ pkey: 'pk_your_public_key' });
+```
+
+## Components
+
+### `XaikuProvider`
+
+The root provider that initializes the SDK and makes it available to all child components via React context.
+
+```jsx
+<XaikuProvider pkey="pk_your_public_key">
+  {children}
+</XaikuProvider>
+```
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `pkey` | `string` | Yes (unless `sdk` is provided) | Your public key. |
+| `sdk` | `SDKInstance` | No | Pre-initialized SDK instance. When provided, the provider uses it instead of creating a new one. |
+| `children` | `ReactNode` | Yes | Child components. |
+| `...rest` | `object` | No | Additional options passed to `makeSDK()` (e.g., `userId`, `orgId`, `experimentIds`). |
+
+The SDK is initialized inside a `useEffect` to ensure it only runs in the browser. If an `sdk` prop is provided, it is used directly without creating a new instance.
+
+### `Experiment`
+
+Scopes child components to a specific experiment ID via context, eliminating the need to pass `experimentId` to every `Text` component or tracking hook.
+
+```jsx
+<Experiment id="exp_1">
+  <Text id="headline" fallback="Default" />
+  <Text id="subheadline" fallback="Default sub" />
+</Experiment>
+```
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | The experiment ID. |
+| `children` | `ReactNode` | Yes | Child components that inherit this experiment ID. |
+
+### `Text`
+
+Renders variant text for a given experiment and part. Automatically tracks a view impression when rendered.
+
+```jsx
+{/* Basic usage with fallback */}
+<Text id="headline" experimentId="exp_1" fallback="Default Headline" />
+
+{/* Using Experiment context */}
+<Experiment id="exp_1">
+  <Text id="headline" fallback="Default Headline" />
+</Experiment>
+
+{/* Render prop pattern */}
+<Text id="headline" experimentId="exp_1">
+  {(text) => <h1>{text}</h1>}
+</Text>
+
+{/* Element children pattern */}
+<Text id="headline" experimentId="exp_1">
+  <h1>Default Headline</h1>
+</Text>
+```
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Part ID within the experiment variant. |
+| `experimentId` | `string` | No | Experiment ID. Falls back to the nearest `Experiment` context. |
+| `fallback` | `ReactNode` | No | Content to display before variants load or if no variant text is found. |
+| `control` | `boolean` | No | When `true`, renders the control variant instead of the selected variant. |
+| `children` | `string \| function \| ReactElement` | No | Determines rendering behavior (see below). |
+
+**Children behavior:**
+
+- **String**: Used as the fallback text.
+- **Function**: Called with the resolved text as argument — `(text) => ReactNode`.
+- **React Element**: Cloned with `data-xaiku-experimentid` and `data-xaiku-partid` attributes, and the resolved text replaces the element's children.
+- **Omitted**: Renders a `<span>` with tracking data attributes.
+
+## Hooks
+
+### `useText(experimentId, id, fallback, control)`
+
+Resolves variant text for a experiment and part. Re-renders the component when variants are selected.
+
+```jsx
+function Headline() {
+  const text = useText('exp_1', 'headline', 'Default');
+  return <h1>{text}</h1>;
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `experimentId` | `string` | Experiment ID. |
+| `id` | `string` | Part ID within the variant. |
+| `fallback` | `any` | Value returned while the SDK is loading or if no variant text exists. |
+| `control` | `boolean` | When `true`, returns the control variant text. |
+
+**Returns:** The resolved variant text, or `fallback` if the SDK is not yet ready.
+
+### `useExperimentId()`
+
+Returns the experiment ID from the nearest `Experiment` context.
+
+```jsx
+function ChildComponent() {
+  const experimentId = useExperimentId();
+}
+```
+
+### `useTrackView({ experimentId, variantId, partId })`
+
+Tracks a view impression when the component mounts. Each unique combination of `experimentId`, `variantId`, and `partId` is tracked only once per session.
+
+```jsx
+function Hero({ experimentId }) {
+  useTrackView({ experimentId, partId: 'hero' });
+  return <div>...</div>;
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `experimentId` | `string` | Yes | Experiment ID. |
+| `variantId` | `string` | No | Variant ID. Auto-resolved from the SDK if omitted. |
+| `partId` | `string` | No | Part identifier. |
+
+### `useTrackClick({ experimentId, variantId, partId })`
+
+Returns a callback function that tracks a click event when called.
+
+```jsx
+function CTAButton({ experimentId }) {
+  const trackClick = useTrackClick({ experimentId, partId: 'cta' });
+  return <button onClick={trackClick}>Sign Up</button>;
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `experimentId` | `string` | Yes | Experiment ID. |
+| `variantId` | `string` | No | Variant ID. Auto-resolved from the SDK if omitted. |
+| `partId` | `string` | No | Part identifier. |
+
+**Returns:** `() => void` — a memoized callback to attach to event handlers.
+
+### `useTrackConversion({ experimentId, variantId, partId, value })`
+
+Returns a callback function that tracks a conversion event when called.
+
+```jsx
+function CheckoutButton({ experimentId }) {
+  const trackConversion = useTrackConversion({
+    experimentId,
+    partId: 'checkout',
+    value: 49.99,
+  });
+
+  const handlePurchase = () => {
+    processPayment();
+    trackConversion();
+  };
+
+  return <button onClick={handlePurchase}>Buy Now</button>;
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `experimentId` | `string` | Yes | Experiment ID. |
+| `variantId` | `string` | No | Variant ID. Auto-resolved from the SDK if omitted. |
+| `partId` | `string` | No | Part identifier. |
+| `value` | `number` | No | Conversion value (e.g., purchase amount). |
+
+**Returns:** `() => void` — a memoized callback to attach to event handlers.
+
+## Contexts
+
+### `XaikuContext`
+
+React context that holds the SDK instance. Use `useContext(XaikuContext)` to access the SDK directly, or use the provided hooks instead.
+
+```jsx
+import { useContext } from 'react';
+import { XaikuContext } from '@xaiku/react';
+
+function CustomComponent() {
+  const sdk = useContext(XaikuContext);
+}
+```
+
+### `ExperimentContext`
+
+React context that holds the current experiment ID set by the nearest `Experiment` provider. Use `useExperimentId()` for convenient access.
+
+```jsx
+import { useContext } from 'react';
+import { ExperimentContext } from '@xaiku/react';
+
+function CustomComponent() {
+  const experimentId = useContext(ExperimentContext);
+}
+```

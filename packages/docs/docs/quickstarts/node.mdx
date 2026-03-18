@@ -1,0 +1,70 @@
+---
+title: Node.js
+sidebar_label: Node.js
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Node.js Quickstart
+
+Use Xaiku on the server to fetch variants and track events from backend code.
+
+## Prerequisites
+
+- Node.js 20+
+- A Xaiku account with a public key (`pk_*`)
+- A experiment created in the Xaiku dashboard
+
+## 1. Install
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/node
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/node
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/node
+```
+
+</TabItem>
+</Tabs>
+
+## 2. Initialize the SDK
+
+The Node.js factory is async — it fetches experiment variants during initialization.
+
+```js
+import xaiku from '@xaiku/node'
+
+const sdk = await xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['your_experiment_id'],
+})
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `pkey` | `string` | — | Your public key (required). |
+| `experimentIds` | `string[]` | `[]` | Experiment IDs to fetch variants for. |
+| `store` | `object` | `{ name: 'memory' }` | Storage backend. Always `memory` on the server. |
+| `onReport` | `function` | `null` | Callback with event buffer on flush. |
+
+## Next steps
+
+- [Server-side Usage](/docs/guides/server-side) — patterns for Express, Fastify, etc.
+- [@xaiku/node reference](/docs/sdk/node) — full API

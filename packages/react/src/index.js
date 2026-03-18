@@ -4,7 +4,7 @@ import makeSDK from '@xaiku/browser'
 import { version } from 'react'
 
 export { default as XaikuProvider, XaikuContext } from './provider'
-export { default as Project, ProjectContext, useProjectId } from './project'
+export { default as Experiment, ExperimentContext, useExperimentId } from './experiment'
 export { Text, useText } from './text'
 export * from './useTrack'
 

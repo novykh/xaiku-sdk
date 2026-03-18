@@ -1,0 +1,215 @@
+---
+title: Server-side Usage
+sidebar_label: Server-side
+---
+
+# Server-side Usage
+
+Xaiku provides two server-side packages: `@xaiku/node` for generic Node.js servers and `@xaiku/nextjs/server` for Next.js applications.
+
+## @xaiku/node
+
+### Async initialization
+
+The Node.js factory is `async` because it fetches experiment data and selects variants during initialization:
+
+```js
+import xaiku from '@xaiku/node'
+
+const sdk = await xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['experiment_abc'],
+})
+```
+
+After `await` resolves, `sdk.getVariant()`, `sdk.getVariantText()`, and all other variant methods are ready to use.
+
+### Browser guard
+
+`@xaiku/node` throws an error if it detects a browser environment (`window` and `document` exist). This prevents accidentally importing the server package in client-side code:
+
+```
+Error: @xaiku node runs only on Node.js/server environments.
+```
+
+If you see this error, check that your bundler is not including `@xaiku/node` in a client bundle.
+
+### Storage
+
+The server SDK defaults to `memory` storage. There is no `localStorage` or `cookie` on the server, so all data (GUID, experiments, variants) lives in process memory. If you need to persist a user's GUID across requests, manage it externally (e.g., in a session store or cookie) and pass it via the `guid` option:
+
+```js
+const sdk = await xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['experiment_abc'],
+  guid: userSessionGuid,
+})
+```
+
+### Server context
+
+The node client automatically captures server information and attaches it to events:
+
+- `hostname`, `platform`, `arch`
+- `cpuCount`, `totalMemory`, `freeMemory`
+- `uptime`, `environment` (`NODE_ENV`)
+- `memoryUsage`, `cpuUsage`
+
+It also registers handlers for `uncaughtException` and `unhandledRejection` that log the error. Call `sdk.destroy()` to clean up these handlers when shutting down.
+
+### Express example
+
+Initialize the SDK once at startup and use it across requests:
+
+```js
+import express from 'express'
+import xaiku from '@xaiku/node'
+
+const app = express()
+
+const sdk = await xaiku({
+  pkey: 'pk_your_public_key',
+  experimentIds: ['experiment_abc'],
+})
+
+app.get('/api/content', (req, res) => {
+  const headline = sdk.getVariantText('experiment_abc', 'headline')
+  const cta = sdk.getVariantText('experiment_abc', 'cta')
+
+  res.json({ headline, cta })
+})
+
+app.listen(3000)
+```
+
+For per-user variant assignment, pass a user-specific GUID:
+
+```js
+app.get('/api/content', async (req, res) => {
+  const userSdk = await xaiku({
+    pkey: 'pk_your_public_key',
+    experimentIds: ['experiment_abc'],
+    guid: req.session.userId,
+  })
+
+  const headline = userSdk.getVariantText('experiment_abc', 'headline')
+  res.json({ headline })
+
+  userSdk.destroy()
+})
+```
+
+### Cleanup
+
+Always call `sdk.destroy()` when the SDK instance is no longer needed. This removes process event listeners and cleans up internal state:
+
+```js
+process.on('SIGTERM', () => {
+  sdk.destroy()
+  process.exit(0)
+})
+```
+
+## Next.js (App Router)
+
+`@xaiku/nextjs/server` provides three exports for server-side usage in Next.js:
+
+| Export | What it does |
+|--------|-------------|
+| `xaikuMiddleware` | Middleware that manages a GUID cookie for consistent variant assignment. |
+| `XaikuProvider` | Async server component that fetches variants and hydrates the client provider. |
+| default export | Server SDK factory built on `@xaiku/node`. |
+
+### Middleware
+
+The middleware reads or creates a GUID cookie and initializes the SDK to validate the key. Place it in your `middleware.js`:
+
+```js title="middleware.js"
+import { xaikuMiddleware } from '@xaiku/nextjs/server'
+
+export async function middleware(request) {
+  return xaikuMiddleware(request)
+}
+```
+
+The middleware:
+
+1. Reads the `__xaiku__guid__` cookie from the request.
+2. Creates a server SDK instance with the GUID (or generates a new one).
+3. Sets the GUID cookie on the response so it persists across requests.
+
+This ensures every visitor gets a stable GUID before any page renders, which is critical for deterministic variant selection.
+
+### Server-side provider
+
+The `XaikuProvider` from `@xaiku/nextjs/server` is an async React Server Component. It fetches experiment variants on the server and passes them to the client-side provider from `@xaiku/react`:
+
+```jsx title="app/layout.js"
+import { XaikuProvider } from '@xaiku/nextjs/server'
+
+export default async function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <XaikuProvider>{children}</XaikuProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+The provider:
+
+1. Reads the GUID from cookies (set by the middleware).
+2. Creates a server SDK and fetches experiments via `sdk.getExperiments()`.
+3. Passes `experiments`, `guid`, and `pkey` to the client-side `XaikuProvider` from `@xaiku/react`.
+
+This eliminates the client-side fetch waterfall -- variants are available immediately on hydration.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `pkey` | `string` | `process.env.NEXT_PUBLIC_XAIKU_API_KEY` | Public key. |
+| `userId` | `string` | -- | User ID for attribution. |
+| `sdk` | `object` | -- | Pre-initialized SDK instance (advanced). |
+| `children` | `ReactNode` | -- | Your application tree. |
+
+### Environment variable
+
+Both the middleware and provider read `NEXT_PUBLIC_XAIKU_API_KEY` by default:
+
+```bash title=".env.local"
+NEXT_PUBLIC_XAIKU_API_KEY=pk_your_public_key
+```
+
+### Server SDK factory
+
+The default export from `@xaiku/nextjs/server` creates a server SDK instance configured for Next.js:
+
+```js
+import makeSDK from '@xaiku/nextjs/server'
+
+const sdk = await makeSDK({
+  pkey: 'pk_your_public_key',
+})
+```
+
+This wraps `@xaiku/node` with Next.js defaults: `framework` is set to `'nextjs'`, `frameworkVersion` is detected from the installed Next.js version, and `skipClient` and `skipExperiments` are set to `true` (the provider handles experiment fetching separately).
+
+## Comparing server packages
+
+| Feature | `@xaiku/node` | `@xaiku/nextjs/server` |
+|---------|--------------|----------------------|
+| Factory type | `async` | `async` |
+| Storage | Memory | Memory (GUID in cookie via middleware) |
+| Experiment fetching | During init | Via provider or on-demand |
+| Browser guard | Throws if `window` exists | Inherits from `@xaiku/node` |
+| Framework metadata | `node` | `nextjs` + Next.js version |
+| GUID management | Manual (pass `guid` option) | Automatic (cookie middleware) |
+
+## Next steps
+
+- [A/B Testing](/docs/guides/ab-testing) -- variant selection algorithm and weights
+- [Configuration](/docs/guides/configuration) -- all factory options
+- [Test Mode](/docs/guides/test-mode) -- testing variants in non-live environments

@@ -11,7 +11,7 @@ The Xaiku SDK is a modern, performant solution for running sophisticated A/B tes
 ### 🚀 A/B Testing & Variant Management
 - **Deterministic Variant Selection** - Consistent user experiences across sessions
 - **Weighted Distribution** - Flexible traffic allocation with custom weights  
-- **Multi-Project Support** - Run multiple tests simultaneously
+- **Multi-Experiment Support** - Run multiple tests simultaneously
 - **Real-time Variant Updates** - Change test configurations without deployments
 
 ### 📊 Advanced Analytics & Tracking
@@ -51,7 +51,7 @@ function App() {
       pkey="your-public-key"
     >
       <Text 
-        projectId="homepage-hero" 
+        experimentId="homepage-hero" 
         id="headline" 
         fallback="Welcome to our platform!"
       >
@@ -74,7 +74,7 @@ import xaiku from '@xaiku/browser'
 const sdk = xaiku({
   apiUrl: 'https://api.xaiku.com',
   pkey: 'your-public-key',
-  projectIds: ['homepage-test']
+  experimentIds: ['homepage-test']
 })
 
 // Get variant text
@@ -84,7 +84,7 @@ const headline = sdk.getVariantText('homepage-test', 'headline', {
 
 // Track conversion
 sdk.track.events.trackConversion({
-  projectId: 'homepage-test',
+  experimentId: 'homepage-test',
   value: 29.99,
   currency: 'USD'
 })
@@ -192,19 +192,19 @@ import {
 function ProductPage({ productId }) {
   // Conversion tracking with funnel analysis
   const { trackFunnelStep, trackConversion } = useTrackConversion({
-    projectId: 'product-conversion',
+    experimentId: 'product-conversion',
     partId: `product-${productId}`
   })
 
   // Engagement monitoring
   const { isTracking } = useTrackEngagement({
-    projectId: 'product-engagement',
+    experimentId: 'product-engagement',
     partId: 'product-details'
   })
 
   // Scroll depth analysis
   useTrackScrollDepth({
-    projectId: 'content-engagement',
+    experimentId: 'content-engagement',
     milestones: [25, 50, 75, 100]
   })
 
@@ -222,17 +222,17 @@ function ProductPage({ productId }) {
 
   return (
     <div>
-      <Text projectId="product-title" id="name" fallback="Product Name">
+      <Text experimentId="product-title" id="name" fallback="Product Name">
         {(title) => <h1>{title}</h1>}
       </Text>
 
       <div className={`engagement ${isTracking ? 'active' : 'idle'}`}>
-        <Text projectId="product-description" id="desc" 
+        <Text experimentId="product-description" id="desc" 
               fallback="Product description" />
       </div>
 
       <button onClick={handleAddToCart}>
-        <Text projectId="cta-buttons" id="add-to-cart" 
+        <Text experimentId="cta-buttons" id="add-to-cart" 
               fallback="Add to Cart" />
       </button>
     </div>

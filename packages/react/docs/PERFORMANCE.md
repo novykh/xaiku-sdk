@@ -14,7 +14,7 @@ Prevents duplicate event tracking across component re-renders:
 ```jsx
 // This won't create duplicate impressions on re-renders
 function MyComponent() {
-  useTrackView({ projectId: "test", partId: "component" })
+  useTrackView({ experimentId: "test", partId: "component" })
   return <div>Content</div>
 }
 ```

@@ -8,5 +8,5 @@ export default (options = {}) =>
     framework: 'nextjs',
     frameworkVersion: nextjsLib?.version || 'N/A',
     skipClient: true,
-    skipProjects: true,
+    skipExperiments: true,
   })

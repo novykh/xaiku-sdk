@@ -9,13 +9,13 @@ import './page.css'
 const Page = async () => {
   return (
     <Suspense fallback="LOADING">
-      <XaikuProvider pkey="pk_IxIifMkJ4Ot8XNBs" projectIds={['66a7aa430d37c7d301230442']} dev>
+      <XaikuProvider pkey="pk_IxIifMkJ4Ot8XNBs" experimentIds={['66a7aa430d37c7d301230442']} dev>
         <article>
           <Header />
 
           <section className="storybook-page">
             <h2>
-              <Text projectId="66a7aa430d37c7d301230442" id="header">
+              <Text experimentId="66a7aa430d37c7d301230442" id="header">
                 Pages in Storybook
               </Text>
             </h2>

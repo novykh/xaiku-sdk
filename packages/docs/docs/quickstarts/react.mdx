@@ -1,0 +1,109 @@
+---
+title: React
+sidebar_label: React
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# React Quickstart
+
+Add Xaiku variant testing and tracking to your React app.
+
+## Prerequisites
+
+- React 18 or 19
+- A Xaiku account with a public key (`pk_*`)
+- A experiment created in the Xaiku dashboard
+
+## 1. Install
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/react
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/react
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/react
+```
+
+</TabItem>
+</Tabs>
+
+## 2. Add the Provider
+
+Wrap your app with `XaikuProvider`:
+
+```jsx
+import { XaikuProvider } from '@xaiku/react'
+
+function App() {
+  return (
+    <XaikuProvider pkey="pk_your_public_key">
+      {/* your app */}
+    </XaikuProvider>
+  )
+}
+```
+
+## 3. Display variant text
+
+Use `Experiment` and `Text` to render A/B test content:
+
+```jsx
+import { Experiment, Text } from '@xaiku/react'
+
+function Hero() {
+  return (
+    <Experiment id="your_experiment_id">
+      <Text id="headline" fallback="Welcome to our product">
+        {(text) => <h1>{text}</h1>}
+      </Text>
+      <Text id="cta" fallback="Get Started">
+        {(text) => <button>{text}</button>}
+      </Text>
+    </Experiment>
+  )
+}
+```
+
+`Text` automatically tracks a view impression when it renders. The `fallback` value is shown if variants haven't loaded yet.
+
+## 4. Track events
+
+```jsx
+import { useTrackClick, useTrackConversion } from '@xaiku/react'
+
+function SignupButton({ experimentId, variantId }) {
+  const trackClick = useTrackClick({ experimentId, variantId, partId: 'cta' })
+  const trackConversion = useTrackConversion({ experimentId, variantId, partId: 'cta' })
+
+  const handleClick = () => {
+    trackClick()
+    // After successful signup:
+    trackConversion()
+  }
+
+  return <button onClick={handleClick}>Sign Up</button>
+}
+```
+
+The tracking hooks require `experimentId` and accept optional `variantId` and `partId` for attribution. They return a function you call when the event occurs.
+
+## Next steps
+
+- [Tracking Events](/docs/guides/tracking-events) — all tracking functions
+- [A/B Testing](/docs/guides/ab-testing) — variant weights and selection
+- [@xaiku/react reference](/docs/sdk/react) — full API including all hooks

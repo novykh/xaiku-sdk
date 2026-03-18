@@ -1,0 +1,239 @@
+---
+title: "@xaiku/nextjs"
+sidebar_label: "@xaiku/nextjs"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# @xaiku/nextjs
+
+Next.js integration for Xaiku with both client and server support. This package provides two entry points: a client module that re-exports all [@xaiku/react](/docs/sdk/react) components and hooks, and a server module with a React Server Component provider, middleware, and a server-side SDK factory.
+
+## Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @xaiku/nextjs
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm add @xaiku/nextjs
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn add @xaiku/nextjs
+```
+</TabItem>
+</Tabs>
+
+## Client Entry Point
+
+```js
+import makeSDK, { XaikuProvider, Text, Experiment, ... } from '@xaiku/nextjs';
+```
+
+The default import (`@xaiku/nextjs`) is a `'use client'` module. It re-exports everything from [@xaiku/react](/docs/sdk/react) and provides a Next.js-specific factory function.
+
+### Factory Function
+
+```ts
+makeSDK(options?: SDKOptions): BrowserSDKInstance
+```
+
+Creates a browser SDK instance with `framework` set to `'nextjs'` and `frameworkVersion` set to the installed Next.js version. Accepts the same options as [@xaiku/browser](/docs/sdk/browser#default-options).
+
+```js
+import makeSDK from '@xaiku/nextjs';
+
+const sdk = makeSDK({ pkey: 'pk_your_public_key' });
+```
+
+### Re-exported Components and Hooks
+
+All of the following are re-exported directly from `@xaiku/react`:
+
+| Export | Description |
+|---|---|
+| `XaikuProvider` | Client-side provider component. |
+| `XaikuContext` | React context holding the SDK instance. |
+| `Experiment` | Experiment scope provider. |
+| `useExperimentId` | Hook to read the current experiment ID from context. |
+| `Text` | Variant text component. |
+| `useText` | Hook to resolve variant text. |
+| `useTrackView` | Hook to track view impressions. |
+| `useTrackClick` | Hook that returns a click tracking callback. |
+| `useTrackConversion` | Hook that returns a conversion tracking callback. |
+
+See the [@xaiku/react reference](/docs/sdk/react) for full documentation of each export.
+
+## Server Entry Point
+
+```js
+import makeSDK, { XaikuProvider, xaikuMiddleware } from '@xaiku/nextjs/server';
+```
+
+The server entry point (`@xaiku/nextjs/server`) provides utilities for React Server Components and Next.js middleware.
+
+### `XaikuProvider` (Server)
+
+An async React Server Component that initializes the SDK on the server, fetches experiments, and passes them to the client-side provider. This eliminates the loading flash that occurs when experiments are fetched client-side.
+
+```jsx
+// app/layout.js
+import { XaikuProvider } from '@xaiku/nextjs/server';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <XaikuProvider>
+          {children}
+        </XaikuProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+**Props:**
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `pkey` | `string` | No | `process.env.NEXT_PUBLIC_XAIKU_API_KEY` | Public key. Defaults to the environment variable. |
+| `userId` | `string` | No | — | User identifier, also used as GUID fallback. |
+| `sdk` | `SDKInstance` | No | — | Pre-initialized server SDK instance. |
+| `children` | `ReactNode` | Yes | — | Child components. |
+| `...rest` | `object` | No | — | Additional options forwarded to `makeSDK()` and the client provider. |
+
+**Behavior:**
+
+1. Reads the GUID from cookies (using the `__xaiku__guid__` cookie key).
+2. Creates a server SDK instance (or uses the provided `sdk` prop).
+3. Fetches experiments on the server via `sdk.getExperiments()`.
+4. Renders the client-side `XaikuProvider` with `experiments` and `guid` pre-populated, avoiding a client-side fetch.
+
+### `xaikuMiddleware`
+
+An async middleware function that ensures a GUID cookie is set for every request. Use it in your Next.js middleware to establish visitor identity before any page renders.
+
+```js
+// middleware.js
+import { xaikuMiddleware } from '@xaiku/nextjs/server';
+
+export async function middleware(request) {
+  return await xaikuMiddleware(request);
+}
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+};
+```
+
+**Signature:**
+
+```ts
+xaikuMiddleware(request: NextRequest, options?: object): Promise<NextResponse>
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `request` | `NextRequest` | Yes | The incoming Next.js request object. |
+| `options` | `object` | No | Additional SDK options (e.g., `pkey`). |
+
+**Behavior:**
+
+1. Reads the existing GUID from cookies.
+2. Creates a server SDK instance to validate or generate the GUID.
+3. Sets the GUID cookie on the response (`path: '/'`).
+4. Returns `NextResponse.next()` to continue the request.
+
+The middleware uses `process.env.NEXT_PUBLIC_XAIKU_API_KEY` as the default public key. Override it by passing `pkey` in the options.
+
+### `makeSDK` (Server)
+
+An async factory function for creating a server-side SDK instance. Built on [@xaiku/node](/docs/sdk/node) with Next.js-specific defaults.
+
+```js
+import makeSDK from '@xaiku/nextjs/server';
+
+const sdk = await makeSDK({ pkey: 'pk_your_public_key', guid: 'user-guid' });
+const experiments = await sdk.getExperiments();
+```
+
+**Signature:**
+
+```ts
+makeSDK(options?: object): Promise<SDKInstance>
+```
+
+**Default behavior:**
+
+| Option | Default | Description |
+|---|---|---|
+| `pkey` | `process.env.NEXT_PUBLIC_XAIKU_API_KEY` | Reads from the environment variable if not provided. |
+| `framework` | `'nextjs'` | Framework identifier. |
+| `frameworkVersion` | Detected from `next/package.json` | Next.js version. |
+| `skipClient` | `true` | Skips client creation (not needed server-side). |
+| `skipExperiments` | `true` | Skips automatic experiment fetching during init (experiments are fetched explicitly). |
+
+All other options are forwarded to [@xaiku/node](/docs/sdk/node).
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_XAIKU_API_KEY` | Your Xaiku public key. Used as the default `pkey` by both the server provider and middleware. |
+
+### Recommended Setup
+
+For the best experience with Next.js App Router:
+
+1. Add `NEXT_PUBLIC_XAIKU_API_KEY` to your environment.
+2. Set up the middleware to manage GUID cookies.
+3. Use the server `XaikuProvider` in your root layout for server-side experiment fetching.
+4. Use `Text`, `Experiment`, and tracking hooks in client components.
+
+```jsx
+// middleware.js
+import { xaikuMiddleware } from '@xaiku/nextjs/server';
+
+export async function middleware(request) {
+  return await xaikuMiddleware(request);
+}
+
+// app/layout.js
+import { XaikuProvider } from '@xaiku/nextjs/server';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <XaikuProvider>{children}</XaikuProvider>
+      </body>
+    </html>
+  );
+}
+
+// app/page.js (client component)
+'use client';
+import { Experiment, Text, useTrackClick } from '@xaiku/nextjs';
+
+export default function Page() {
+  const trackClick = useTrackClick({ experimentId: 'exp_1', partId: 'cta' });
+
+  return (
+    <Experiment id="exp_1">
+      <Text id="headline" fallback="Welcome" />
+      <button onClick={trackClick}>Get Started</button>
+    </Experiment>
+  );
+}
+```

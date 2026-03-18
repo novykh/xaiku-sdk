@@ -1,5 +1,5 @@
 import makeCoreSdk from '@xaiku/core'
-import { makeProjects, isBrowser } from '@xaiku/shared'
+import { makeExperiments, isBrowser } from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
@@ -22,7 +22,7 @@ export default async (options = {}) => {
 
   if (!instance.options.skipClient) instance.client = makeClient(instance)
 
-  await makeProjects(instance)
+  await makeExperiments(instance)
 
   instance.destroy = () => {
     if (!instance) return

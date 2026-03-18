@@ -23,3 +23,10 @@ yarn-error.log*
 
 *storybook.log
 storybook-static/
+
+# plans
+.agents/plans/
+
+# docusaurus
+packages/docs/.docusaurus/
+packages/docs/build/

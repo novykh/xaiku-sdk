@@ -1,0 +1,207 @@
+---
+title: A/B Testing & Variants
+sidebar_label: A/B Testing
+---
+
+# A/B Testing & Variants
+
+Xaiku uses deterministic variant selection so that the same user always sees the same variant, without requiring a server round-trip on every page load.
+
+## How variant selection works
+
+When the SDK fetches experiments from the API, each experiment contains an array of variants with weighted traffic allocation. The SDK selects a variant locally using a hash of two values:
+
+1. **GUID** -- a unique identifier for the user, persisted in storage
+2. **Experiment ID** -- the identifier of the A/B test experiment
+
+The selection algorithm (implemented in `@xaiku/shared`) works as follows:
+
+1. Concatenate the GUID and experiment ID into a single string.
+2. Compute a numeric hash of that string.
+3. Map the hash to a position within the total weight range.
+4. Walk through the variants in order, accumulating weights, and select the first variant whose cumulative weight exceeds the hash position.
+
+```
+hash = hashFunction(guid + experimentId)
+position = hash % totalWeight
+selected = first variant where cumulativeWeight > position
+```
+
+Because the hash is deterministic, the same GUID and experiment ID always produce the same variant. This means:
+
+- A user sees the same variant across page reloads and sessions (as long as the GUID persists in storage).
+- No server-side session state is required for variant assignment.
+- Variant distribution closely matches the configured weights at scale.
+
+## Weights
+
+Each variant has a `weight` property that controls its share of traffic. The default weight is `5` if not specified. Weights are relative, not percentages.
+
+For example, with two variants:
+
+| Variant | Weight | Traffic share |
+|---------|--------|--------------|
+| A | 5 | 50% |
+| B | 5 | 50% |
+
+With uneven weights:
+
+| Variant | Weight | Traffic share |
+|---------|--------|--------------|
+| A | 8 | 80% |
+| B | 2 | 20% |
+
+You can use any positive numbers. The SDK normalizes them by dividing each weight by the total.
+
+## Control variants
+
+One variant in each experiment can be marked as the `control` variant by setting `control: true`. The control is the baseline you compare other variants against.
+
+When the SDK selects a variant, it returns both:
+
+- `selected` -- the variant assigned to this user based on the hash
+- `control` -- the variant marked as control (or the selected variant itself if it is the control)
+
+You can access the control variant explicitly:
+
+```js
+const control = sdk.getVariant('experiment_id', { control: true })
+```
+
+## Accessing variant data
+
+After initialization, the SDK provides several methods for reading variant data:
+
+### `sdk.getVariant(experimentId, options?)`
+
+Returns the selected variant object for the given experiment. Pass `{ control: true }` to get the control variant instead.
+
+```js
+const variant = sdk.getVariant('experiment_id')
+// { id: 'var_abc', weight: 5, control: false, parts: { ... } }
+```
+
+### `sdk.getVariantId(experimentId)`
+
+Returns just the variant ID string, or `null` if no variant is found.
+
+```js
+const variantId = sdk.getVariantId('experiment_id')
+// 'var_abc'
+```
+
+### `sdk.getVariantText(experimentId, partId, options?)`
+
+Returns the text content for a specific part of the selected variant. Variants contain a `parts` object that maps field names to text values.
+
+```js
+const headline = sdk.getVariantText('experiment_id', 'headline')
+// 'Try our new pricing'
+
+const controlHeadline = sdk.getVariantText('experiment_id', 'headline', { control: true })
+// 'Welcome to our product'
+```
+
+## React pattern
+
+In React, the `<Experiment>` and `<Text>` components handle variant rendering and impression tracking automatically.
+
+### Provider setup
+
+Wrap your app with `XaikuProvider` to make the SDK available to all components:
+
+```jsx
+import { XaikuProvider } from '@xaiku/react'
+
+function App() {
+  return (
+    <XaikuProvider pkey="pk_your_public_key">
+      {/* your app */}
+    </XaikuProvider>
+  )
+}
+```
+
+### Rendering variant text
+
+Use `<Experiment>` to set the experiment context and `<Text>` to render variant content:
+
+```jsx
+import { Experiment, Text } from '@xaiku/react'
+
+function Hero() {
+  return (
+    <Experiment id="experiment_id">
+      <Text id="headline" fallback="Welcome to our product">
+        {(text) => <h1>{text}</h1>}
+      </Text>
+      <Text id="subtitle" fallback="The best solution for your needs">
+        {(text) => <p>{text}</p>}
+      </Text>
+    </Experiment>
+  )
+}
+```
+
+The `<Text>` component:
+
+- Looks up the variant text for the given `id` (part) within the current experiment.
+- Falls back to the `fallback` prop if variants are not yet loaded.
+- Automatically tracks a view impression when it renders.
+- Accepts children as a render function, a React element, or plain text.
+
+### Using the `useText` hook
+
+For more control, use the `useText` hook directly:
+
+```jsx
+import { useText } from '@xaiku/react'
+
+function Headline({ experimentId }) {
+  const text = useText(experimentId, 'headline', 'Default headline')
+
+  return <h1>{text}</h1>
+}
+```
+
+`useText(experimentId, partId, fallback, control)` returns the variant text string or the fallback if variants are unavailable. It re-renders automatically when variants are selected.
+
+### Tracking in React
+
+The tracking hooks attribute events to specific variants:
+
+```jsx
+import { useTrackClick, useTrackConversion } from '@xaiku/react'
+
+function CTAButton({ experimentId }) {
+  const trackClick = useTrackClick({ experimentId, partId: 'cta' })
+  const trackConversion = useTrackConversion({ experimentId, partId: 'cta' })
+
+  return (
+    <button onClick={() => { trackClick(); trackConversion(); }}>
+      Sign Up
+    </button>
+  )
+}
+```
+
+The hooks automatically resolve the `variantId` from the SDK if you don't provide one explicitly.
+
+## Consistency guarantees
+
+Variant assignment is stable as long as the GUID persists:
+
+| Storage backend | Persistence |
+|----------------|-------------|
+| `localStorage` | Survives page reloads and new tabs. Cleared only by explicit user action. |
+| `sessionStorage` | Survives page reloads within the same tab. Lost when the tab closes. |
+| `cookie` | Survives across subdomains. Expires after the configured number of days (default 7). |
+| `memory` | Lost on every page reload. Suitable for server-side usage where GUIDs are managed externally. |
+
+For server-side rendering (Next.js), the middleware persists the GUID in a cookie so that variant assignment is consistent between server and client.
+
+## Next steps
+
+- [Tracking Events](/docs/guides/tracking-events) -- attribute tracking data to variants
+- [Server-side Usage](/docs/guides/server-side) -- server-side variant fetching
+- [Test Mode](/docs/guides/test-mode) -- test variants before going live

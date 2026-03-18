@@ -14,7 +14,7 @@ export const defaultOptions = {
 export default (options = {}) => {
   options = { ...defaultOptions, ...options }
 
-  const { appName, version, pkey, projectIds, skipClient } = options
+  const { appName, version, pkey, experimentIds, skipClient } = options
 
   const listeners = makeListeners()
 
@@ -25,7 +25,7 @@ export default (options = {}) => {
     ...makeFnProxy(listeners.trigger),
     ...listeners,
     pkey,
-    projectIds: projectIds ? (Array.isArray(projectIds) ? projectIds : [projectIds]) : [],
+    experimentIds: experimentIds ? (Array.isArray(experimentIds) ? experimentIds : [experimentIds]) : [],
   }
 
   instance.storage = makeStorage(instance)

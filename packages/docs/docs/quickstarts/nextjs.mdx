@@ -1,0 +1,114 @@
+---
+title: Next.js
+sidebar_label: Next.js
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Next.js Quickstart
+
+Add Xaiku to your Next.js app with server-side variant fetching and middleware.
+
+## Prerequisites
+
+- Next.js 16 (App Router)
+- A Xaiku account with a public key (`pk_*`)
+- A experiment created in the Xaiku dashboard
+
+## 1. Install
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @xaiku/nextjs
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @xaiku/nextjs
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @xaiku/nextjs
+```
+
+</TabItem>
+</Tabs>
+
+## 2. Set your environment variable
+
+```bash title=".env.local"
+NEXT_PUBLIC_XAIKU_API_KEY=pk_your_public_key
+```
+
+## 3. Add the middleware
+
+The middleware manages a GUID cookie for consistent variant assignment.
+
+```js title="middleware.js"
+import { xaikuMiddleware } from '@xaiku/nextjs/server'
+
+export async function middleware(request) {
+  return xaikuMiddleware(request)
+}
+```
+
+## 4. Add the Provider
+
+Use the server-side provider in your root layout. It fetches experiment variants on the server and hydrates the client.
+
+```jsx title="app/layout.js"
+import { XaikuProvider } from '@xaiku/nextjs/server'
+
+export default async function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <XaikuProvider>{children}</XaikuProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+## 5. Display variant text
+
+Use the same components as `@xaiku/react` — they're re-exported from `@xaiku/nextjs`:
+
+```jsx title="app/page.js"
+import { Experiment, Text } from '@xaiku/nextjs'
+
+export default function Page() {
+  return (
+    <Experiment id="your_experiment_id">
+      <Text id="headline" fallback="Welcome">
+        {(text) => <h1>{text}</h1>}
+      </Text>
+    </Experiment>
+  )
+}
+```
+
+## How it works
+
+`@xaiku/nextjs` has two entry points:
+
+| Import | Environment | What it does |
+|--------|-------------|-------------|
+| `@xaiku/nextjs` | Client | Re-exports all `@xaiku/react` components + Next.js SDK factory |
+| `@xaiku/nextjs/server` | Server | Server-side provider, middleware, and SDK factory using `@xaiku/node` |
+
+The server provider fetches variants at request time and passes them to the client provider, avoiding a client-side fetch waterfall.
+
+## Next steps
+
+- [Server-side Usage](/docs/guides/server-side) — deep dive into server patterns
+- [A/B Testing](/docs/guides/ab-testing) — variant weights and selection
+- [@xaiku/nextjs reference](/docs/sdk/nextjs) — full API

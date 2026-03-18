@@ -1,0 +1,141 @@
+---
+title: POST /api/v1/analytics
+sidebar_label: Analytics
+---
+
+# POST /api/v1/analytics
+
+Submit analytics events. The SDK batches events in memory and flushes them to this endpoint periodically (every 5 seconds) or when the batch reaches 5 events. On page unload, remaining events are sent via `navigator.sendBeacon`.
+
+## Request
+
+```
+POST https://xaiku.com/api/v1/analytics
+```
+
+### Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `Accept` | Yes | `application/json` |
+| `Content-Type` | Yes | `application/json` |
+| `X-public-key` | Yes | Your public key (`pk_*`) |
+
+### Body
+
+The request body is a JSON object containing an `events` array:
+
+```json
+{
+  "events": [
+    {
+      "eventName": "impression",
+      "experimentId": "exp_abc123",
+      "variantId": "var_001",
+      "sessionId": "sess_xyz",
+      "pathname": "/landing",
+      "referrer": "https://google.com",
+      "conversion": false,
+      "loadTime": 1200,
+      "scrollDepth": 75.5,
+      "timeOnPage": 32000,
+      "clickTarget": "#cta-button",
+      "utm_source": "newsletter",
+      "utm_medium": "email",
+      "utm_campaign": "spring_sale",
+      "test": false
+    }
+  ]
+}
+```
+
+On page unload the SDK uses `sendBeacon`, which sends a flat JSON body with `events` and `pkey` at the top level:
+
+```json
+{
+  "events": [...],
+  "pkey": "pk_dGhpcyBpcyBhIHRlc3Q"
+}
+```
+
+### Event Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `eventName` | string | Yes | Event type: `impression`, `click`, `conversion`, `dwell_time`, `scroll_depth`, `bounce`, `hover`, `feedback`, `performance`, `error`, or a custom name |
+| `experimentId` | string | Yes | Experiment the event belongs to |
+| `sessionId` | string | Yes | Session identifier for the visitor |
+| `variantId` | string | No | Variant shown to the user |
+| `conversion` | boolean | No | Whether the event counts as a conversion |
+| `loadTime` | number | No | Page load time in milliseconds |
+| `scrollDepth` | number | No | Maximum scroll depth as a percentage (0-100) |
+| `timeOnPage` | number | No | Time spent on page in milliseconds |
+| `clickTarget` | string | No | CSS selector or identifier of the clicked element |
+| `pathname` | string | No | Page path (auto-populated by the SDK) |
+| `referrer` | string | No | Document referrer (auto-populated by the SDK) |
+| `utm_source` | string | No | UTM source parameter |
+| `utm_medium` | string | No | UTM medium parameter |
+| `utm_campaign` | string | No | UTM campaign parameter |
+| `utm_term` | string | No | UTM term parameter |
+| `utm_content` | string | No | UTM content parameter |
+| `test` | boolean | No | `true` when the event was sent in test mode |
+
+### Limits
+
+- Maximum payload size: **1 MB**
+
+## Examples
+
+### curl
+
+```bash
+curl -X POST "https://xaiku.com/api/v1/analytics" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "X-public-key: pk_dGhpcyBpcyBhIHRlc3Q" \
+  -d '{
+    "events": [
+      {
+        "eventName": "impression",
+        "experimentId": "exp_abc123",
+        "variantId": "var_001",
+        "sessionId": "sess_xyz",
+        "pathname": "/landing",
+        "referrer": ""
+      },
+      {
+        "eventName": "click",
+        "experimentId": "exp_abc123",
+        "variantId": "var_001",
+        "sessionId": "sess_xyz",
+        "pathname": "/landing",
+        "clickTarget": "#cta-button"
+      }
+    ]
+  }'
+```
+
+### JavaScript fetch
+
+```js
+await fetch('https://xaiku.com/api/v1/analytics', {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'X-public-key': 'pk_dGhpcyBpcyBhIHRlc3Q',
+  },
+  body: JSON.stringify({
+    events: [
+      {
+        eventName: 'impression',
+        experimentId: 'exp_abc123',
+        variantId: 'var_001',
+        sessionId: 'sess_xyz',
+        pathname: '/landing',
+        referrer: '',
+      },
+    ],
+  }),
+});
+```

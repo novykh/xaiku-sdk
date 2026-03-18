@@ -1,0 +1,220 @@
+---
+title: "@xaiku/core"
+sidebar_label: "@xaiku/core"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# @xaiku/core
+
+The core SDK factory that creates an Xaiku instance with storage, event system, GUID management, and client attributes. This is the foundational package that all environment-specific SDKs build upon.
+
+:::tip
+Most users should use [@xaiku/browser](/docs/sdk/browser), [@xaiku/react](/docs/sdk/react), or [@xaiku/nextjs](/docs/sdk/nextjs) instead. Use `@xaiku/core` directly only when building a custom integration or a new environment-specific SDK.
+:::
+
+## Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @xaiku/core
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm add @xaiku/core
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn add @xaiku/core
+```
+</TabItem>
+</Tabs>
+
+## Usage
+
+```js
+import makeSDK from '@xaiku/core';
+
+const sdk = makeSDK({
+  pkey: 'pk_your_public_key',
+  appName: 'my-app',
+  version: '1.0.0',
+});
+```
+
+## Factory Function
+
+```ts
+makeSDK(options?: SDKOptions): SDKInstance
+```
+
+Creates and returns an SDK instance. The factory initializes the event system, storage, GUID, API URL resolution, and an optional client for managing attributes.
+
+## Options
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `pkey` | `string` | — | **Required.** Your public key (must start with `pk_`). |
+| `appName` | `string` | `'xaiku'` | Application name for identification. |
+| `version` | `string` | `'N/A'` | Application version string. |
+| `store` | `object` | `{ name: 'memory', custom: null }` | Storage configuration. See [Storage](#storage). |
+| `experimentIds` | `string \| string[]` | `[]` | Experiment IDs to fetch on initialization. |
+| `skipClient` | `boolean` | `false` | Skip client creation when `true`. |
+| `onReport` | `function \| null` | `null` | Callback invoked with the event buffer before flushing. |
+| `framework` | `string` | — | Framework identifier (set by higher-level SDKs). |
+| `frameworkVersion` | `string` | — | Framework version (set by higher-level SDKs). |
+| `userId` | `string` | `''` | User identifier passed through to client attributes. |
+| `orgId` | `string` | `''` | Organization identifier passed through to client attributes. |
+| `guid` | `string` | — | Explicit GUID. When omitted, one is generated or retrieved from storage. |
+| `dev` | `boolean` | — | When `true`, uses the local development API URL. |
+| `proxyApiUrl` | `string` | — | Custom API URL. Overridden by `dev`. |
+| `searchParams` | `string[]` | — | URL search parameter names to capture with metrics. |
+
+## Instance Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `options` | `object` | Merged options object. |
+| `appName` | `string` | Application name. |
+| `version` | `string` | Application version. |
+| `pkey` | `string` | Public key. |
+| `experimentIds` | `string[]` | Normalized array of experiment IDs. |
+| `storage` | `object` | Resolved storage adapter (see [Storage](#storage)). |
+| `guid` | `string` | Unique visitor identifier (UUID v4 format). |
+| `apiUrl` | `string` | Resolved API base URL. |
+| `token` | `string` | Token extracted from the public key. |
+| `client` | `object \| undefined` | Client instance (omitted when `skipClient` is `true`). |
+
+## Event System
+
+Every SDK instance exposes an event emitter for inter-module communication.
+
+### `on(eventName, handler)`
+
+Subscribe to an event. Returns an unsubscribe function that itself has a chainable `.on()` method, allowing multiple subscriptions to be torn down together.
+
+```js
+const off = sdk.on('experiments:fetched', (experiments) => {
+  console.log(experiments);
+});
+
+const offAll = sdk.on('experiments:fetched', handlerA)
+  .on('variants:select', handlerB);
+
+offAll();
+```
+
+### `once(eventName, handler)`
+
+Subscribe to an event and automatically unsubscribe after the first invocation.
+
+```js
+sdk.once('experiments:fetched', (experiments) => {
+  console.log('Fetched once:', experiments);
+});
+```
+
+### `off(eventName, handler)`
+
+Remove a specific handler from an event.
+
+```js
+sdk.off('experiments:fetched', handler);
+```
+
+### `trigger(eventName, ...args)`
+
+Emit an event, calling all registered handlers with the provided arguments.
+
+```js
+sdk.trigger('custom:event', { key: 'value' });
+```
+
+### `offAll()`
+
+Remove all event listeners.
+
+## Client API
+
+The `client` manages session attributes that are attached to every reported metric. It is created automatically unless `skipClient` is `true`.
+
+### `client.getAttribute(key)`
+
+Returns the value of a single attribute.
+
+```js
+sdk.client.getAttribute('sessionId');
+```
+
+### `client.getAttributes()`
+
+Returns all current attributes as an object.
+
+```js
+const attrs = sdk.client.getAttributes();
+```
+
+### `client.setAttribute(key, value)`
+
+Set an attribute. `value` can be a direct value or an updater function receiving the current value.
+
+```js
+sdk.client.setAttribute('userId', 'user_123');
+
+sdk.client.setAttribute('counter', (prev) => prev + 1);
+```
+
+### `client.setAttributes(values)`
+
+Set multiple attributes at once.
+
+```js
+sdk.client.setAttributes({
+  userId: 'user_123',
+  orgId: 'org_456',
+});
+```
+
+### Default Client Attributes
+
+| Attribute | Source |
+|---|---|
+| `framework` | `options.framework` |
+| `frameworkVersion` | `options.frameworkVersion` |
+| `sessionId` | `options.guid` or `sdk.guid` |
+| `userId` | `options.userId` |
+| `orgId` | `options.orgId` |
+
+## Function Proxy
+
+The instance includes proxy utilities from `makeFnProxy`, exposed as:
+
+| Method | Description |
+|---|---|
+| `canProxyFn(fn)` | Check if a function can be proxied. |
+| `proxy(obj, fnNames, callback, context)` | Proxy one or more methods on an object. |
+| `proxyFn(name, fn, callback, context, obj)` | Proxy a single function. |
+| `xaikuFnSymbol` | Symbol used to mark proxied functions. |
+| `proxyStates` | Object with `start`, `end`, `error` state strings. |
+
+## Storage
+
+Storage is resolved in the following order:
+
+1. If `store.custom` is provided and valid, it is used directly.
+2. The named store from `store.name` is created (`'cookie'`, `'localStorage'`, `'sessionStorage'`, or `'memory'`).
+3. If the resolved store is not supported in the current environment, falls back to `memory`.
+
+A valid store must implement `get(key)`, `set(key, value)`, and `delete(key)`.
+
+## destroy()
+
+Tears down the SDK instance and cleans up the client.
+
+```js
+sdk.destroy();
+```

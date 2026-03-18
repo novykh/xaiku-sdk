@@ -15,7 +15,7 @@ describe('init', () => {
 
     expect(sdk.appName).toBe(defaultOptions.appName)
     expect(sdk.version).toBe(defaultOptions.version)
-    expect(sdk.projectIds).toEqual([])
+    expect(sdk.experimentIds).toEqual([])
     expect(sdk.options).toEqual({ ...defaultOptions, pkey: 'pk_123' })
     expect(sdk.on).toBeDefined()
     expect(sdk.trigger).toBeDefined()
@@ -37,14 +37,14 @@ describe('init', () => {
       pkey: 'pk_1234',
       appName: 'foo',
       version: 'bar',
-      projectIds: [1, 2, 3],
+      experimentIds: [1, 2, 3],
       store: { custom: { get: 1, set: 2, delete: 3 } },
       dev: true,
     })
 
     expect(sdk.appName).toBe('foo')
     expect(sdk.version).toBe('bar')
-    expect(sdk.projectIds).toEqual([1, 2, 3])
+    expect(sdk.experimentIds).toEqual([1, 2, 3])
     expect(sdk.storage.get).not.toBe(1)
     expect(sdk.storage.get).toBeDefined()
     expect(sdk.storage.set).not.toBe(2)
@@ -60,12 +60,12 @@ describe('init', () => {
 
     sdk = init({
       pkey: 'pk_1234',
-      projectIds: 1,
+      experimentIds: 1,
       store: { name: 'sessionStorage' },
       proxyApiUrl: 'http://localhost:3001/api/v1/',
     })
 
-    expect(sdk.projectIds).toEqual([1])
+    expect(sdk.experimentIds).toEqual([1])
 
     // No DOM
     expect(sdk.storage.name).toBe(storeNames.memory)
