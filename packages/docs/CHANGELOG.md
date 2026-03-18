@@ -1,4 +1,4 @@
-# @xaiku/nextjs
+# @xaiku/docs
 
 ## 1.0.0
 
@@ -32,81 +32,3 @@
   2. Update event listeners: `sdk.on('projects:fetched', ...)` → `sdk.on('experiments:fetched', ...)`
   3. Update HTML attribute selectors: `[data-xaiku-projectid]` → `[data-xaiku-experimentid]`
   4. Clear local storage key `__xaiku__projects__` (now `__xaiku__experiments__`)
-
-### Patch Changes
-
-- Updated dependencies [66e325f]
-  - @xaiku/react@1.0.0
-  - @xaiku/node@1.0.0
-
-## 0.0.7
-
-### Patch Changes
-
-- fcb869b: Upgrade npm packages
-- Updated dependencies [fcb869b]
-  - @xaiku/react@0.0.7
-  - @xaiku/node@0.0.7
-
-## 0.0.6
-
-### Patch Changes
-
-- e96e6c1: Fix lint issues.
-- Updated dependencies [e96e6c1]
-  - @xaiku/react@0.0.6
-  - @xaiku/node@0.0.6
-
-## 0.0.5
-
-### Patch Changes
-
-- af7afb0: Upgrade packages.
-- 2c9e835: Documentation.
-- dce1926: Minor fix.
-- Updated dependencies [af7afb0]
-- Updated dependencies [2c9e835]
-  - @xaiku/react@0.0.5
-  - @xaiku/node@0.0.5
-
-## 0.0.4
-
-### Patch Changes
-
-- 85897eb: Sending events.
-- a04cbc5: Cleanup.
-- Updated dependencies [85897eb]
-- Updated dependencies [a04cbc5]
-  - @xaiku/node@0.0.4
-  - @xaiku/react@0.0.4
-
-## 0.0.3
-
-### Patch Changes
-
-- eaa7570: Fix: DynamicServerError.
-- 008979d: Rollback: Try fixing DynamicServerError, but still including try-catch on sdk specific functions.
-- defe646: Analytics hooks.
-- Updated dependencies [defe646]
-  - @xaiku/react@0.0.3
-  - @xaiku/node@0.0.3
-
-## 0.0.2
-
-### Patch Changes
-
-- 561c3fb: Add tests and fix text component!
-- d0755bd: Introduced next js components.
-- Updated dependencies [561c3fb]
-- Updated dependencies [d0755bd]
-  - @xaiku/node@0.0.2
-  - @xaiku/react@0.0.2
-
-## 0.0.1
-
-### Patch Changes
-
-- e7687ed: First release.
-- Updated dependencies [e7687ed]
-  - @xaiku/node@0.0.1
-  - @xaiku/react@0.0.1
