@@ -14,7 +14,15 @@ export default async (request, options = {}) => {
     console.error('Xaiku middleware error:', e)
   }
 
-  const response = NextResponse.next()
+  const testMode = cookieStore.get('xaiku_test')?.value === 'true'
+  const requestHeaders = new Headers(request.headers)
+  if (testMode) {
+    requestHeaders.set('x-xaiku-test', 'true')
+  }
+
+  const response = NextResponse.next({
+    request: { headers: requestHeaders },
+  })
 
   cookieStore.set(guidStorageKey, guid, {
     path: '/',

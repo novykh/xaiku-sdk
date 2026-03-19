@@ -1,7 +1,7 @@
 'use server'
 
 import React from 'react'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { XaikuProvider as ClientProvider } from '@xaiku/react'
 import { guidStorageKey } from '@xaiku/shared'
 import makeSDK from './makeSDK'
@@ -14,6 +14,8 @@ const Provider = async ({
   ...rest
 }) => {
   const cookieStore = await cookies()
+  const headerStore = await headers()
+  const testMode = headerStore.get('x-xaiku-test') === 'true'
 
   let experiments
   try {
@@ -24,6 +26,7 @@ const Provider = async ({
         pkey,
         userId,
         guid: cookieStore.get(guidStorageKey)?.value || userId,
+        testMode,
       }))
 
     experiments = await sdk.getExperiments()
@@ -32,7 +35,13 @@ const Provider = async ({
   }
 
   return (
-    <ClientProvider {...rest} userId={userId} pkey={pkey} guid={sdk?.guid} experiments={experiments}>
+    <ClientProvider
+      {...rest}
+      userId={userId}
+      pkey={pkey}
+      guid={sdk?.guid}
+      experiments={experiments}
+    >
       {children}
     </ClientProvider>
   )

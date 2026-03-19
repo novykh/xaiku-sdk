@@ -1,6 +1,5 @@
 import request from '~/request'
 import ensureOneSlash from '~/ensureOneSlash'
-import isTestMode from '~/isTestMode'
 import makeEvents from './events'
 
 export default sdk => {
@@ -75,7 +74,7 @@ export default sdk => {
         }, {})),
     }
 
-    addMetric({ ...baseMetric, ...metric, eventName, ...(isTestMode() && { test: true }) })
+    addMetric({ ...baseMetric, ...metric, eventName, ...(sdk.options?.testMode && { test: true }) })
   })
 
   const destroy = () => {

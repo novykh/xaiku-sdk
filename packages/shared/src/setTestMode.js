@@ -8,7 +8,7 @@ const getExpiresUtcString = days => {
 
 const getDomain = () => window.location.hostname.split('.').slice(-2).join('.')
 
-export const buildTestModeCookie = (enabled) => {
+export const buildTestModeCookie = enabled => {
   if (enabled) {
     return `${testModeStorageKey}=true; path=/; domain=.${getDomain()}; expires=${getExpiresUtcString(7)}; secure; SameSite=Lax`
   }

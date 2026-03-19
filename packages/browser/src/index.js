@@ -1,5 +1,11 @@
 import makeCoreSdk from '@xaiku/core'
-import { makeTrack, makeExperiments, makePerformanceObserver, isBrowser } from '@xaiku/shared'
+import {
+  makeTrack,
+  makeExperiments,
+  makePerformanceObserver,
+  isBrowser,
+  syncTestModeCookie,
+} from '@xaiku/shared'
 import makeClient from './client'
 
 const defaultOptions = {
@@ -19,6 +25,9 @@ export default (options = {}) => {
       `@xaiku ${instance.options.framework} runs only on browsers and expects document to exist.`
     )
   }
+
+  syncTestModeCookie()
+  instance.options.testMode = localStorage.getItem('xaiku_test') === 'true'
 
   instance.pos = makePerformanceObserver(instance.trigger)
   instance.pos.connect()
