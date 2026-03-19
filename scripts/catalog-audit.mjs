@@ -11,7 +11,17 @@ const packageJsonFiles = fs
 
 const manifests = ['package.json', ...packageJsonFiles]
 const sections = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
-const skipPrefixes = ['workspace:', 'catalog:', 'file:', 'link:', 'git+', 'http://', 'https://', 'github:', 'npm:']
+const skipPrefixes = [
+  'workspace:',
+  'catalog:',
+  'file:',
+  'link:',
+  'git+',
+  'http://',
+  'https://',
+  'github:',
+  'npm:',
+]
 
 const workspaceCatalogKeys = new Set()
 const repeated = new Map()
@@ -102,7 +112,9 @@ if (repeatedCandidates.length === 0) {
   printSection('Repeated direct-version dependencies')
   for (const candidate of repeatedCandidates) {
     const status = candidate.inCatalog ? 'already in catalog' : 'candidate for catalog'
-    console.log(`${candidate.name}  refs=${candidate.refsCount}  versions=[${candidate.uniqueVersions.join(', ')}]  ${status}`)
+    console.log(
+      `${candidate.name}  refs=${candidate.refsCount}  versions=[${candidate.uniqueVersions.join(', ')}]  ${status}`
+    )
   }
 }
 

@@ -1,6 +1,5 @@
 import request from '~/request'
 import ensureOneSlash from '~/ensureOneSlash'
-import isTestMode from '~/isTestMode'
 
 export default async (sdk, ids) => {
   try {
@@ -11,7 +10,7 @@ export default async (sdk, ids) => {
       'X-experiment-ids': (ids ?? sdk.experimentIds).join(','),
     }
 
-    if (isTestMode()) {
+    if (sdk.options?.testMode) {
       headers['X-xaiku-test'] = 'true'
     }
 

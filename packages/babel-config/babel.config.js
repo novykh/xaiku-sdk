@@ -21,15 +21,15 @@ module.exports = api => {
     plugins: [
       !isTest &&
         useModuleResolver && [
-        moduleResolver,
-        {
-          alias: {
-            '~': './src',
-            react: 'react',
-            'react-dom': 'react-dom',
+          moduleResolver,
+          {
+            alias: {
+              '~': './src',
+              react: 'react',
+              'react-dom': 'react-dom',
+            },
           },
-        },
-      ],
+        ],
     ].filter(Boolean),
     ignore: [!isTest && '**/*.test.js'].filter(Boolean),
   }

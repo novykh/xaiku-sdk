@@ -59,7 +59,7 @@ function FrameworkGrid() {
     <section className={styles.frameworks}>
       <h2>Choose your framework</h2>
       <div className={styles.grid}>
-        {frameworks.map((fw) => (
+        {frameworks.map(fw => (
           <FrameworkCard key={fw.title} {...fw} />
         ))}
       </div>
