@@ -1,5 +1,16 @@
 # @xaiku/nextjs
 
+## 1.1.0
+
+### Minor Changes
+
+- 48d0258: Add server-side test mode support. Test mode now uses `sdk.options.testMode` as the single source of truth across browser and server environments. The browser SDK syncs localStorage to a cookie, Next.js middleware forwards it via request header, and the server provider passes it to the SDK. Added `setTestMode()` and `syncTestModeCookie()` helpers. Deprecated `isTestMode()`.
+
+### Patch Changes
+
+- @xaiku/node@1.0.1
+- @xaiku/react@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
