@@ -25,7 +25,11 @@ export default (options = {}) => {
     ...makeFnProxy(listeners.trigger),
     ...listeners,
     pkey,
-    experimentIds: experimentIds ? (Array.isArray(experimentIds) ? experimentIds : [experimentIds]) : [],
+    experimentIds: experimentIds
+      ? Array.isArray(experimentIds)
+        ? experimentIds
+        : [experimentIds]
+      : [],
   }
 
   instance.storage = makeStorage(instance)

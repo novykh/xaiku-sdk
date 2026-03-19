@@ -62,5 +62,9 @@ export const Text = ({ id, experimentId, children, fallback, control }) => {
       text
     )
 
-  return createElement('span', { 'data-xaiku-experimentid': experimentId, 'data-xaiku-partid': id }, text)
+  return createElement(
+    'span',
+    { 'data-xaiku-experimentid': experimentId, 'data-xaiku-partid': id },
+    text
+  )
 }
