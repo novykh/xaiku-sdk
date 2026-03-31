@@ -1,13 +1,13 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import Provider, { useSDK, XaikuContext } from './provider'
-import makeSDK from '@xaiku/browser'
+import Provider, { useSdk, XaikuContext } from './provider'
+import makeSdk from '@xaiku/browser'
 
-// Mock the makeSDK function
+// Mock the makeSdk function
 jest.mock('@xaiku/browser', () => jest.fn(() => ({ sdk: 'mockedSDK' })))
 
 const TestComponent = () => {
-  const sdk = useSDK()
+  const sdk = useSdk()
   return <div>{sdk ? 'SDK Loaded' : 'SDK Not Loaded'}</div>
 }
 
@@ -37,7 +37,7 @@ describe('Provider', () => {
         <TestComponent />
       </Provider>
     )
-    expect(makeSDK).toHaveBeenCalledWith({
+    expect(makeSdk).toHaveBeenCalledWith({
       pkey: 'test-pkey',
       framework: 'react',
       frameworkVersion: React.version,

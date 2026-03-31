@@ -35,9 +35,9 @@ yarn add @xaiku/node
 ## Usage
 
 ```js
-import makeSDK from '@xaiku/node';
+import makeSdk from '@xaiku/node';
 
-const sdk = await makeSDK({
+const sdk = await makeSdk({
   pkey: 'pk_your_public_key',
   guid: 'user-session-id',
 });
@@ -49,7 +49,7 @@ const variant = sdk.getVariant('exp_1');
 ## Factory Function
 
 ```ts
-makeSDK(options?: NodeSDKOptions): Promise<SDKInstance>
+makeSdk(options?: NodeSDKOptions): Promise<SDKInstance>
 ```
 
 Creates a server-side SDK instance. The factory is **async** because it pre-fetches experiments during initialization (unless `skipExperiments` is `true`).
@@ -70,7 +70,7 @@ All other options are inherited from [@xaiku/core](/docs/sdk/core#options).
 
 | Behavior | Browser | Node |
 |---|---|---|
-| **Factory** | Synchronous | Async (`await makeSDK(...)`) |
+| **Factory** | Synchronous | Async (`await makeSdk(...)`) |
 | **Environment** | Browser only | Server only |
 | **Storage** | `localStorage` by default | `memory` by default |
 | **Experiments** | Fetched on demand | Pre-fetched during initialization |
@@ -109,12 +109,12 @@ The node SDK instance includes everything from the [core instance](/docs/sdk/cor
 
 ```js
 import express from 'express';
-import makeSDK from '@xaiku/node';
+import makeSdk from '@xaiku/node';
 
 const app = express();
 
 app.get('/api/variant', async (req, res) => {
-  const sdk = await makeSDK({
+  const sdk = await makeSdk({
     pkey: process.env.XAIKU_PUBLIC_KEY,
     guid: req.cookies['__xaiku__guid__'] || req.sessionID,
   });

@@ -1,11 +1,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Text, useText } from './text'
-import { useSDK } from './provider'
+import { useSdk } from './provider'
 import { useExperimentId } from './experiment'
 
 jest.mock('./provider', () => ({
-  useSDK: jest.fn(),
+  useSdk: jest.fn(),
 }))
 
 jest.mock('./experiment', () => ({
@@ -24,7 +24,7 @@ const TestComponent = ({ experimentId, id, fallback }) => {
 
 describe('useText', () => {
   it('returns fallback when sdk is not available', () => {
-    useSDK.mockReturnValue(null)
+    useSdk.mockReturnValue(null)
     render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Fallback Text')).toBeInTheDocument()
   })
@@ -34,7 +34,7 @@ describe('useText', () => {
       getVariantText: jest.fn().mockReturnValue(null),
       on: jest.fn(),
     }
-    useSDK.mockReturnValue(mockSdk)
+    useSdk.mockReturnValue(mockSdk)
     render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Fallback Text')).toBeInTheDocument()
   })
@@ -44,7 +44,7 @@ describe('useText', () => {
       getVariantText: jest.fn().mockReturnValue('Variant Text'),
       on: jest.fn(),
     }
-    useSDK.mockReturnValue(mockSdk)
+    useSdk.mockReturnValue(mockSdk)
     render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Variant Text')).toBeInTheDocument()
   })
@@ -59,7 +59,7 @@ describe('useText', () => {
         }
       },
     }
-    useSDK.mockReturnValue(mockSdk)
+    useSdk.mockReturnValue(mockSdk)
     render(<TestComponent experimentId="1" id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Variant Text')).toBeInTheDocument()
   })
@@ -71,7 +71,7 @@ describe('Text', () => {
       getVariantText: jest.fn().mockReturnValue('Variant Text'),
       on: jest.fn(),
     }
-    useSDK.mockReturnValue(mockSdk)
+    useSdk.mockReturnValue(mockSdk)
     render(<Text id="1" fallback="Fallback Text" />)
     expect(screen.getByText('Fallback Text')).toBeInTheDocument()
   })
@@ -82,7 +82,7 @@ describe('Text', () => {
         getVariantText: jest.fn().mockReturnValue(null),
         on: jest.fn(),
       }
-      useSDK.mockReturnValue(mockSdk)
+      useSdk.mockReturnValue(mockSdk)
       useExperimentId.mockReturnValue('1')
     })
 
@@ -143,7 +143,7 @@ describe('Text', () => {
         getVariantText: jest.fn().mockReturnValue('Variant Text'),
         on: jest.fn(),
       }
-      useSDK.mockReturnValue(mockSdk)
+      useSdk.mockReturnValue(mockSdk)
       useExperimentId.mockReturnValue('1')
     })
 

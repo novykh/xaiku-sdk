@@ -33,7 +33,7 @@ yarn add @xaiku/nextjs
 ## Client Entry Point
 
 ```js
-import makeSDK, { XaikuProvider, Text, Experiment, ... } from '@xaiku/nextjs';
+import makeSdk, { XaikuProvider, Text, Experiment, ... } from '@xaiku/nextjs';
 ```
 
 The default import (`@xaiku/nextjs`) is a `'use client'` module. It re-exports everything from [@xaiku/react](/docs/sdk/react) and provides a Next.js-specific factory function.
@@ -41,15 +41,15 @@ The default import (`@xaiku/nextjs`) is a `'use client'` module. It re-exports e
 ### Factory Function
 
 ```ts
-makeSDK(options?: SDKOptions): BrowserSDKInstance
+makeSdk(options?: SDKOptions): BrowserSDKInstance
 ```
 
 Creates a browser SDK instance with `framework` set to `'nextjs'` and `frameworkVersion` set to the installed Next.js version. Accepts the same options as [@xaiku/browser](/docs/sdk/browser#default-options).
 
 ```js
-import makeSDK from '@xaiku/nextjs';
+import makeSdk from '@xaiku/nextjs';
 
-const sdk = makeSDK({ pkey: 'pk_your_public_key' });
+const sdk = makeSdk({ pkey: 'pk_your_public_key' });
 ```
 
 ### Re-exported Components and Hooks
@@ -73,7 +73,7 @@ See the [@xaiku/react reference](/docs/sdk/react) for full documentation of each
 ## Server Entry Point
 
 ```js
-import makeSDK, { XaikuProvider, xaikuMiddleware } from '@xaiku/nextjs/server';
+import makeSdk, { XaikuProvider, xaikuMiddleware } from '@xaiku/nextjs/server';
 ```
 
 The server entry point (`@xaiku/nextjs/server`) provides utilities for React Server Components and Next.js middleware.
@@ -107,7 +107,7 @@ export default function RootLayout({ children }) {
 | `userId` | `string` | No | — | User identifier, also used as GUID fallback. |
 | `sdk` | `SDKInstance` | No | — | Pre-initialized server SDK instance. |
 | `children` | `ReactNode` | Yes | — | Child components. |
-| `...rest` | `object` | No | — | Additional options forwarded to `makeSDK()` and the client provider. |
+| `...rest` | `object` | No | — | Additional options forwarded to `makeSdk()` and the client provider. |
 
 **Behavior:**
 
@@ -155,21 +155,21 @@ xaikuMiddleware(request: NextRequest, options?: object): Promise<NextResponse>
 
 The middleware uses `process.env.NEXT_PUBLIC_XAIKU_API_KEY` as the default public key. Override it by passing `pkey` in the options.
 
-### `makeSDK` (Server)
+### `makeSdk` (Server)
 
 An async factory function for creating a server-side SDK instance. Built on [@xaiku/node](/docs/sdk/node) with Next.js-specific defaults.
 
 ```js
-import makeSDK from '@xaiku/nextjs/server';
+import makeSdk from '@xaiku/nextjs/server';
 
-const sdk = await makeSDK({ pkey: 'pk_your_public_key', guid: 'user-guid' });
+const sdk = await makeSdk({ pkey: 'pk_your_public_key', guid: 'user-guid' });
 const experiments = await sdk.getExperiments();
 ```
 
 **Signature:**
 
 ```ts
-makeSDK(options?: object): Promise<SDKInstance>
+makeSdk(options?: object): Promise<SDKInstance>
 ```
 
 **Default behavior:**

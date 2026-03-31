@@ -35,9 +35,9 @@ yarn add @xaiku/browser
 ## Usage
 
 ```js
-import makeSDK from '@xaiku/browser';
+import makeSdk from '@xaiku/browser';
 
-const sdk = makeSDK({
+const sdk = makeSdk({
   pkey: 'pk_your_public_key',
 });
 
@@ -51,7 +51,7 @@ sdk.track.events.trackConversion({ experimentId: 'exp_1', variantId: 'var_a', va
 ## Factory Function
 
 ```ts
-makeSDK(options?: BrowserSDKOptions): BrowserSDKInstance
+makeSdk(options?: BrowserSDKOptions): BrowserSDKInstance
 ```
 
 Creates a browser SDK instance. Throws an error if called outside a browser environment.

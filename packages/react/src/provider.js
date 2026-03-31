@@ -1,30 +1,30 @@
 'use client'
 
 import React, { createContext, version, useContext, useEffect, useState } from 'react'
-import makeSDK from '@xaiku/browser'
+import makeSdk from '@xaiku/browser'
 
 export const XaikuContext = createContext(null)
 
-export const useSDK = () => useContext(XaikuContext)
+export const useSdk = () => useContext(XaikuContext)
 
-const Provider = ({ children, pkey, sdk, ...rest }) => {
-  const [memoizedSDK, setMemoizedSDK] = useState(sdk)
+const Provider = ({ children, pkey, sdk: sdkProp, ...rest }) => {
+  const [sdk, setSdk] = useState(sdkProp || null)
 
   useEffect(() => {
-    if (memoizedSDK) return
+    if (sdkProp) return
 
-    setMemoizedSDK(
-      sdk ||
-        makeSDK({
-          pkey,
-          framework: 'react',
-          frameworkVersion: version,
-          ...rest,
-        })
-    )
+    const instance = makeSdk({
+      pkey,
+      framework: 'react',
+      frameworkVersion: version,
+      ...rest,
+    })
+    setSdk(instance)
+
+    return () => instance?.destroy?.()
   }, [])
 
-  return <XaikuContext.Provider value={memoizedSDK}>{children}</XaikuContext.Provider>
+  return <XaikuContext.Provider value={sdk}>{children}</XaikuContext.Provider>
 }
 
 export default Provider

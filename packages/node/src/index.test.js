@@ -1,4 +1,4 @@
-import makeSDK from '.'
+import makeSdk from '.'
 import makeCoreSdk from '@xaiku/core'
 import { makeExperiments, isBrowser } from '@xaiku/shared'
 import makeClient from './client'
@@ -22,7 +22,7 @@ describe('SDK factory', () => {
       destroy: jest.fn(),
     })
 
-    await expect(makeSDK()).rejects.toThrow('@xaiku node runs only on Node.js/server environments.')
+    await expect(makeSdk()).rejects.toThrow('@xaiku node runs only on Node.js/server environments.')
   })
 
   test('initializes sdk and sets client when skipClient is false (or not set)', async () => {
@@ -37,7 +37,7 @@ describe('SDK factory', () => {
     makeClient.mockReturnValue(dummyClient)
     makeExperiments.mockResolvedValue()
 
-    const instance = await makeSDK({ customOption: 'foo' })
+    const instance = await makeSdk({ customOption: 'foo' })
 
     expect(instance).toBe(dummySdk)
     expect(makeClient).toHaveBeenCalledWith(dummySdk)
@@ -55,7 +55,7 @@ describe('SDK factory', () => {
     makeCoreSdk.mockReturnValue(dummySdk)
     makeExperiments.mockResolvedValue()
 
-    await makeSDK()
+    await makeSdk()
 
     expect(makeClient).not.toHaveBeenCalled()
     expect(dummySdk.client).toBeUndefined()
@@ -73,7 +73,7 @@ describe('SDK factory', () => {
     makeClient.mockReturnValue({ destroy: clientDestroy })
     makeExperiments.mockResolvedValue()
 
-    const instance = await makeSDK()
+    const instance = await makeSdk()
 
     instance.destroy()
 

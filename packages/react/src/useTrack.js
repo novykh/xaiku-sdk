@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from 'react'
-import { useSDK } from './provider'
+import { useSdk } from './provider'
 
 const trackedViews = new Set()
 
 export const useTrackView = ({ experimentId, variantId, partId }) => {
-  const sdk = useSDK()
+  const sdk = useSdk()
 
   useEffect(() => {
     if (!sdk || !experimentId) return
@@ -25,7 +25,7 @@ export const useTrackView = ({ experimentId, variantId, partId }) => {
 }
 
 export const useTrackClick = ({ experimentId, variantId, partId }) => {
-  const sdk = useSDK()
+  const sdk = useSdk()
 
   return useCallback(() => {
     if (!sdk || !experimentId) return
@@ -39,7 +39,7 @@ export const useTrackClick = ({ experimentId, variantId, partId }) => {
 }
 
 export const useTrackConversion = ({ experimentId, variantId, partId, value }) => {
-  const sdk = useSDK()
+  const sdk = useSdk()
 
   return useCallback(() => {
     if (!sdk || !experimentId) return

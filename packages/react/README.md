@@ -199,7 +199,7 @@ pnpm lint
 - `Experiment` - Experiment context wrapper
 
 ### Hooks
-- `useSDK()` - Access SDK instance
+- `useSdk()` - Access SDK instance
 - `useExperimentId()` - Get current experiment context
 - `useText(experimentId, id, fallback, control)` - Get variant text
 - `useTrackView(options)` - Track impressions

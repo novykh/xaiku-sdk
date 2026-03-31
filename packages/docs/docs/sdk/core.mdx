@@ -37,9 +37,9 @@ yarn add @xaiku/core
 ## Usage
 
 ```js
-import makeSDK from '@xaiku/core';
+import makeSdk from '@xaiku/core';
 
-const sdk = makeSDK({
+const sdk = makeSdk({
   pkey: 'pk_your_public_key',
   appName: 'my-app',
   version: '1.0.0',
@@ -49,7 +49,7 @@ const sdk = makeSDK({
 ## Factory Function
 
 ```ts
-makeSDK(options?: SDKOptions): SDKInstance
+makeSdk(options?: SDKOptions): SDKInstance
 ```
 
 Creates and returns an SDK instance. The factory initializes the event system, storage, GUID, API URL resolution, and an optional client for managing attributes.

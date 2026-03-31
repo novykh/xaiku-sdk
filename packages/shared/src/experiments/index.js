@@ -24,7 +24,7 @@ const findMissingIds = (experiments, ids) =>
   ids.length === Object.keys(experiments).length ? [] : ids.filter(id => !experiments[id])
 
 export default async sdk => {
-  let localVariants = null
+  let localVariants = sdk.options.variants ?? null
 
   let storage = sdk.storage
 
@@ -41,7 +41,7 @@ export default async sdk => {
   }
 
   sdk.getExperiments = async (ids, { force } = {}) => {
-    if (!force && sdk.options.experiments) {
+    if (!force && sdk.options.experiments && Object.keys(sdk.options.experiments).length) {
       if (!storage.get(experimentsKey)) sdk.setExperiments(sdk.options.experiments)
 
       return sdk.options.experiments
@@ -49,7 +49,12 @@ export default async sdk => {
 
     ids = ids ? (Array.isArray(ids) ? ids : [ids]) : []
 
-    let experiments = force ? null : storage.get(experimentsKey)
+    const storageExperiments = storage.get(experimentsKey)
+    let experiments = force
+      ? null
+      : !storageExperiments || !Object.keys(storageExperiments).length
+        ? null
+        : storageExperiments
 
     if (experiments) {
       if (!force && experiments) return experiments
@@ -72,7 +77,11 @@ export default async sdk => {
   sdk.getVariants = () => {
     if (localVariants) return localVariants
 
-    return storage.get(variantsKey)
+    const storageVariants = storage.get(variantsKey)
+
+    if (storageVariants && Object.keys(storageVariants).length) return storageVariants
+
+    return null
   }
 
   sdk.setVariants = variants => {
@@ -136,11 +145,5 @@ export default async sdk => {
     return variant.parts[partId]
   }
 
-  const initializeForUser = async ({ force = false } = {}) => {
-    const experiments = await sdk.getExperiments(sdk.experimentIds, { force })
-
-    return sdk.selectVariants(experiments, { force })
-  }
-
-  if (!sdk.options.skipExperiments) await initializeForUser()
+  if (!sdk.options.skipExperiments) await sdk.getExperiments(sdk.experimentIds)
 }

@@ -3,7 +3,7 @@ import { SdkInstance } from "@xaiku/shared"
 
 export const XaikuContext: Context<string | null>;
 
-export const useSDK: () => string | null;
+export const useSdk: () => string | null;
 
 export interface ProviderProps {
   id?: string;

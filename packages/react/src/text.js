@@ -5,10 +5,10 @@ import {
   cloneElement,
   createElement,
   useCallback,
-  useLayoutEffect,
+  useEffect,
   useState,
 } from 'react'
-import { useSDK } from './provider'
+import { useSdk } from './provider'
 import { useExperimentId } from './experiment'
 import { useTrackView } from './useTrack'
 
@@ -19,9 +19,9 @@ const useForceUpdate = () => {
 
 export const useText = (experimentId, id, fallback, control) => {
   const rerender = useForceUpdate()
-  const sdk = useSDK()
+  const sdk = useSdk()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!sdk) return
 
     return sdk.on('variants:select', rerender)

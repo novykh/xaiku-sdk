@@ -1,6 +1,6 @@
 'use client'
 
-import makeSDK from '@xaiku/react'
+import makeSdk from '@xaiku/react'
 import nextjsLib from 'next/package.json'
 
 export {
@@ -16,7 +16,7 @@ export {
 } from '@xaiku/react'
 
 export default (options = {}) =>
-  makeSDK({
+  makeSdk({
     ...options,
     framework: 'nextjs',
     frameworkVersion: nextjsLib?.version || 'N/A',

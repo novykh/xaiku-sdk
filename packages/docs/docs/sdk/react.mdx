@@ -35,7 +35,7 @@ yarn add @xaiku/react
 ## Usage
 
 ```jsx
-import makeSDK, { XaikuProvider, Experiment, Text } from '@xaiku/react';
+import makeSdk, { XaikuProvider, Experiment, Text } from '@xaiku/react';
 
 function App() {
   return (
@@ -51,15 +51,15 @@ function App() {
 ## Factory Function
 
 ```ts
-makeSDK(options?: SDKOptions): BrowserSDKInstance
+makeSdk(options?: SDKOptions): BrowserSDKInstance
 ```
 
 Creates a browser SDK instance with `framework` set to `'react'` and `frameworkVersion` set to the installed React version. Accepts the same options as [@xaiku/browser](/docs/sdk/browser#default-options).
 
 ```js
-import makeSDK from '@xaiku/react';
+import makeSdk from '@xaiku/react';
 
-const sdk = makeSDK({ pkey: 'pk_your_public_key' });
+const sdk = makeSdk({ pkey: 'pk_your_public_key' });
 ```
 
 ## Components
@@ -81,7 +81,7 @@ The root provider that initializes the SDK and makes it available to all child c
 | `pkey` | `string` | Yes (unless `sdk` is provided) | Your public key. |
 | `sdk` | `SDKInstance` | No | Pre-initialized SDK instance. When provided, the provider uses it instead of creating a new one. |
 | `children` | `ReactNode` | Yes | Child components. |
-| `...rest` | `object` | No | Additional options passed to `makeSDK()` (e.g., `userId`, `orgId`, `experimentIds`). |
+| `...rest` | `object` | No | Additional options passed to `makeSdk()` (e.g., `userId`, `orgId`, `experimentIds`). |
 
 The SDK is initialized inside a `useEffect` to ensure it only runs in the browser. If an `sdk` prop is provided, it is used directly without creating a new instance.
 

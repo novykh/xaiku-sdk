@@ -26,7 +26,7 @@ Groups multiple events for efficient transmission:
 import { useBatchedTracking } from '@xaiku/react'
 
 function HighVolumeComponent() {
-  const sdk = useSDK()
+  const sdk = useSdk()
   const addToBatch = useBatchedTracking(
     sdk, 
     10,    // Batch size
