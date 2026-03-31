@@ -1,5 +1,15 @@
 # @xaiku/react
 
+## 1.1.0
+
+### Minor Changes
+
+- 00bc6c3: Rename `useSDK` export to `useSdk` for consistent naming convention. Add SDK instance cleanup on provider unmount. Switch from `useLayoutEffect` to `useEffect` in `useText` for SSR compatibility. Provider now accepts `variants` prop to support server-side pre-fetched variants.
+
+### Patch Changes
+
+- @xaiku/browser@1.1.1
+
 ## 1.0.1
 
 ### Patch Changes

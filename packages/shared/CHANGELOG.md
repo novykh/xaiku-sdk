@@ -1,5 +1,11 @@
 # @xaiku/shared
 
+## 1.1.1
+
+### Patch Changes
+
+- 00bc6c3: Fix variant/experiment handling edge cases: guard against empty object falsy bypasses in `getExperiments` and `getVariants`, accept pre-fetched variants via `sdk.options.variants`, simplify experiments initialization.
+
 ## 1.1.0
 
 ### Minor Changes

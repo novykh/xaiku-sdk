@@ -1,5 +1,13 @@
 # @xaiku/node
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [00bc6c3]
+  - @xaiku/shared@1.1.1
+  - @xaiku/core@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

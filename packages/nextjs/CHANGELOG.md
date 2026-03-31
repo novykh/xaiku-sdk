@@ -1,5 +1,17 @@
 # @xaiku/nextjs
 
+## 1.2.0
+
+### Minor Changes
+
+- 00bc6c3: `makeSdk` (server) now auto-detects `testMode` from the `xaiku_test` cookie — no need to pass it explicitly. Middleware no longer relays the `x-xaiku-test` header. Server provider passes pre-fetched `variants` to the client provider to support SSR hydration.
+
+### Patch Changes
+
+- Updated dependencies [00bc6c3]
+  - @xaiku/react@1.1.0
+  - @xaiku/node@1.0.2
+
 ## 1.1.0
 
 ### Minor Changes
