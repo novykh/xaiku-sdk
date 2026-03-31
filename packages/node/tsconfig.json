@@ -3,18 +3,16 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
+    "rootDir": "./src",
     "allowJs": true,
-    "baseUrl": "./src",
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/*"]
+    },
     "strict": false,
     "lib": ["esnext"],
     "skipLibCheck": true
   },
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "~/*": ["src/*"],
-    }
-  },
-  "include": ["src/**/*.js", "**/*.d.ts"],
+  "include": ["src/**/*.js", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.js"]
 }
