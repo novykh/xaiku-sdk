@@ -5,9 +5,8 @@
     "outDir": "dist",
     "rootDir": "./src",
     "allowJs": true,
-    "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"]
     },
     "strict": false,
     "lib": ["esnext"],
