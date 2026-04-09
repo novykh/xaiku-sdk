@@ -27,6 +27,9 @@ storybook-static/
 # plans
 .agents/plans/
 
+# worktrees
+.worktrees/
+
 # docusaurus
 packages/docs/.docusaurus/
 packages/docs/build/
