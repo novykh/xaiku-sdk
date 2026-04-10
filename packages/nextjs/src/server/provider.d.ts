@@ -5,6 +5,7 @@ export interface ProviderProps {
   children: ReactNode;
   pkey?: string;
   userId?: string;
+  orgId?: string;
   sdk?: SdkInstance;
   [key: string]: any;
 }

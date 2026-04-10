@@ -50,15 +50,22 @@ NEXT_PUBLIC_XAIKU_API_KEY=pk_your_public_key
 
 ## 3. Add the middleware
 
-The middleware manages a GUID cookie for consistent variant assignment.
+The middleware manages a GUID cookie for consistent variant assignment and can forward user identity to the provider.
 
 ```js title="middleware.js"
 import { xaikuMiddleware } from '@xaiku/nextjs/server'
 
 export async function middleware(request) {
-  return xaikuMiddleware(request)
+  return xaikuMiddleware(request, {
+    auth: async (req) => {
+      const session = await getSession(req) // your auth library
+      return { userId: session?.userId, orgId: session?.orgId }
+    },
+  })
 }
 ```
+
+The `auth` callback is optional. If provided, `userId` and `orgId` are forwarded to the provider automatically — no props needed in your layout.
 
 ## 4. Add the Provider
 

@@ -122,23 +122,29 @@ process.on('SIGTERM', () => {
 
 ### Middleware
 
-The middleware reads or creates a GUID cookie and initializes the SDK to validate the key. Place it in your `middleware.js`:
+The middleware manages visitor identity (GUID cookie) and can forward authenticated user context to the provider. Place it in your `middleware.js`:
 
 ```js title="middleware.js"
 import { xaikuMiddleware } from '@xaiku/nextjs/server'
 
 export async function middleware(request) {
-  return xaikuMiddleware(request)
+  return xaikuMiddleware(request, {
+    auth: async (req) => {
+      const session = await getSession(req) // your auth library
+      return { userId: session?.userId, orgId: session?.orgId }
+    },
+  })
 }
 ```
 
 The middleware:
 
-1. Reads the `__xaiku__guid__` cookie from the request.
-2. Creates a server SDK instance with the GUID (or generates a new one).
-3. Sets the GUID cookie on the response so it persists across requests.
+1. Calls the `auth` callback (if provided) to resolve `userId` and `orgId`.
+2. Reads the `__xaiku__guid__` cookie from the request (or generates a new one).
+3. Forwards `userId` and `orgId` to the server provider via request headers.
+4. Sets the GUID cookie on the response so it persists across requests.
 
-This ensures every visitor gets a stable GUID before any page renders, which is critical for deterministic variant selection.
+This ensures every visitor gets a stable GUID and user identity before any page renders. The `auth` callback is optional — without it, the middleware only manages the GUID cookie.
 
 ### Server-side provider
 
@@ -160,9 +166,10 @@ export default async function RootLayout({ children }) {
 
 The provider:
 
-1. Reads the GUID from cookies (set by the middleware).
-2. Creates a server SDK and fetches experiments via `sdk.getExperiments()`.
-3. Passes `experiments`, `guid`, and `pkey` to the client-side `XaikuProvider` from `@xaiku/react`.
+1. Reads `userId` and `orgId` from request headers set by the middleware (falls back to props if provided directly).
+2. Reads the GUID from cookies (set by the middleware).
+3. Creates a server SDK and fetches experiments via `sdk.getExperiments()`.
+4. Passes `experiments`, `guid`, `userId`, `orgId`, and `pkey` to the client-side `XaikuProvider` from `@xaiku/react`.
 
 This eliminates the client-side fetch waterfall -- variants are available immediately on hydration.
 
@@ -171,7 +178,8 @@ This eliminates the client-side fetch waterfall -- variants are available immedi
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `pkey` | `string` | `process.env.NEXT_PUBLIC_XAIKU_API_KEY` | Public key. |
-| `userId` | `string` | -- | User ID for attribution. |
+| `userId` | `string` | -- | User ID. Automatically read from middleware when not provided. |
+| `orgId` | `string` | -- | Organization ID. Automatically read from middleware when not provided. |
 | `sdk` | `object` | -- | Pre-initialized SDK instance (advanced). |
 | `children` | `ReactNode` | -- | Your application tree. |
 

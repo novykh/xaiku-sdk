@@ -104,28 +104,35 @@ export default function RootLayout({ children }) {
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `pkey` | `string` | No | `process.env.NEXT_PUBLIC_XAIKU_API_KEY` | Public key. Defaults to the environment variable. |
-| `userId` | `string` | No | — | User identifier, also used as GUID fallback. |
+| `userId` | `string` | No | — | User identifier, also used as GUID fallback. Automatically read from middleware when not provided. |
+| `orgId` | `string` | No | — | Organization identifier. Automatically read from middleware when not provided. |
 | `sdk` | `SDKInstance` | No | — | Pre-initialized server SDK instance. |
 | `children` | `ReactNode` | Yes | — | Child components. |
 | `...rest` | `object` | No | — | Additional options forwarded to `makeSdk()` and the client provider. |
 
 **Behavior:**
 
-1. Reads the GUID from cookies (using the `__xaiku__guid__` cookie key).
-2. Creates a server SDK instance (or uses the provided `sdk` prop).
-3. Fetches experiments on the server via `sdk.getExperiments()`.
-4. Renders the client-side `XaikuProvider` with `experiments` and `guid` pre-populated, avoiding a client-side fetch.
+1. Reads `userId` and `orgId` from request headers set by the middleware (falls back to props if provided).
+2. Reads the GUID from cookies (using the `__xaiku__guid__` cookie key).
+3. Creates a server SDK instance (or uses the provided `sdk` prop).
+4. Fetches experiments on the server via `sdk.getExperiments()`.
+5. Renders the client-side `XaikuProvider` with `experiments`, `guid`, `userId`, and `orgId` pre-populated, avoiding a client-side fetch.
 
 ### `xaikuMiddleware`
 
-An async middleware function that ensures a GUID cookie is set for every request. Use it in your Next.js middleware to establish visitor identity before any page renders.
+An async middleware function that manages GUID cookies and forwards user identity to the server provider. Use it in your Next.js middleware to establish visitor and user identity before any page renders.
 
 ```js
 // middleware.js
 import { xaikuMiddleware } from '@xaiku/nextjs/server';
 
 export async function middleware(request) {
-  return await xaikuMiddleware(request);
+  return await xaikuMiddleware(request, {
+    auth: async (req) => {
+      const session = await getSession(req); // your auth library
+      return { userId: session?.userId, orgId: session?.orgId };
+    },
+  });
 }
 
 export const config = {
@@ -133,25 +140,26 @@ export const config = {
 };
 ```
 
-**Signature:**
-
-```ts
-xaikuMiddleware(request: NextRequest, options?: object): Promise<NextResponse>
-```
+By resolving `userId` and `orgId` in middleware, the server `XaikuProvider` picks them up automatically — no props needed in your layout.
 
 **Parameters:**
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `request` | `NextRequest` | Yes | The incoming Next.js request object. |
-| `options` | `object` | No | Additional SDK options (e.g., `pkey`). |
+| `options.auth` | `function` | No | Async callback that receives the request and returns `{ userId?, orgId? }`. |
+| `options.userId` | `string` | No | Static user ID (used when `auth` is not provided). |
+| `options.orgId` | `string` | No | Static organization ID (used when `auth` is not provided). |
+| `options.*` | | No | Additional SDK options (e.g., `pkey`). |
 
 **Behavior:**
 
-1. Reads the existing GUID from cookies.
-2. Creates a server SDK instance to validate or generate the GUID.
-3. Sets the GUID cookie on the response (`path: '/'`).
-4. Returns `NextResponse.next()` to continue the request.
+1. Calls the `auth` callback (if provided) to resolve `userId` and `orgId`.
+2. Reads the existing GUID from request cookies.
+3. Creates a server SDK instance to validate or generate the GUID.
+4. Forwards `userId` and `orgId` to the server provider via request headers.
+5. Sets the GUID cookie on the response (`path: '/'`).
+6. Returns `NextResponse.next()` to continue the request.
 
 The middleware uses `process.env.NEXT_PUBLIC_XAIKU_API_KEY` as the default public key. Override it by passing `pkey` in the options.
 
@@ -206,7 +214,12 @@ For the best experience with Next.js App Router:
 import { xaikuMiddleware } from '@xaiku/nextjs/server';
 
 export async function middleware(request) {
-  return await xaikuMiddleware(request);
+  return await xaikuMiddleware(request, {
+    auth: async (req) => {
+      const session = await getSession(req);
+      return { userId: session?.userId, orgId: session?.orgId };
+    },
+  });
 }
 
 // app/layout.js
