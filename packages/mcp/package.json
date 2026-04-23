@@ -1,0 +1,30 @@
+{
+  "name": "@xaiku/mcp",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novykh/xaiku-sdk.git",
+    "directory": "packages/mcp"
+  },
+  "private": false,
+  "bin": {
+    "xaiku-mcp": "./dist/bin.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "babel src -d dist --no-copy-ignored --copy-files",
+    "test": "jest",
+    "lint": "pnpm exec eslint './src/**/*.js'",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm clean && pnpm build"
+  },
+  "devDependencies": {
+    "@babel/cli": "catalog:",
+    "@xaiku/babel-config": "workspace:*",
+    "@xaiku/eslint-config": "workspace:*",
+    "babel-jest": "catalog:test",
+    "jest": "catalog:test",
+    "eslint": "catalog:lint"
+  }
+}
