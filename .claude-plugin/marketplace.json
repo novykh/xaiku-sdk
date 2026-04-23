@@ -1,0 +1,20 @@
+{
+  "name": "xaiku",
+  "description": "A/B testing and experimentation for AI agents and apps",
+  "owner": {
+    "name": "novykh",
+    "email": "ioannis.klironomos@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "xaiku",
+      "description": "A/B testing and experimentation SDK for AI agents, browser apps, and server-side code",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "novykh",
+        "email": "ioannis.klironomos@gmail.com"
+      }
+    }
+  ]
+}
