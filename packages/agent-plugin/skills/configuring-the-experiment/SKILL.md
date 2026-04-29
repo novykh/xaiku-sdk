@@ -1,6 +1,6 @@
 ---
 name: configuring-the-experiment
-description: Use before going live, when readiness is below 100%, or when the user asks about metrics / baseline / traffic / significance. Sets the four config fields and reports readiness.
+description: Use when readiness is below 100%, when going live is blocked, or when the user asks about metrics / baseline / traffic / significance. Sets the four config fields and reports readiness.
 ---
 
 # configuring-the-experiment

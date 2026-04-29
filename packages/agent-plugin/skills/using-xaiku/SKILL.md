@@ -1,6 +1,6 @@
 ---
 name: using-xaiku
-description: Use at every session start. Routes all xaiku work across connecting, org selection, voices, experiments, variants, forecast, launch, and results.
+description: Use when any session starts that may touch xaiku. Routes all xaiku work across connecting, org selection, voices, experiments, variants, forecast, launch, and results.
 ---
 
 # using-xaiku

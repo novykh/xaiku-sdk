@@ -1,6 +1,6 @@
 ---
 name: integrating-the-sdk
-description: Use on the SDK delivery path — website, app, landing page. Walks the user through installing the right xaiku SDK, wiring the provider, pulling the public key, and running a connection check before flipping live.
+description: Use when the user is on the SDK delivery path — website, app, landing page. Walks them through installing the right xaiku SDK, wiring the provider, pulling the public key, and running a connection check before flipping live.
 ---
 
 # integrating-the-sdk

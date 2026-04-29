@@ -1,6 +1,6 @@
 ---
 name: iterating-on-an-experiment
-description: Use after results are in — user wants to rerun, refine, or launch a follow-up. Turns insight into the next experiment.
+description: Use when results are in and the user wants to rerun, refine, or launch a follow-up. Turns insight into the next experiment.
 ---
 
 # iterating-on-an-experiment

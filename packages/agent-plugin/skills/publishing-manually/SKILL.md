@@ -1,6 +1,6 @@
 ---
 name: publishing-manually
-description: Use on the manual delivery path — ads, email, social, push, SMS. User takes approved variants and pastes them into their ad platform / email tool. No code needed.
+description: Use when the user is on the manual delivery path — ads, email, social, push, SMS. They take approved variants and paste them into their ad platform / email tool. No code needed.
 ---
 
 # publishing-manually

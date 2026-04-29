@@ -15,5 +15,13 @@
     "hooks",
     "mcp-servers",
     "skills"
-  ]
+  ],
+  "scripts": {
+    "test": "jest",
+    "test:behavioral": "bash tests/skill-triggering/runner.sh"
+  },
+  "devDependencies": {
+    "jest": "catalog:test",
+    "gray-matter": "4.0.3"
+  }
 }

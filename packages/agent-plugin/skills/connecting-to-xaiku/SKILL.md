@@ -1,6 +1,6 @@
 ---
 name: connecting-to-xaiku
-description: Use on first run, when a xaiku MCP tool returns 401, or when the user says "log in / reconnect". Walks the user through the OAuth handshake with xaiku's MCP server.
+description: Use when this is the first run, when a xaiku MCP tool returns 401, or when the user says "log in / reconnect". Walks the user through the OAuth handshake with xaiku's MCP server.
 ---
 
 # connecting-to-xaiku
