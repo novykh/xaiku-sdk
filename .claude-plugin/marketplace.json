@@ -8,9 +8,9 @@
   "plugins": [
     {
       "name": "xaiku",
-      "description": "A/B testing and experimentation SDK for AI agents, browser apps, and server-side code",
-      "version": "1.0.0",
-      "source": "./",
+      "description": "Drive xaiku experiments from any Claude Code agent.",
+      "version": "0.1.0",
+      "source": "./packages/agent-plugin",
       "author": {
         "name": "novykh",
         "email": "ioannis.klironomos@gmail.com"

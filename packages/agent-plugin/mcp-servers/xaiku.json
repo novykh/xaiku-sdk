@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "xaiku": {
+      "type": "http",
+      "url": "https://mcp.xaiku.com"
+    }
+  }
+}

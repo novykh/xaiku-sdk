@@ -1,0 +1,19 @@
+{
+  "name": "xaiku",
+  "description": "Drive xaiku experiments from any Claude Code agent — voices, variants, forecasts, launches, results.",
+  "version": "0.1.0",
+  "author": {
+    "name": "novykh",
+    "email": "ioannis.klironomos@gmail.com"
+  },
+  "homepage": "https://xaiku.com",
+  "repository": "https://github.com/novykh/xaiku-sdk",
+  "license": "MIT",
+  "keywords": [
+    "xaiku",
+    "ai-agents",
+    "experiments",
+    "ab-testing",
+    "mcp"
+  ]
+}
