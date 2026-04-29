@@ -1,0 +1,2 @@
+# expect: publishing-manually
+I need to test 5 variants of a Google Ads headline for my summer sale. My baseline conversion is around 3%.

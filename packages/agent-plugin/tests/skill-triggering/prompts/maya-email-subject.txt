@@ -1,0 +1,2 @@
+# expect: publishing-manually
+Help me write variants of email subject lines for our onboarding sequence.
