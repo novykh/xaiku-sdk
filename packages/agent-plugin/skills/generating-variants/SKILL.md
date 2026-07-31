@@ -12,7 +12,7 @@ description: Use when the user wants variants for an existing experiment — fir
 
 ## Tool
 
-- `xaiku_generate_variants(orgId, experimentId, count)` — generates `count` new variants. `count` is capped at **10 per call** by the MCP tool schema (see `app/api/mcp/tools/variants.js`). For larger batches on paid tiers, call multiple times. Each variant has fields matching the template, plus phrase breakdowns with emotions and gene types.
+- `xaiku_generate_variants(orgId, experimentId, count)` — generates `count` new variants. `count` is capped at **10 per call** by the MCP tool schema (see `app/api/mcp/tools/variants.js`). For larger batches on paid tiers, call multiple times. Each variant carries one entry in `variant.parts`, keyed by part id, for every editable template part — each with its own phrase breakdown carrying emotions and gene types.
 
 ## Flow
 
