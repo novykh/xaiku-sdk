@@ -17,10 +17,11 @@ description: Use when the user wants variants for an existing experiment — fir
 ## Flow
 
 1. Ask the user how many variants (default to 5 on free/starter, 8 on pro — but let them override).
-2. If this is the first generation and no control exists, propose the user's own existing copy as the control (or the first generated variant if blank slate). Use variant CRUD tools to set control after.
+2. If this is the first generation and no control exists, explain what a control is in one line ("the version you compare against"). The MCP tools cannot yet add the user's current live copy as a variant: `xaiku_set_variant_control` only marks an existing generated variant. Say this plainly, and offer to mark one generated version as control or to continue without one.
 3. Call `xaiku_generate_variants`.
-4. Show the user a compact summary: one line per variant — the headline text, 1-2 emotions tagged, and the variant ID.
-5. Offer next moves: "Edit a specific phrase? See the forecast? Approve them all and move to launch?"
+4. Show every version in full, as a visitor would read it (see "Talking to the user" in `using-xaiku`): all parts in page order, labelled in plain words, with how it feels in 1–2 words. Then add one line per version on what makes it different from the others.
+5. Check the copy against what the user told you (tone, casing, "we" vs "I", parts that must stay fixed) and flag mismatches in plain words before moving on.
+6. Offer next moves: "Change a line in one version? See which one is likely to win? Approve them and launch?"
 
 ## Tier limits
 

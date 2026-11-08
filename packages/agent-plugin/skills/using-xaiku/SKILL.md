@@ -92,8 +92,22 @@ digraph routing {
 | `reading-results` | Aggregated analytics, winner, insights. |
 | `iterating-on-an-experiment` | Rerun / refine after results. |
 
-## Output discipline
+## Talking to the user
 
-- Always tell the user which MCP tool you're about to call and why (one short sentence).
-- When showing a list of variants, include the variant ID — the user will use it to reference a specific one.
-- Keep copy output minimal in chat; link to the xaiku dashboard for deeper inspection.
+The user is usually a marketer, not an engineer. They should see copy, not data.
+
+- **Never paste tool output.** No JSON, field names (`parts`, `attr`, `phraseIndex`, `geneType`), hex colours, or raw IDs. Translate every result into plain words.
+- **Say what you're doing, not which tool.** "Writing 3 versions of your banner…", not "Calling xaiku_generate_variants".
+- **Show copy the way a visitor would read it.** One block per variant, every part in page order, labelled in plain words (Headline, Subhead, Button):
+
+  > **Version A** — feels: clear, curious
+  > **Headline:** See your servers live
+  > **Subhead:** Sign in with email, Google, GitHub or SSO. First time? We'll create your account.
+  > **Button:** Send link
+
+- **Name versions A, B, C…** and keep those names for the whole conversation. Use IDs only inside tool calls, or if the user asks.
+- **Emotions are the point.** For each version, say how it should feel in 1–2 plain words, and when comparing, say what feeling changes.
+- **Every choice comes with context.** Before asking the user to pick, show what each option does to the whole version, not the fragment alone.
+- **Flag problems in their terms.** "The button says 'Continue', the same as your SSO button", not "email_cta collides".
+- **End with one clear next step**, or numbered options with a recommendation.
+- Point to the xaiku dashboard for deeper inspection.

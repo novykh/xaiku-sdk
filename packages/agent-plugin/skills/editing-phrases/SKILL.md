@@ -33,14 +33,26 @@ All three take `variantId` (not experimentId) because phrase edits are variant-s
 
 These three tools only *propose* alternatives — they do not mutate the variant. To persist the user's chosen phrase, call:
 
-- `xaiku_apply_phrase(orgId, variantId, attr, phraseIndex, phrase, emotions?)` — writes the chosen `phrase` and optional `emotions` array into `variant.parts[attr].phrases[phraseIndex]` and returns the updated variant.
+- `xaiku_apply_phrase(orgId, variantId, attr, phraseIndex, phrase, emotions?)` — replaces the phrase inside the part's text and saves the phrase with its emotions. Pass the `emotions` exactly as the chosen alternative returned them.
 
 ## Flow
 
-1. Confirm which variant, which field, which phrase, which mode.
-2. Call the right proposal tool. Show the user the alternatives inline.
-3. When the user picks one, call `xaiku_apply_phrase` with the chosen text and any updated emotions from the alternative.
-4. Confirm the persistence back to the user: *"Updated. The variant now reads: …"*.
+1. Confirm which version, which part, and what should change. Ask in plain words ("the second sentence of the subhead"), never by index.
+2. Call the right proposal tool.
+3. **Show each alternative in context, not as a fragment.** Every alternative comes back with `text`: the full part with the new phrase already swapped in. For each one, show:
+   - the full part as it would read, with the changed words in **bold**;
+   - how it feels, in 1–2 plain words, and what that changes compared with now ("calmer, less salesy");
+   - one line on what it does for the version as a whole ("now the subhead answers 'do I need an account?'").
+
+   Start with the current wording as the baseline, then list the options:
+
+   > **Subhead now:** Use your email, Google, GitHub or SSO. I will set up your account if you're new. — *feels: personal, odd*
+   > **a.** Use your email, Google, GitHub or SSO. **First time? We'll create your account.** — *feels: welcoming, clear.* Speaks to new visitors directly.
+   > **b.** …
+
+   Recommend one and say why in one line.
+4. When the user picks, call `xaiku_apply_phrase` with the chosen phrase and its emotions.
+5. Re-read the version with `xaiku_list_variants` and show the **whole version** as it now reads (all parts), so the user sees the edit in place. If the saved text doesn't contain the new phrase, say so plainly and stop editing.
 
 ## Red flags
 
