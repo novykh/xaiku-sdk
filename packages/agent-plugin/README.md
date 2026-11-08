@@ -2,8 +2,15 @@
 
 The xaiku agent plugin for Claude Code.
 
-Install via the xaiku marketplace. Once enabled, any Claude Code session
-(including Cowork and NanoClaw) can drive xaiku experiments end-to-end:
+Install in Claude Code:
+
+```
+/plugin install xaiku --marketplace novykh/xaiku-sdk
+```
+
+After installing, run `/mcp` and sign in to xaiku.
+
+Once enabled, any Claude Code session (including Cowork and NanoClaw) can drive xaiku experiments end-to-end:
 create, generate variants, edit phrases, read the forecast, launch, and
 analyze results.
 

@@ -13,7 +13,7 @@
   "files": [
     ".claude-plugin",
     "hooks",
-    "mcp-servers",
+    ".mcp.json",
     "skills"
   ],
   "scripts": {

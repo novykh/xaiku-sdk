@@ -24,6 +24,12 @@ describe('plugin manifests', () => {
     expect(entry.source).toBe('./packages/agent-plugin')
   })
 
+  test('plugin ships the xaiku MCP server in .mcp.json at the plugin root', () => {
+    const raw = fs.readFileSync(path.join(PKG_ROOT, '.mcp.json'), 'utf8')
+    const parsed = JSON.parse(raw)
+    expect(parsed.mcpServers.xaiku).toEqual({ type: 'http', url: 'https://mcp.xaiku.com' })
+  })
+
   test('plugin and marketplace versions match', () => {
     const plugin = JSON.parse(
       fs.readFileSync(path.join(PKG_ROOT, '.claude-plugin', 'plugin.json'), 'utf8')
