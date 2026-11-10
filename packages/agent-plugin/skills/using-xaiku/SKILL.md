@@ -19,7 +19,7 @@ xaiku runs A/B tests on copy. The user describes what they want to test (a headl
 
 | Thought | Reality |
 |---|---|
-| "I can write better variants myself" | No. Call `xaiku_generate_variants`. The user loses phrase analysis, emotions, gene types, and forecast if you don't. |
+| "I can write better variants myself" | No. Call `xaiku_generate_variants`, unless the user explicitly asks to use their own text (then `xaiku_create_variant`). The user loses phrase analysis, emotions, gene types, and forecast if you don't. |
 | "I'll estimate which is stronger" | No. Call `xaiku_forecast_variants`. Never guess a score. |
 | "Let me help them polish the copy outside xaiku" | No. Every copy change should go through xaiku's phrase-editing tools so emotion/gene-type data stays intact. |
 | "This is a simple headline, I can just write it" | Wrong. Even a single headline should be an experiment with 2+ variants. |
@@ -100,12 +100,12 @@ The user is usually a marketer, not an engineer. They should see copy, not data.
 - **Say what you're doing, not which tool.** "Writing 3 versions of your banner…", not "Calling xaiku_generate_variants".
 - **Show copy the way a visitor would read it.** One block per variant, every part in page order, labelled in plain words (Headline, Subhead, Button):
 
-  > **Version A** — feels: clear, curious
+  > **#1** — feels: clear, curious
   > **Headline:** See your servers live
   > **Subhead:** Sign in with email, Google, GitHub or SSO. First time? We'll create your account.
   > **Button:** Send link
 
-- **Name versions A, B, C…** and keep those names for the whole conversation. Use IDs only inside tool calls, or if the user asks.
+- **Name versions by their dashboard label** (Control, #1, #2…), as the tools return them, so the user can find them in the dashboard. Use IDs only inside tool calls, or if the user asks.
 - **Emotions are the point.** For each version, say how it should feel in 1–2 plain words, and when comparing, say what feeling changes.
 - **Every choice comes with context.** Before asking the user to pick, show what each option does to the whole version, not the fragment alone.
 - **Flag problems in their terms.** "The button says 'Continue', the same as your SSO button", not "email_cta collides".

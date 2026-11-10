@@ -1,6 +1,6 @@
 ---
 name: reading-the-forecast
-description: Use when the user wants to know which variant will likely win before launch, or has 2+ approved variants and asks for a preview. Requires Starter+ subscription.
+description: Use when the user wants to know which variant will likely win before launch, or has 2+ approved variants and asks for a preview.
 ---
 
 # reading-the-forecast
@@ -8,7 +8,6 @@ description: Use when the user wants to know which variant will likely win befor
 ## Preconditions
 
 - Experiment has a control variant and at least 2 approved variants.
-- User is on Starter plan or higher (forecast is gated).
 
 ## Tool
 
@@ -27,13 +26,13 @@ description: Use when the user wants to know which variant will likely win befor
 ## Flow
 
 1. Call `xaiku_forecast_variants`.
-2. Show the leaderboard as a markdown table: rank, variant id, composite, vs-control delta.
+2. Show the leaderboard as a markdown table: rank, variant label (Control, #1, #2…), composite, vs-control delta.
 3. Highlight the top insight — the forecast's one-line summary of what separates the leader.
 4. Offer follow-ups: "Edit a phrase on the runner-up? Launch the leader? Generate more variants?"
 
-## On free-tier rejection
+## Not enough variants
 
-If the tool returns a plan-gate error, tell the user: *"Forecast requires the Starter plan or higher. You can still launch without it — xaiku will learn which wins from real traffic."*
+If the tool returns `needs_more_variants`, tell the user there are not enough versions to compare yet, and offer to add or approve more.
 
 ## Red flags
 

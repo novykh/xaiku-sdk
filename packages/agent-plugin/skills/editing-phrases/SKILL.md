@@ -33,7 +33,17 @@ All three take `variantId` (not experimentId) because phrase edits are variant-s
 
 These three tools only *propose* alternatives — they do not mutate the variant. To persist the user's chosen phrase, call:
 
-- `xaiku_apply_phrase(orgId, variantId, attr, phraseIndex, phrase, emotions?)` — replaces the phrase inside the part's text and saves the phrase with its emotions. Pass the `emotions` exactly as the chosen alternative returned them.
+- `xaiku_apply_phrase(orgId, variantId, attr, phraseIndex, phrase, normalize, emotions?, confirmLive?)` — replaces the phrase inside the part's text and saves the phrase with its emotions. Pass the `emotions` exactly as the chosen alternative returned them. Ask whether to clean up spacing and punctuation; pass `normalize: true` unless the user declines.
+
+## Replacing a whole field
+
+If the user wants their own text for a whole field, call `xaiku_set_field_text(orgId, variantId, field, text, normalize, confirmLive?)`, then `xaiku_analyze_variant(orgId, variantId)` so phrase tools work again. Approved versions are read-only: offer to unapprove first.
+
+## Live experiments and long text
+
+- On a live experiment, ask the user before changing anything, and pass `confirmLive: true` only after they agree.
+- Text longer than a field's limit is still saved and the tool returns a warning. Tell the user and offer a shorter version.
+- Refer to versions by their dashboard label (Control, #1, #2…).
 
 ## Flow
 
