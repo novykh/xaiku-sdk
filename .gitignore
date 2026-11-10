@@ -33,3 +33,5 @@ storybook-static/
 # docusaurus
 packages/docs/.docusaurus/
 packages/docs/build/
+# local dev builds
+.dev/
