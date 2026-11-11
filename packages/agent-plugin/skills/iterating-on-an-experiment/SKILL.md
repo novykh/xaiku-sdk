@@ -19,9 +19,10 @@ description: Use when results are in and the user wants to rerun, refine, or lau
 
 ## Flow
 
-1. Summarize what we learned in one line (pull from `xaiku_get_analytics` + `xaiku_forecast_variants` if still available).
-2. Ask the user what angle they want to explore next. Offer 2-3 concrete options.
-3. Hand off to `creating-an-experiment` with seed context, or `generating-variants` if they want more variants on the existing experiment.
+1. If the user means an earlier test and you do not know its id, call `xaiku_list_experiments(orgId)`. If several, ask which by name.
+2. Summarize what we learned in one line (pull from `xaiku_get_analytics` + `xaiku_forecast_variants` if still available).
+3. Ask the user what angle they want to explore next. Offer 2-3 concrete options.
+4. Hand off to `creating-an-experiment` with seed context, or `generating-variants` if they want more variants on the existing experiment.
 
 ## Red flags
 

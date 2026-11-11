@@ -25,8 +25,9 @@ description: Use when an experiment is live and the user asks "how's my test doi
 
 ## Flow
 
-1. Call `xaiku_get_analytics`.
-2. Render a table, using `perVariant[i].deltaVsControl` directly (already computed as a ratio; format as a % with sign):
+1. If you do not know the experiment id, call `xaiku_list_experiments(orgId)`. If one fits, use it. If several, ask the user which by name.
+2. Call `xaiku_get_analytics`. For the raw event rows, `xaiku_list_events(orgId, experimentId)` is also available.
+3. Render a table, using `perVariant[i].deltaVsControl` directly (already computed as a ratio; format as a % with sign):
 
 ```
 | Variant | Imps | Conv | Rate | Δ vs control |
@@ -34,9 +35,9 @@ description: Use when an experiment is live and the user asks "how's my test doi
 | v1 | 1,198 | 72 | 6.0% | +25% |
 ```
 
-3. If `winner` is non-null, add a single-line card: *"🏆 v1 is leading — +25% vs control on 1,198 impressions. Confirm significance on the dashboard."* Never claim a confidence %.
-4. If `winner` is null, say so in plain language. Optionally call `xaiku_get_readiness` to get `stats.requiredSamplePerVariant` and compare to current impressions — then tell the user *"You're at 1,198 of ~4,000 impressions needed. Give it another week."* If readiness data is missing, just say *"Not enough data yet — keep it running."* Do not invent an ETA from weekly traffic alone without the readiness sample plan.
-5. Link to the xaiku dashboard for charts (time series, Sankey, heatmap) and significance: `https://xaiku.com/dashboard/{org}/experiments/{experimentId}/analysis`.
+4. If `winner` is non-null, add a single-line card: *"🏆 v1 is leading — +25% vs control on 1,198 impressions. Confirm significance on the dashboard."* Never claim a confidence %.
+5. If `winner` is null, say so in plain language. Optionally call `xaiku_get_readiness` to get `stats.requiredSamplePerVariant` and compare to current impressions — then tell the user *"You're at 1,198 of ~4,000 impressions needed. Give it another week."* If readiness data is missing, just say *"Not enough data yet — keep it running."* Do not invent an ETA from weekly traffic alone without the readiness sample plan.
+6. Link to the xaiku dashboard for charts (time series, Sankey, heatmap) and significance: `https://xaiku.com/dashboard/{org}/experiments/{experimentId}/analysis`.
 
 ## Rendering in Cowork
 

@@ -18,7 +18,7 @@ description: Use when the user wants variants for an existing experiment — fir
 
 ## Approving, control and archive
 
-`xaiku_approve_variant`, `xaiku_unapprove_variant`, `xaiku_set_variant_control`, `xaiku_remove_variant_control` and `xaiku_archive_variant` take a variant `id`. On a live experiment, ask the user first and pass `confirmLive: true` only after they agree. Archiving an approved version also removes its approval; tell the user. The last approved version of a live experiment cannot be archived.
+`xaiku_approve_variant(orgId, id, confirmLive?)`, `xaiku_unapprove_variant`, `xaiku_remove_variant_control` and `xaiku_archive_variant(orgId, id, archived?, confirmLive?)` take a variant `id`. `xaiku_set_variant_control(orgId, id, experimentId, confirmLive?)` also needs the `experimentId`. Pass `archived: false` to unarchive. `xaiku_set_variant_weight(orgId, id, weight)` sets how much traffic a version gets, when the user asks. On a live experiment, ask the user first and pass `confirmLive: true` only after they agree. Archiving an approved version also removes its approval; tell the user. The last approved version of a live experiment cannot be archived.
 
 ## Flow
 

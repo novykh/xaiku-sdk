@@ -32,13 +32,15 @@ experiment.samplePlan = {
 ## Tools
 
 - `xaiku_get_readiness(orgId, experimentId)` — returns `{ blockers, warnings, readiness, isBlocked, stats: { requiredSamplePerVariant, totalSampleNeeded, estimatedDays, estimatedWeeks } }`.
-- `xaiku_update_experiment(orgId, experimentId, { patch: { samplePlan: { ... } } })` — nest the four fields inside `samplePlan` in the patch. Partial updates to `samplePlan` replace the subdoc; to preserve existing values, merge them client-side first from `xaiku_get_experiment`.
+- `xaiku_get_experiment(orgId, id)` — reads the experiment. It takes `id`; the readiness tool takes `experimentId`.
+- `xaiku_update_experiment(orgId, id, patch)` — `id` is the experiment id. Nest the four fields inside `samplePlan` in the patch. Partial updates to `samplePlan` replace the subdoc; to preserve existing values, merge them client-side first from `xaiku_get_experiment`.
 
 ## Flow
 
+0. If you do not know the experiment id, call `xaiku_list_experiments(orgId)`. If one fits, use it. If several, ask the user which by name.
 1. Call `xaiku_get_readiness`.
 2. If readiness < 1, walk through the missing fields one by one (or batch them in one question if the user is impatient).
-3. Call `xaiku_get_experiment` to read the current `samplePlan`, merge the new values, then call `xaiku_update_experiment` with `{ patch: { samplePlan: mergedSamplePlan } }`.
+3. Call `xaiku_get_experiment` to read the current `samplePlan`, merge the new values, then call `xaiku_update_experiment` with `patch.samplePlan` set to the merged values.
 4. Re-call `xaiku_get_readiness` to confirm. Report the sample plan in plain English, reading from `stats.estimatedWeeks`: *"With 10k weekly visitors at a 5% baseline, detecting a 10% lift needs ~2 weeks."*
 5. Flag any warnings (e.g., `underpowered` → ask if they want to lower MDE or extend timeline).
 

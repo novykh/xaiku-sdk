@@ -13,7 +13,7 @@ description: Use when the user is on the manual delivery path — ads, email, so
 ## Tools
 
 - `xaiku_list_variants(orgId, experimentId)` — filter client-side to `approved: true`.
-- `xaiku_update_integration(orgId, experimentId, { integration: { method: "manual" } })` — arg schema wraps the patch in an `integration` field.
+- `xaiku_update_integration(orgId, experimentId, integration)` — `integration` is an object with `method` and `status`. Pass both.
 - `xaiku_go_live(orgId, experimentId)`
 
 ## Flow
@@ -23,10 +23,9 @@ description: Use when the user is on the manual delivery path — ads, email, so
    - **Ads**: one block per variant, each field labeled, character count shown.
    - **Email subjects**: a bulleted list of subjects.
    - **Social posts**: one post per variant, ready to paste.
-3. Offer CSV: format all variants as CSV text in the chat (columns = field IDs, rows = variants). The user can copy and save.
-4. Explain traffic split: "Run each variant for the same duration with equal weight. Track which converts, then tell me the results and I'll import them."
-5. Call `xaiku_update_integration` with `method: "manual"`, then `xaiku_go_live`.
-6. Remind them results can be uploaded via CSV on the analysis page once they have data.
+3. Explain traffic split: "Run each version for the same time with equal weight."
+4. Call `xaiku_update_integration(orgId, experimentId, integration)` with `method: "manual"` and `status: "testing"`, then `xaiku_go_live`.
+5. Be honest about results: xaiku cannot import numbers from ad or email tools yet, so it will not show a winner for this test. They compare the versions in their own tool. If they tell you which won, you can help write the next round (`iterating-on-an-experiment`).
 
 ## Rendering tips
 
@@ -42,4 +41,4 @@ description: Use when the user is on the manual delivery path — ads, email, so
 
 ## Next likely skill
 
-`reading-results` (once she has tracked data).
+`iterating-on-an-experiment` (once she knows which version won in her own tool).

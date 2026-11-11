@@ -1,23 +1,20 @@
-# @xaiku/agent-plugin
+# xaiku for Claude Code
 
-The xaiku agent plugin for Claude Code.
+Test your copy (headlines, ads, emails) with Claude. xaiku writes the versions, scores them and tracks which wins.
 
-Install in Claude Code:
+## Install
+
+Run these two commands in a terminal:
 
 ```
-/plugin install xaiku --marketplace novykh/xaiku-sdk
+claude plugin marketplace add novykh/xaiku-sdk
+claude plugin install xaiku@xaiku
 ```
 
-After installing, run `/mcp` and sign in to xaiku.
+Then open Claude Code, run `/mcp`, pick xaiku and sign in.
 
-Once enabled, any Claude Code session (including Cowork and NanoClaw) can drive xaiku experiments end-to-end:
-create, generate variants, edit phrases, read the forecast, launch, and
-analyze results.
+## Use it
 
-## What's inside
+Tell Claude what you want to test, for example "help me test a headline for my sale email".
 
-- **MCP server registration** — auto-connects to `mcp.xaiku.com` using
-  Claude Code's OAuth flow.
-- **SessionStart hook** — injects the `using-xaiku` orchestrator so the
-  agent knows when and how to use xaiku.
-- **14 skills** — one per stage of the experiment lifecycle.
+xaiku shows results for tests it serves through its SDK on a website or app. For ads and email you publish by hand, xaiku can write and score the versions but cannot import your numbers yet.

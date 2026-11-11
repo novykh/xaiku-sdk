@@ -42,7 +42,7 @@ defaults to manual-primary with the SDK still one click away.
 
 ## Tools
 
-- `xaiku_create_experiment(orgId, { name, template, channel?, description? })` — returns the new experiment.
+- `xaiku_create_experiment(orgId, name, template, channel?, description?)` — returns the new experiment.
 
 ## Flow
 

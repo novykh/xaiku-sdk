@@ -29,11 +29,11 @@ FIRST_RUN_PREAMBLE=$(cat <<'EOF'
 If this is the first message of the session and the user has not yet
 used xaiku, open with:
 
-> "xaiku's connected. I can help you test copy — headlines, ads, emails,
+> "xaiku is installed. I can help you test copy — headlines, ads, emails,
 > CTAs. What are you working on?"
 
-Then invoke `connecting-to-xaiku` as soon as the user describes
-something testable.
+Do not say xaiku is connected until a xaiku tool has answered. Invoke
+`connecting-to-xaiku` as soon as the user describes something testable.
 
 If you can already see a successful response from any xaiku tool this
 session (e.g., the agent has called `xaiku_list_orgs` and got a real

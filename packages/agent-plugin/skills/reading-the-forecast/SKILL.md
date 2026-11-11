@@ -11,7 +11,7 @@ description: Use when the user wants to know which variant will likely win befor
 
 ## Tool
 
-- `xaiku_forecast_variants(orgId, experimentId)` — returns 5-dim scores per variant + leaderboard + top insight.
+- `xaiku_forecast_variants(orgId, experimentId)` — returns 5-dim scores per variant, a ranking and a top insight. Each item carries a `label`.
 
 ## The 5 dimensions
 
@@ -26,7 +26,7 @@ description: Use when the user wants to know which variant will likely win befor
 ## Flow
 
 1. Call `xaiku_forecast_variants`.
-2. Show the leaderboard as a markdown table: rank, variant label (Control, #1, #2…), composite, vs-control delta.
+2. Show the leaderboard as a markdown table: rank, the variant `label` as the tool returns it, and the scores the tool returns. Show only what the tool returned.
 3. Highlight the top insight — the forecast's one-line summary of what separates the leader.
 4. Offer follow-ups: "Edit a phrase on the runner-up? Launch the leader? Generate more variants?"
 

@@ -17,7 +17,7 @@ A voice bundles 8 binary style toggles (headline, personalize, storytelling, act
 
 - `xaiku_list_voices(orgId)` — list non-archived voices.
 - `xaiku_get_voice(orgId, id)`
-- `xaiku_create_voice(orgId, { name, textStyles?, acceptedExcerpts?, avoidedExcerpts? })`
+- `xaiku_create_voice(orgId, name, textStyles?, acceptedExcerpts?, avoidedExcerpts?)`
 - `xaiku_update_voice(orgId, id, patch)`
 - `xaiku_archive_voice(orgId, id)`
 

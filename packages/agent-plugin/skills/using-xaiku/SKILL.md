@@ -43,7 +43,7 @@ digraph routing {
   "No orgId?" -> "No voice?" [label="no"];
   "No voice?" -> "managing-voices" [label="yes, and user wants a voice"];
   "No voice?" -> "No experiment yet?" [label="no, or skip for now"];
-  "No experiment yet?" -> "creating-an-experiment" [label="yes"];
+  "No experiment yet?" -> "creating-an-experiment" [label="yes, after xaiku_list_experiments finds none"];
   "No experiment yet?" -> "No variants?" [label="no"];
   "No variants?" -> "generating-variants" [label="yes"];
   "No variants?" -> "Not configured?" [label="no"];
@@ -65,13 +65,13 @@ digraph routing {
 | Channel is Google/Meta Ads, email, social, push, SMS | `publishing-manually`. |
 | Channel is website, app, landing page | `integrating-the-sdk`. |
 | User pastes an existing draft | `creating-an-experiment` with the draft as seed, then `generating-variants`. |
-| User says "my last test…" | `iterating-on-an-experiment`. |
+| User says "my last test…" or "how is my test doing" | Find it with `xaiku_list_experiments(orgId)` first, then `reading-results` or `iterating-on-an-experiment`. |
 
 ## Entry-point shortcuts
 
 - **Blank slate** ("I want to test a headline"): `creating-an-experiment` → `generating-variants` → `reading-the-forecast` → `going-live`.
 - **Draft in hand** ("Here's my copy, make it better"): `creating-an-experiment` (seeded) → `generating-variants` → `editing-phrases` → `reading-the-forecast` → `going-live`.
-- **Live experiment** ("How's my test doing?"): `reading-results`.
+- **Live experiment** ("How's my test doing?"): find it with `xaiku_list_experiments(orgId)`, then `reading-results`. Never create a new experiment for this.
 - **Prior experiment with results** ("Last ad flopped, iterate"): `iterating-on-an-experiment`.
 
 ## Skill map
@@ -88,9 +88,21 @@ digraph routing {
 | `reading-the-forecast` | 5-dim scoring, leaderboard, compare. |
 | `going-live` | Pre-flight gate, then branch SDK or manual. |
 | `integrating-the-sdk` | Dev path: framework snippets, test mode, connection check. |
-| `publishing-manually` | Maya path: CSV / per-variant text. |
+| `publishing-manually` | Maya path: per-variant text to paste into ads or email. |
 | `reading-results` | Aggregated analytics, winner, insights. |
 | `iterating-on-an-experiment` | Rerun / refine after results. |
+
+## If a call fails
+
+| What the tool says | What to do |
+|---|---|
+| `Org not found or not a member` | Run `selecting-an-organization` again. |
+| `Rate limit exceeded. Try again shortly.` | Wait a moment, then retry once. |
+| `The Free plan includes 1 experiment. Upgrade to create more.` (any "plan includes" text) | Tell the user plainly. Point them to the dashboard to upgrade. Do not retry. |
+| JSON with `"error":"not_ready"` and `blockers` | Hand the blockers to `configuring-the-experiment`. |
+| A message about a live, approved or archived version | Follow what the message says. On a live experiment, ask the user first, then retry with `confirmLive: true`. |
+| `Not found` | The id is wrong. Find it again with `xaiku_list_experiments(orgId)`. |
+| `Internal error` | Say it failed on xaiku's side. Try once more, then stop. |
 
 ## Talking to the user
 
