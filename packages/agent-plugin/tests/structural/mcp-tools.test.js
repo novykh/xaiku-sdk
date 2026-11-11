@@ -26,6 +26,7 @@ const EXPECTED_TOOLS = new Set([
   'xaiku_update_voice',
   'xaiku_archive_voice',
   'xaiku_get_integration',
+  'xaiku_create_public_key',
   'xaiku_update_integration',
   'xaiku_check_connection',
   'xaiku_go_live',

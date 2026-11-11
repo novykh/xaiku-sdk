@@ -30,6 +30,7 @@ const SERVER_PARAMS = {
   xaiku_update_experiment: [...org, 'id', 'patch'],
   xaiku_forecast_variants: [...org, 'experimentId'],
   xaiku_get_integration: [...org, 'experimentId'],
+  xaiku_create_public_key: [...org],
   xaiku_update_integration: [...org, 'experimentId', 'integration'],
   xaiku_check_connection: [...org, 'experimentId'],
   xaiku_go_live: [...org, 'experimentId'],

@@ -22,6 +22,7 @@ description: Use when the user is on the SDK delivery path — website, app, lan
 ## Tools
 
 - `xaiku_get_integration(orgId, experimentId)` — returns current integration status and the public key.
+- `xaiku_create_public_key(orgId)` — creates the workspace public key when there is none and returns `{ publicKey, created }`. When a key already exists it returns that key unchanged, so it is safe to call again.
 - `xaiku_get_sdk_snippet(orgId, experimentId, framework)` — returns `{ install, provider, usage }` canonical strings for `react` | `nextjs` | `browser` | `node`, pre-substituted with the experiment's pkey and field list. **This is the only source of truth for SDK code in the plugin.** Do not invent or hand-write SDK snippets.
 - `xaiku_check_connection(orgId, experimentId)` — returns `connected: true` or `connected: false`. It only reads; it changes nothing.
 - `xaiku_update_integration(orgId, experimentId, integration)` — `integration` is an object with `method` and `status`. Always pass both.
@@ -30,7 +31,7 @@ description: Use when the user is on the SDK delivery path — website, app, lan
 ## Flow
 
 1. Ask which framework: `react`, `nextjs`, `browser`, or `node`.
-2. Call `xaiku_get_sdk_snippet` for that framework. Show the three returned strings to the user — `install` first, then `provider` (React/Next only), then `usage`.
+2. Call `xaiku_create_public_key`, so the snippet carries a real key instead of the `your-public-key` placeholder. Then call `xaiku_get_sdk_snippet` for that framework. Show the three returned strings to the user — `install` first, then `provider` (React/Next only), then `usage`.
 3. Tell them to enable test mode (`setTestMode(true)` from `@xaiku/shared`) and load their page.
 4. Call `xaiku_update_integration` with `method: "sdk"` and `status: "testing"`.
 5. Ask them to tell you when they've loaded the page, then call `xaiku_check_connection`. If it says `connected: false`, ask them to check test mode and reload, then try again.
