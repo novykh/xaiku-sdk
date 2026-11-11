@@ -13,7 +13,7 @@ description: Use when the user is on the manual delivery path — ads, email, so
 ## Tools
 
 - `xaiku_list_variants(orgId, experimentId)` — filter client-side to `approved: true`.
-- `xaiku_update_integration(orgId, experimentId, integration)` — `integration` is an object with `method` and `status`. Pass both.
+- `xaiku_update_integration(orgId, experimentId, integration)` — `integration` is an object with `method` and `status`. Fields left out keep their saved value.
 - `xaiku_go_live(orgId, experimentId)`
 
 ## Flow
