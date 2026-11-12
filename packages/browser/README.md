@@ -23,9 +23,7 @@ const sdk = xaikuBrowser({
 
 // Variants are known once this page load's experiments have arrived
 sdk.on('experiments:fetched', () => {
-  const headline = sdk.getVariantText('homepage-test', 'headline', {
-    fallback: 'Welcome to our site!'
-  })
+  const headline = sdk.getVariantText('homepage-test', 'headline') ?? 'Welcome to our site!'
 
   document.getElementById('headline').textContent = headline
 
@@ -38,19 +36,17 @@ sdk.on('experiments:fetched', () => {
 ## Core Features
 
 ### Variant Text Display
-Get text variants with automatic fallback handling:
+Get text variants. `getVariantText` returns `null` when there is no variant, so give your own default with `??`:
 
 ```javascript
 // Basic usage
-const buttonText = sdk.getVariantText('cta-test', 'button', {
-  fallback: 'Sign Up'
-})
+const buttonText = sdk.getVariantText('cta-test', 'button') ?? 'Sign Up'
 
 // With control group
-const headline = sdk.getVariantText('hero-test', 'headline', {
-  fallback: 'Default Headline',
-  control: false // or true to force control
-})
+const headline =
+  sdk.getVariantText('hero-test', 'headline', {
+    control: false, // or true to force control
+  }) ?? 'Default Headline'
 
 // Update DOM
 document.querySelector('#hero h1').textContent = headline
@@ -108,15 +104,9 @@ sdk.track.events.trackConversion({
 
     // Variants are known once this page load's experiments have arrived
     sdk.on('experiments:fetched', () => {
-      const headline = sdk.getVariantText('landing', 'headline', {
-        fallback: 'Transform Your Business'
-      })
-      const subtitle = sdk.getVariantText('landing', 'subtitle', {
-        fallback: 'Join thousands of satisfied customers'
-      })
-      const ctaText = sdk.getVariantText('landing', 'cta', {
-        fallback: 'Start Free Trial'
-      })
+      const headline = sdk.getVariantText('landing', 'headline') ?? 'Transform Your Business'
+      const subtitle = sdk.getVariantText('landing', 'subtitle') ?? 'Join thousands of satisfied customers'
+      const ctaText = sdk.getVariantText('landing', 'cta') ?? 'Start Free Trial'
 
       document.getElementById('headline').textContent = headline
       document.getElementById('subtitle').textContent = subtitle
@@ -171,15 +161,9 @@ const sdk = xaikuBrowser({
 // Update product page content
 function updateProductPage(productId) {
   // Get variant content
-  const productTitle = sdk.getVariantText('product', 'title', {
-    fallback: 'Amazing Product'
-  })
-  const addToCartText = sdk.getVariantText('product', 'add-to-cart', {
-    fallback: 'Add to Cart'
-  })
-  const buyNowText = sdk.getVariantText('product', 'buy-now', {
-    fallback: 'Buy Now'
-  })
+  const productTitle = sdk.getVariantText('product', 'title') ?? 'Amazing Product'
+  const addToCartText = sdk.getVariantText('product', 'add-to-cart') ?? 'Add to Cart'
+  const buyNowText = sdk.getVariantText('product', 'buy-now') ?? 'Buy Now'
 
   // Update DOM
   document.querySelector('.product-title').textContent = productTitle
@@ -238,12 +222,8 @@ function updatePageContent(route) {
 
 function updateHomePage() {
   // Hero section variants
-  const heroHeadline = sdk.getVariantText('homepage', 'hero-headline', {
-    fallback: 'Welcome to Our Platform'
-  })
-  const heroSubtext = sdk.getVariantText('homepage', 'hero-subtext', {
-    fallback: 'The best solution for your needs'
-  })
+  const heroHeadline = sdk.getVariantText('homepage', 'hero-headline') ?? 'Welcome to Our Platform'
+  const heroSubtext = sdk.getVariantText('homepage', 'hero-subtext') ?? 'The best solution for your needs'
 
   document.querySelector('#hero h1').textContent = heroHeadline
   document.querySelector('#hero p').textContent = heroSubtext
@@ -254,12 +234,8 @@ function updateHomePage() {
 
 function updateProductsPage() {
   // Product listing variants
-  const listingTitle = sdk.getVariantText('products', 'listing-title', {
-    fallback: 'Our Products'
-  })
-  const filterText = sdk.getVariantText('products', 'filter-label', {
-    fallback: 'Filter by category'
-  })
+  const listingTitle = sdk.getVariantText('products', 'listing-title') ?? 'Our Products'
+  const filterText = sdk.getVariantText('products', 'filter-label') ?? 'Filter by category'
 
   document.querySelector('#products h1').textContent = listingTitle
   document.querySelector('.filter-label').textContent = filterText
@@ -297,8 +273,9 @@ sdk.getVariantText(experimentId, partId, options)
 **Parameters:**
 - `experimentId` (string) - A/B test experiment ID
 - `partId` (string) - Specific part/component ID
-- `options.fallback` (string) - Default text if variant fails
 - `options.control` (boolean) - Force control group (optional)
+
+Returns the part's text, or `null` when no variant is selected or the part is missing.
 
 ### Event Tracking
 ```javascript
