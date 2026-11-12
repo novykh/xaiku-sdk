@@ -36,6 +36,7 @@ export const Text = ({ id, experimentId, children, fallback, control }) => {
   const contextExperimentId = useExperimentId()
   experimentId = experimentId ?? contextExperimentId
 
+  useTrackView({ experimentId })
   useTrackView({ experimentId, partId: id })
 
   if (!experimentId) {

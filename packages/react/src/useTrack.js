@@ -9,18 +9,24 @@ export const useTrackView = ({ experimentId, variantId, partId }) => {
   useEffect(() => {
     if (!sdk || !experimentId) return
 
-    const actualVariantId = variantId || sdk.getVariantId(experimentId)
-    const trackingKey = `${experimentId}:${actualVariantId}:${partId || 'default'}`
+    const send = () => {
+      const selected = variantId ?? sdk.getVariantId(experimentId)
+      if (!selected) return false
 
-    if (trackedViews.has(trackingKey)) return
+      const trackingKey = `${experimentId}:${selected}:${partId ?? 'experiment'}`
+      if (!trackedViews.has(trackingKey)) {
+        trackedViews.add(trackingKey)
+        sdk.track.events.trackView({ experimentId, variantId: selected, partId })
+      }
+      return true
+    }
 
-    sdk.track.events.trackView({
-      experimentId,
-      variantId: actualVariantId,
-      partId,
+    if (send()) return
+
+    const off = sdk.on('variants:select', () => {
+      if (send()) off()
     })
-
-    trackedViews.add(trackingKey)
+    return off
   }, [sdk, experimentId, variantId, partId])
 }
 
