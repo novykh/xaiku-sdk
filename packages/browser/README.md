@@ -29,11 +29,9 @@ const headline = sdk.getVariantText('homepage-test', 'headline', {
 // Update DOM element
 document.getElementById('headline').textContent = headline
 
-// Track view (automatic with getVariantText)
-sdk.track.events.trackView({
-  experimentId: 'homepage-test',
-  partId: 'headline'
-})
+// Record that the experiment was shown, once per page load.
+// The selected variant is filled in; nothing is sent until one is selected.
+sdk.track.events.trackView({ experimentId: 'homepage-test' })
 ```
 
 ## Core Features
@@ -62,12 +60,11 @@ document.querySelector('#cta-button').textContent = buttonText
 Simple tracking for marketing metrics:
 
 ```javascript
-// Track views (impressions)
-sdk.track.events.trackView({
-  experimentId: 'homepage-test',
-  variantId: 'variant-a', // optional, auto-detected
-  partId: 'hero-section'
-})
+// Track the experiment view (once per page load). This is what conversion rates divide by.
+sdk.track.events.trackView({ experimentId: 'homepage-test' })
+
+// Optional: a view of one part, used only by the per-part charts
+sdk.track.events.trackView({ experimentId: 'homepage-test', partId: 'hero-section' })
 
 // Track clicks
 sdk.track.events.trackClick({
@@ -124,15 +121,8 @@ sdk.track.events.trackConversion({
     document.getElementById('subtitle').textContent = subtitle
     document.getElementById('cta-button').textContent = ctaText
 
-    // Track views (automatic with getVariantText)
-    sdk.track.events.trackView({
-      experimentId: 'landing',
-      partId: 'headline'
-    })
-    sdk.track.events.trackView({
-      experimentId: 'landing', 
-      partId: 'subtitle'
-    })
+    // Record that the experiment was shown
+    sdk.track.events.trackView({ experimentId: 'landing' })
 
     // Track CTA clicks
     document.getElementById('cta-button').addEventListener('click', () => {
@@ -195,11 +185,7 @@ function updateProductPage(productId) {
   document.querySelector('.buy-now-btn').textContent = buyNowText
 
   // Track product view
-  sdk.track.events.trackView({
-    experimentId: 'product',
-    partId: 'product-page',
-    productId
-  })
+  sdk.track.events.trackView({ experimentId: 'product', productId })
 
   // Track add to cart
   document.querySelector('.add-to-cart-btn').addEventListener('click', () => {
@@ -261,10 +247,7 @@ function updateHomePage() {
   document.querySelector('#hero p').textContent = heroSubtext
 
   // Track page view
-  sdk.track.events.trackView({
-    experimentId: 'homepage',
-    partId: 'hero'
-  })
+  sdk.track.events.trackView({ experimentId: 'homepage' })
 }
 
 function updateProductsPage() {
@@ -280,10 +263,7 @@ function updateProductsPage() {
   document.querySelector('.filter-label').textContent = filterText
 
   // Track page view
-  sdk.track.events.trackView({
-    experimentId: 'products',
-    partId: 'listing'
-  })
+  sdk.track.events.trackView({ experimentId: 'products' })
 }
 
 // Handle navigation
@@ -320,7 +300,7 @@ sdk.getVariantText(experimentId, partId, options)
 
 ### Event Tracking
 ```javascript
-// Track impressions
+// Track that an experiment was shown: { experimentId, partId? }. Returns false and sends nothing until a variant is selected.
 sdk.track.events.trackView(data)
 
 // Track interactions  

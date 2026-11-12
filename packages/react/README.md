@@ -75,13 +75,15 @@ import { Experiment } from '@xaiku/react'
 ## Tracking Hooks
 
 ### useTrackView
-Track when variants are viewed (automatic with Text component).
+Records that an experiment was shown. `Experiment` and `Text` already do this once per page load, after the variant is selected, so most apps never call it.
+
+With no `partId` it records the experiment view, which conversion rates divide by. With a `partId` it records a view of one part, used only by the per-part charts.
 
 ```jsx
 import { useTrackView } from '@xaiku/react'
 
 function MyComponent() {
-  useTrackView({ experimentId: "test-123", partId: "custom-section" })
+  useTrackView({ experimentId: "test-123" })
   return <div>Custom content</div>
 }
 ```
