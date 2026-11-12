@@ -43,13 +43,16 @@ const EXPECTED_TOOLS = new Set([
 
 const TOOL_MENTION = /xaiku_[a-z_]+/g
 
+// Browser storage key for test mode (packages/shared/src/setTestMode.js), not a tool.
+const NOT_TOOLS = new Set(['xaiku_test'])
+
 const collectToolMentions = () => {
   const mentions = new Set()
   for (const folder of fs.readdirSync(SKILLS_DIR)) {
     const file = path.join(SKILLS_DIR, folder, 'SKILL.md')
     if (!fs.existsSync(file)) continue
     const text = fs.readFileSync(file, 'utf8')
-    for (const m of text.matchAll(TOOL_MENTION)) mentions.add(m[0])
+    for (const m of text.matchAll(TOOL_MENTION)) if (!NOT_TOOLS.has(m[0])) mentions.add(m[0])
   }
   return mentions
 }
