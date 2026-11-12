@@ -30,7 +30,6 @@ xaiku runs A/B tests on copy. The user describes what they want to test (a headl
 digraph routing {
   "No token?" [shape=diamond];
   "No orgId?" [shape=diamond];
-  "No voice?" [shape=diamond];
   "No experiment yet?" [shape=diamond];
   "No variants?" [shape=diamond];
   "Not configured?" [shape=diamond];
@@ -40,9 +39,7 @@ digraph routing {
   "No token?" -> "connecting-to-xaiku" [label="yes"];
   "No token?" -> "No orgId?" [label="no"];
   "No orgId?" -> "selecting-an-organization" [label="yes"];
-  "No orgId?" -> "No voice?" [label="no"];
-  "No voice?" -> "managing-voices" [label="yes, and user wants a voice"];
-  "No voice?" -> "No experiment yet?" [label="no, or skip for now"];
+  "No orgId?" -> "No experiment yet?" [label="no"];
   "No experiment yet?" -> "creating-an-experiment" [label="yes, after xaiku_list_experiments finds none"];
   "No experiment yet?" -> "No variants?" [label="no"];
   "No variants?" -> "setting-writing-rules" [label="yes, rules not settled"];
@@ -101,11 +98,21 @@ digraph routing {
 |---|---|
 | `Org not found or not a member` | Run `selecting-an-organization` again. |
 | `Rate limit exceeded. Try again shortly.` | Wait a moment, then retry once. |
-| `The Free plan includes 1 experiment. Upgrade to create more.` (any "plan includes" text) | Tell the user plainly. Point them to the dashboard to upgrade. Do not retry. |
+| `The Free plan includes 1 experiment. Upgrade to create more.` (any "plan includes" text) | Tell the user plainly. Archived experiments don't count, so offer two ways on: upgrade in the dashboard, or archive an experiment the user names (`xaiku_update_experiment` with `patch.archived: true`). Never archive without asking. |
 | JSON with `"error":"not_ready"` and `blockers` | Hand the blockers to `configuring-the-experiment`. |
 | A message about a live, approved or archived version | Follow what the message says. On a live experiment, ask the user first, then retry with `confirmLive: true`. |
 | `Not found` | The id is wrong. Find it again with `xaiku_list_experiments(orgId)`. |
 | `Internal error` | Say it failed on xaiku's side. Try once more, then stop. |
+
+## How to ask
+
+The same rules xaiku's own chat follows:
+
+- One short question at a time. Ask only for what is missing.
+- Never invent data: no made-up numbers, names, quotes or limits.
+- Save only what the user actually said.
+- When you say you'll change something, make the tool call in the same turn.
+- Agree the structure first (what gets tested). Voice, tone and writing rules come after.
 
 ## Talking to the user
 

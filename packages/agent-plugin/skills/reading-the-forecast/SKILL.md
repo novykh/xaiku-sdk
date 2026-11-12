@@ -27,6 +27,7 @@ description: Use when the user wants to know which variant will likely win befor
 
 1. Call `xaiku_forecast_variants`.
 2. Show the leaderboard as a markdown table: rank, the variant `label` as the tool returns it, and the scores the tool returns. Show only what the tool returned.
+   Every score and every `vsControl.delta` ("+18% vs control") is xaiku's estimate from reading the copy, not a measurement. Say "xaiku estimates". `vsControl` is only present when the experiment has a control.
 3. Highlight the top insight — the forecast's one-line summary of what separates the leader.
 4. Offer follow-ups: "Edit a phrase on the runner-up? Launch the leader? Generate more variants?"
 

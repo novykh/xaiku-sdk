@@ -35,10 +35,24 @@ experiment.samplePlan = {
 - `xaiku_get_experiment(orgId, id)` — reads the experiment. It takes `id`; the readiness tool takes `experimentId`.
 - `xaiku_update_experiment(orgId, id, patch)` — `id` is the experiment id. Nest the four fields inside `samplePlan` in the patch. Partial updates to `samplePlan` replace the subdoc; to preserve existing values, merge them client-side first from `xaiku_get_experiment`.
 
+## What readiness codes mean
+
+| Code | Kind | Meaning, in the user's words |
+|---|---|---|
+| `no_primary_metric` | blocker | xaiku doesn't know what counts as a win yet. |
+| `no_control` | blocker | There is no version to compare against. |
+| `no_approved_variants` | blocker | No new version is approved yet. |
+| `no_traffic_estimate` | warning | No weekly visitor estimate, so no time estimate. |
+| `no_baseline` | warning | No current rate, so no time estimate. |
+| `too_many_variants` | warning | More than 4 versions with under 10,000 weekly visitors: the test will be slow. |
+| `underpowered` | warning | At this traffic the test needs more than 90 days. |
+| `variants_similar` | warning | Two of the versions in the test read almost the same, so telling them apart takes longer. Show the user where they overlap. |
+
 ## Flow
 
 0. If you do not know the experiment id, call `xaiku_list_experiments(orgId)`. If one fits, use it. If several, ask the user which by name.
 1. Call `xaiku_get_readiness`.
+   If an analytics tool is connected (for example PostHog or Google Analytics), offer to read weekly traffic and the current rate from it. Tell the user how you measured them. Never guess a baseline.
 2. If readiness < 1, walk through the missing fields one by one (or batch them in one question if the user is impatient).
 3. Call `xaiku_get_experiment` to read the current `samplePlan`, merge the new values, then call `xaiku_update_experiment` with `patch.samplePlan` set to the merged values.
 4. Re-call `xaiku_get_readiness` to confirm. Report the sample plan in plain English, reading from `stats.estimatedWeeks`: *"With 10k weekly visitors at a 5% baseline, detecting a 10% lift needs ~2 weeks."*
