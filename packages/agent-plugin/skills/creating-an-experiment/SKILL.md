@@ -64,7 +64,7 @@ defaults to manual-primary with the SDK still one click away.
 
 ## Tools
 
-- `xaiku_create_experiment(orgId, name, template, channel?, notes?, intent?, tone?, audience?, keywords?, statics?, variants?)` — returns the new experiment. See Fields.
+- `xaiku_create_experiment(orgId, name, template, channel?, notes?, intent?, tone?, audience?, brandVoice?, keywords?, statics?, variants?, voiceId?, description?)` — returns the new experiment. See Fields.
 - `xaiku_update_experiment(orgId, id, patch)` — changes any field later, or archives an experiment with `patch.archived: true`.
 
 ## Flow

@@ -35,7 +35,7 @@ description: Use when the user is on the SDK delivery path — website, app, lan
 3. Ask where a **win** happens, in plain words: a click on this same page, or a later page (for example a sign-up confirmation) in the same browser.
    - Record it with `useTrackConversion({ experimentId })` from `@xaiku/react`, called inside the same `XaikuProvider`. On a later page, mount `XaikuProvider` there too; the visitor's version is remembered in that browser.
    - If the win happens on another device or another site (for example a sign-in link opened on a phone), tell the user xaiku cannot credit it to a version yet. Do not build your own tracking for it.
-4. Test mode: tell them to open the page, run `localStorage.setItem('xaiku_test', 'true')` in the browser console, and reload. Test mode also serves experiments that are not live yet, and marks the events as test traffic.
+4. Test mode: tell them to open the page, run `localStorage.setItem('xaiku_test', 'true')` in the browser console, and reload. On Next.js, reload twice: the server reads a cookie that the browser writes on the first reload. Test mode also serves experiments that are not live yet, and marks the events as test traffic.
 5. Call `xaiku_update_integration` with `method: "sdk"` and `status: "testing"`.
 6. Ask them to tell you when they've loaded the page, then call `xaiku_check_connection`. If it says `connected: false`, ask them to check test mode and reload, then try again.
 7. When it says `connected: true`, flip to `live` with `xaiku_go_live`.

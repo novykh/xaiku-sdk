@@ -14,6 +14,8 @@ description: Use when the user says how copy must be written (casing, "we" or "I
 
 Writing rules live on a **voice**, in its `toolkit`. Every experiment that uses that voice is written with them. When xaiku writes variants, it starts from its own defaults and applies the voice's `toolkit` on top.
 
+An experiment may also carry its own `toolkit` (the dashboard's variants sidebar still writes one), and today it overrides the voice. If `xaiku_get_experiment` returns a `toolkit`, tell the user that the experiment has its own settings that win over the voice, and ask them to reset those settings in the dashboard sidebar.
+
 Rules only shape versions written afterwards. Existing versions keep their text.
 
 ## The rules that change the writing

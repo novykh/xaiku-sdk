@@ -12,7 +12,7 @@ description: Use when the user wants variants for an existing experiment — fir
 
 ## Tools
 
-- `xaiku_generate_variants(orgId, experimentId, count)` — generates `count` new variants, up to 10 per call. Each variant carries one entry in `variant.parts`, keyed by part id, for every editable template part — each with its own phrase breakdown carrying emotions and gene types.
+- `xaiku_generate_variants(orgId, experimentId, count, force?)` — generates `count` new variants, up to 10 per call. After the first batch, a call without `force: true` is skipped and changes nothing; pass `force: true` whenever versions were generated before. Each variant carries one entry in `variant.parts`, keyed by part id, for every editable template part — each with its own phrase breakdown carrying emotions and gene types.
 - `xaiku_create_variant(orgId, experimentId, fields, control?, normalize)` — adds a variant from the user's own text, only when they explicitly ask. Usually this is their current live copy as the control. Ask whether to clean up spacing and punctuation; pass `normalize: true` unless they decline. Then call `xaiku_analyze_variant(orgId, variantId)` so phrase editing works on it.
 - `xaiku_update_experiment(orgId, id, patch)` — `patch.variants` sets how many variants the experiment holds (1-32).
 
@@ -28,7 +28,7 @@ description: Use when the user wants variants for an existing experiment — fir
 4. Show every version in full, as a visitor would read it (see "Talking to the user" in `using-xaiku`): all parts in page order, labelled in plain words, with how it feels in 1–2 words. Then add one line per version on what makes it different from the others.
 5. Check the copy against what the user told you (tone, casing, "we" vs "I", parts that must stay fixed) and flag mismatches in plain words before moving on.
    - **Every version breaks the same rule** (casing, "I" instead of "we", a banned word): fix the rule on the voice (`setting-writing-rules`), then offer either (a) archive those versions with `xaiku_archive_variant` and generate again, or (b) rewrite each affected field with `xaiku_set_field_text` and re-analyse with `xaiku_analyze_variant`. Never fix a whole-version problem phrase by phrase.
-   - `xaiku_generate_variants` only adds versions; it never replaces them. Archive the old ones if the user wants fresh ones instead.
+   - `xaiku_generate_variants` only adds versions; it never replaces them, and after the first batch it needs `force: true`. Archive the old ones if the user wants fresh ones instead.
 6. If a tool returns a warning that a text is over a field's limit, the text is still saved. Tell the user and offer a shorter version.
 7. Offer next moves: "Change a line in one version? See which one is likely to win? Approve them and launch?"
 

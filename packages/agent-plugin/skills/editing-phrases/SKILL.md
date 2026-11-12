@@ -68,7 +68,7 @@ If the user wants their own text for a whole field, call `xaiku_set_field_text(o
 
 | Thought | Reality |
 |---|---|
-| "I'll rewrite the whole variant instead" | No — phrase-level editing preserves the analysis on unchanged phrases. |
+| "I'll rewrite a whole field to change one phrase" | No — phrase-level editing preserves the analysis on unchanged phrases. Whole-field rewrites are for whole-field problems (see below). |
 | "I can generate alternatives myself" | No — xaiku's tool respects voice, gene type, and character limits. Your hand-written alternatives don't. |
 | "I'll fix the casing or 'I' → 'we' phrase by phrase" | No. A phrase edit changes one phrase; the rest of the field keeps its old casing. For a whole-field style fix use `xaiku_set_field_text`, or fix the rule on the voice (`setting-writing-rules`) and generate again. |
 | "I'll apply phrases, then rewrite the same field anyway" | No. Rewriting a field with `xaiku_set_field_text` throws away the phrase work on it. Pick one route per field. |

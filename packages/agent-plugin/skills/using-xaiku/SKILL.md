@@ -21,7 +21,7 @@ xaiku runs A/B tests on copy. The user describes what they want to test (a headl
 |---|---|
 | "I can write better variants myself" | No. Call `xaiku_generate_variants`, unless the user explicitly asks to use their own text (then `xaiku_create_variant`). The user loses phrase analysis, emotions, gene types, and forecast if you don't. |
 | "I'll estimate which is stronger" | No. Call `xaiku_forecast_variants`. Never guess a score. |
-| "Let me help them polish the copy outside xaiku" | No. Every copy change should go through xaiku's phrase-editing tools so emotion/gene-type data stays intact. |
+| "Let me help them polish the copy outside xaiku" | No. Every copy change should go through xaiku's editing tools (phrase tools, or `xaiku_set_field_text` then `xaiku_analyze_variant` for a whole field) so emotion/gene-type data stays intact. |
 | "This is a simple headline, I can just write it" | Wrong. Even a single headline should be an experiment with 2+ variants. |
 
 ## Routing (state-driven)
