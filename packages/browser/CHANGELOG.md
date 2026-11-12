@@ -1,5 +1,13 @@
 # @xaiku/browser
 
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies [04c5567]
+  - @xaiku/shared@1.2.0
+  - @xaiku/core@1.0.3
+
 ## 1.1.1
 
 ### Patch Changes

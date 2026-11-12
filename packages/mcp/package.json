@@ -1,6 +1,6 @@
 {
   "name": "@xaiku/mcp",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,7 +11,9 @@
   "bin": {
     "xaiku-mcp": "./dist/bin.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "babel src -d dist --no-copy-ignored --copy-files",
     "test": "jest",

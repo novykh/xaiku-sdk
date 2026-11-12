@@ -1,5 +1,13 @@
 # @xaiku/nextjs
 
+## 1.2.1
+
+### Patch Changes
+
+- Updated dependencies [04c5567]
+  - @xaiku/react@1.2.0
+  - @xaiku/node@1.0.3
+
 ## 1.2.0
 
 ### Minor Changes

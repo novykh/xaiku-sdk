@@ -1,5 +1,12 @@
 # @xaiku/core
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [04c5567]
+  - @xaiku/shared@1.2.0
+
 ## 1.0.2
 
 ### Patch Changes
