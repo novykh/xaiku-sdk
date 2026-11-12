@@ -65,6 +65,8 @@ export default async sdk => {
     return null
   }
 
+  sdk.getSelectedVariantId = experimentId => localVariants?.[experimentId]?.selected?.id ?? null
+
   sdk.setVariants = variants => {
     localVariants = variants
     onNextTick(() => sdk.storage.set(variantsKey, variants))

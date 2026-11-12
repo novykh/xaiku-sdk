@@ -21,17 +21,18 @@ const sdk = xaikuBrowser({
   pkey: 'your-public-key'
 })
 
-// Get variant text with fallback
-const headline = sdk.getVariantText('homepage-test', 'headline', {
-  fallback: 'Welcome to our site!'
+// Variants are known once this page load's experiments have arrived
+sdk.on('experiments:fetched', () => {
+  const headline = sdk.getVariantText('homepage-test', 'headline', {
+    fallback: 'Welcome to our site!'
+  })
+
+  document.getElementById('headline').textContent = headline
+
+  // Record that the experiment was shown, once per page load.
+  // The selected variant is filled in; nothing is sent until one is selected.
+  sdk.track.events.trackView({ experimentId: 'homepage-test' })
 })
-
-// Update DOM element
-document.getElementById('headline').textContent = headline
-
-// Record that the experiment was shown, once per page load.
-// The selected variant is filled in; nothing is sent until one is selected.
-sdk.track.events.trackView({ experimentId: 'homepage-test' })
 ```
 
 ## Core Features
@@ -105,24 +106,25 @@ sdk.track.events.trackConversion({
       pkey: 'your-public-key'
     })
 
-    // Get variant text and update DOM
-    const headline = sdk.getVariantText('landing', 'headline', {
-      fallback: 'Transform Your Business'
-    })
-    const subtitle = sdk.getVariantText('landing', 'subtitle', {
-      fallback: 'Join thousands of satisfied customers'
-    })
-    const ctaText = sdk.getVariantText('landing', 'cta', {
-      fallback: 'Start Free Trial'
-    })
+    // Variants are known once this page load's experiments have arrived
+    sdk.on('experiments:fetched', () => {
+      const headline = sdk.getVariantText('landing', 'headline', {
+        fallback: 'Transform Your Business'
+      })
+      const subtitle = sdk.getVariantText('landing', 'subtitle', {
+        fallback: 'Join thousands of satisfied customers'
+      })
+      const ctaText = sdk.getVariantText('landing', 'cta', {
+        fallback: 'Start Free Trial'
+      })
 
-    // Update DOM elements
-    document.getElementById('headline').textContent = headline
-    document.getElementById('subtitle').textContent = subtitle
-    document.getElementById('cta-button').textContent = ctaText
+      document.getElementById('headline').textContent = headline
+      document.getElementById('subtitle').textContent = subtitle
+      document.getElementById('cta-button').textContent = ctaText
 
-    // Record that the experiment was shown
-    sdk.track.events.trackView({ experimentId: 'landing' })
+      // Record that the experiment was shown
+      sdk.track.events.trackView({ experimentId: 'landing' })
+    })
 
     // Track CTA clicks
     document.getElementById('cta-button').addEventListener('click', () => {

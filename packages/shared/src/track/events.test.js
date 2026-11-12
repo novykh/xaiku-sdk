@@ -6,9 +6,10 @@ import makeEvents from './events'
 describe('track events', () => {
   let events
   let reports
+  let sdk
 
   beforeEach(async () => {
-    const sdk = {
+    sdk = {
       options: {
         store: { name: 'memory' },
         skipExperiments: true,
@@ -31,6 +32,21 @@ describe('track events', () => {
   it('trackView sends nothing when no variant is selected', () => {
     expect(events.trackView({ experimentId: 'e2' })).toBe(false)
     expect(reports).toEqual([])
+  })
+
+  it('trackView ignores a version that was only stored by an earlier page load', async () => {
+    const fresh = {
+      options: { store: { name: 'memory' }, skipExperiments: true },
+      ...makeListeners(),
+    }
+    fresh.storage = makeStorage(fresh)
+    await makeExperiments(fresh)
+    fresh.storage.set('__xaiku__variants__', { e3: { selected: { id: 'old' } } })
+    fresh.on('metric:report', (name, metric) => reports.push([name, metric]))
+
+    expect(makeEvents(fresh).trackView({ experimentId: 'e3' })).toBe(false)
+    expect(reports).toEqual([])
+    fresh.storage.delete('__xaiku__variants__')
   })
 
   it('trackView keeps an explicit variantId and partId', () => {

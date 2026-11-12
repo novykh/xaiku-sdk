@@ -5,9 +5,10 @@ export default sdk => {
   }
 
   // 1. Impression: Track when a variant is shown.
-  const trackView = (extraData = {}) => {
-    const metric = withVariant(extraData)
-    if (!metric.variantId) return false
+  const trackView = ({ variantId, ...extraData } = {}) => {
+    const selected = variantId ?? sdk.getSelectedVariantId(extraData.experimentId)
+    if (!selected) return false
+    const metric = { ...extraData, variantId: selected }
     sdk.trigger('metric:report', 'impression', metric)
     return true
   }

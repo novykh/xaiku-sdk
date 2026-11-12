@@ -10,7 +10,7 @@ export const useTrackView = ({ experimentId, variantId, partId }) => {
     if (!sdk || !experimentId) return
 
     const send = () => {
-      const selected = variantId ?? sdk.getVariantId(experimentId)
+      const selected = variantId ?? sdk.getSelectedVariantId(experimentId)
       if (!selected) return false
 
       const trackingKey = `${experimentId}:${selected}:${partId ?? 'experiment'}`

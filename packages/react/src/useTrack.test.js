@@ -91,6 +91,26 @@ describe('views', () => {
     )
   })
 
+  it('a stored version is not viewed when this load turns the experiment off', async () => {
+    makeTestSdk(
+      () =>
+        new Promise(resolve => setTimeout(() => resolve(JSON.stringify({ experiments: {} })), 50))
+    )
+    sdk.storage.set('__xaiku__variants__', {
+      e5: { selected: { id: 'v1' }, control: { id: 'v1' } },
+    })
+    const fetched = new Promise(resolve => sdk.on('experiments:fetched', resolve))
+    render(
+      <XaikuProvider sdk={sdk}>
+        <Experiment id="e5" />
+      </XaikuProvider>
+    )
+
+    await fetched
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(experimentViews()).toEqual([])
+  })
+
   it('a part rendered twice sends one part view', async () => {
     makeTestSdk(JSON.stringify(variantsFor('e4')))
     render(
