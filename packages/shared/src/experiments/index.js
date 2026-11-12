@@ -20,9 +20,6 @@ const checkSize = (experiments, storeName) => {
   }
 }
 
-const findMissingIds = (experiments, ids) =>
-  ids.length === Object.keys(experiments).length ? [] : ids.filter(id => !experiments[id])
-
 export default async sdk => {
   let localVariants = sdk.options.variants ?? null
 
@@ -49,24 +46,8 @@ export default async sdk => {
 
     ids = ids ? (Array.isArray(ids) ? ids : [ids]) : []
 
-    const storageExperiments = storage.get(experimentsKey)
-    let experiments = force
-      ? null
-      : !storageExperiments || !Object.keys(storageExperiments).length
-        ? null
-        : storageExperiments
-
-    if (experiments) {
-      if (!force && experiments) return experiments
-
-      const missingIds = findMissingIds(experiments, ids)
-
-      if (!missingIds.length) return experiments
-
-      ids = missingIds
-    }
-
-    experiments = await fetchExperiments(sdk, ids)
+    const fetched = await fetchExperiments(sdk, ids)
+    const experiments = fetched ?? storage.get(experimentsKey) ?? {}
 
     sdk.setExperiments(experiments)
     sdk.trigger('experiments:fetched', experiments)

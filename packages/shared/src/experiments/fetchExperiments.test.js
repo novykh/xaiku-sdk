@@ -82,6 +82,6 @@ describe('fetchExperiments', () => {
     const ids = ['test-experiment-id']
     const experiments = await fetchExperiments(sdk, ids)
 
-    expect(experiments).toEqual([])
+    expect(experiments).toBeNull()
   })
 })

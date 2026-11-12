@@ -21,5 +21,5 @@ export default async (sdk, ids) => {
     console.error(error)
   }
 
-  return []
+  return null
 }
