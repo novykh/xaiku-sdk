@@ -98,13 +98,12 @@ export default async sdk => {
 
     variants = Object.keys(experiments).reduce((h, uid) => {
       h[uid] = selectVariant(experiments[uid], sdk.guid, uid)
-
-      sdk.trigger('variants:select', h[uid])
-
       return h
     }, {})
 
     sdk.setVariants(variants)
+
+    Object.values(variants).forEach(variant => sdk.trigger('variants:select', variant))
 
     return variants
   }
