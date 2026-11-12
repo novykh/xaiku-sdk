@@ -45,7 +45,9 @@ digraph routing {
   "No voice?" -> "No experiment yet?" [label="no, or skip for now"];
   "No experiment yet?" -> "creating-an-experiment" [label="yes, after xaiku_list_experiments finds none"];
   "No experiment yet?" -> "No variants?" [label="no"];
-  "No variants?" -> "generating-variants" [label="yes"];
+  "No variants?" -> "setting-writing-rules" [label="yes, rules not settled"];
+  "setting-writing-rules" -> "generating-variants";
+  "No variants?" -> "generating-variants" [label="yes, rules settled"];
   "No variants?" -> "Not configured?" [label="no"];
   "Not configured?" -> "configuring-the-experiment" [label="yes"];
   "Not configured?" -> "reading-the-forecast" [label="no, fine to forecast"];
@@ -81,6 +83,7 @@ digraph routing {
 | `connecting-to-xaiku` | First-run OAuth handshake. |
 | `selecting-an-organization` | Resolve orgId for the session. |
 | `managing-voices` | Create, edit, or pick a brand voice. |
+| `setting-writing-rules` | Casing, "we" or "I", banned words, exact spellings and formats, saved on the voice. |
 | `creating-an-experiment` | Turn a user description into an experiment (with template). |
 | `generating-variants` | Produce N variants for an experiment. |
 | `editing-phrases` | Revise / shift emotion / rewrite gene type on a specific phrase. |
