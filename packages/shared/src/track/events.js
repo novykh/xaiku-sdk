@@ -1,12 +1,20 @@
 export default sdk => {
+  const withVariant = ({ variantId, ...extraData }) => {
+    const selected = variantId ?? sdk.getVariantId(extraData.experimentId)
+    return selected ? { ...extraData, variantId: selected } : extraData
+  }
+
   // 1. Impression: Track when a variant is shown.
   const trackView = (extraData = {}) => {
-    sdk.trigger('metric:report', 'impression', extraData)
+    const metric = withVariant(extraData)
+    if (!metric.variantId) return false
+    sdk.trigger('metric:report', 'impression', metric)
+    return true
   }
 
   // 2. Click: Track when a variant is clicked.
   const trackClick = (extraData = {}) => {
-    sdk.trigger('metric:report', 'click', extraData)
+    sdk.trigger('metric:report', 'click', withVariant(extraData))
   }
 
   // 3. Dwell/Reading Time: Start/stop timer for how long a variant is in view.
@@ -54,7 +62,7 @@ export default sdk => {
 
   // 5. Conversion: Capture actions such as form submissions or sign-ups.
   const trackConversion = (extraData = {}) => {
-    sdk.trigger('metric:report', 'conversion', extraData)
+    sdk.trigger('metric:report', 'conversion', withVariant(extraData))
   }
 
   // 6. Time-to-Conversion: Record the time interval from an initial impression to conversion.
