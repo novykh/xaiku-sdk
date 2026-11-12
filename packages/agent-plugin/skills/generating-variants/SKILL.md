@@ -8,7 +8,7 @@ description: Use when the user wants variants for an existing experiment — fir
 ## Preconditions
 
 - Experiment exists.
-- Voice set (or explicitly skipped).
+- Writing rules settled with the user (`setting-writing-rules`). Without a voice, xaiku writes in Title Case and as "I".
 
 ## Tools
 
@@ -27,6 +27,8 @@ description: Use when the user wants variants for an existing experiment — fir
 3. Call `xaiku_generate_variants`. If it is refused because the experiment is already at its variant count, tell the user in plain words, ask whether to raise the number, then call `xaiku_update_experiment` and retry.
 4. Show every version in full, as a visitor would read it (see "Talking to the user" in `using-xaiku`): all parts in page order, labelled in plain words, with how it feels in 1–2 words. Then add one line per version on what makes it different from the others.
 5. Check the copy against what the user told you (tone, casing, "we" vs "I", parts that must stay fixed) and flag mismatches in plain words before moving on.
+   - **Every version breaks the same rule** (casing, "I" instead of "we", a banned word): fix the rule on the voice (`setting-writing-rules`), then offer either (a) archive those versions with `xaiku_archive_variant` and generate again, or (b) rewrite each affected field with `xaiku_set_field_text` and re-analyse with `xaiku_analyze_variant`. Never fix a whole-version problem phrase by phrase.
+   - `xaiku_generate_variants` only adds versions; it never replaces them. Archive the old ones if the user wants fresh ones instead.
 6. If a tool returns a warning that a text is over a field's limit, the text is still saved. Tell the user and offer a shorter version.
 7. Offer next moves: "Change a line in one version? See which one is likely to win? Approve them and launch?"
 
