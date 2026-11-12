@@ -39,12 +39,7 @@ export const Text = ({ id, experimentId, children, fallback, control }) => {
   useTrackView({ experimentId })
   useTrackView({ experimentId, partId: id })
 
-  if (!experimentId) {
-    console.warn('No experimentId provided, falling back to fallback prop.')
-    return fallback
-  }
-
-  fallback =
+  const resolvedFallback =
     fallback ??
     (isValidElement(children)
       ? children.props.children
@@ -52,7 +47,12 @@ export const Text = ({ id, experimentId, children, fallback, control }) => {
         ? ''
         : (children ?? ''))
 
-  const text = useText(experimentId, id, fallback, control)
+  const text = useText(experimentId, id, resolvedFallback, control)
+
+  if (!experimentId) {
+    console.warn('No experimentId provided, falling back to fallback prop.')
+    return fallback
+  }
 
   if (typeof children === 'function') return children(text)
 

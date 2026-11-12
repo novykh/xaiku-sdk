@@ -171,3 +171,18 @@ describe('Text', () => {
     })
   })
 })
+
+describe('Text hook order', () => {
+  it('keeps working when the experiment id goes away after the first render', () => {
+    const mockSdk = { getVariantText: jest.fn().mockReturnValue('Variant text'), on: jest.fn() }
+    useSdk.mockReturnValue(mockSdk)
+    useExperimentId.mockReturnValue(null)
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const { rerender } = render(<Text id="headline" experimentId="e1" fallback="Fallback" />)
+    expect(screen.getByText('Variant text')).toBeInTheDocument()
+
+    rerender(<Text id="headline" fallback="Fallback" />)
+    expect(screen.getByText('Fallback')).toBeInTheDocument()
+  })
+})
