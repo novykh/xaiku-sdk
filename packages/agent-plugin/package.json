@@ -1,6 +1,6 @@
 {
   "name": "@xaiku/agent-plugin",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "xaiku Claude Code plugin — gives AI agents the skills and MCP access to drive experiments end-to-end",
   "private": false,
   "keywords": [
