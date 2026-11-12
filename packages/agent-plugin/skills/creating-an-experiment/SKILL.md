@@ -8,7 +8,8 @@ description: Use when the user describes something to test (headline, ad, email 
 ## Preconditions
 
 - orgId resolved.
-- Voice chosen (or explicit "skip voice" decision).
+
+The voice and writing rules come after the structure is agreed, as in xaiku's own chat.
 
 ## What to extract
 
@@ -33,6 +34,27 @@ fixed copy `editable: false` so the model can see it without changing it.
 - Landing hero → `{ id: 'headline', role: 'mainText', kind: 'text', editable: true, maxLength: 60 }`, `{ id: 'subhead', role: 'subText', kind: 'text', editable: true, maxLength: 120 }`, `{ id: 'cta', role: 'cta', kind: 'cta', editable: true, maxLength: 20 }`
 - Email subject → `{ id: 'subject', role: 'mainText', kind: 'text', editable: true, maxLength: 60 }`
 
+## Fields
+
+`xaiku_create_experiment` takes these. Fill only what the user said or what you read from their page; never invent a value.
+
+| Field | What xaiku does with it |
+|---|---|
+| `name` | Required. The name shown in the dashboard. |
+| `template` | Required. The parts above. |
+| `channel` | One of `web`, `app`, `email`, `social`, `ads`, `sms`, `push`, `other`. |
+| `notes` | The brief the writer reads as context. Put the current copy here (it becomes the control later), the facts that may be claimed, and what must not be said. |
+| `intent` | The goal, for example "more sign-ups from first-time visitors". |
+| `tone` | How it should sound, in the user's words. |
+| `audience` | Who reads it. |
+| `brandVoice` | Free-text description of the brand's voice. |
+| `keywords` | Words the writer works in where they fit. |
+| `statics` | Words or phrases **every version must include**. This is not for fixed text; fixed text is a template part with `editable: false`. |
+| `variants` | How many versions the experiment holds. |
+| `description` | Stored for the dashboard only. The writer does not read it, so put anything the writer needs in `notes`. |
+
+Writing rules (casing, "we" or "I", banned words, exact spellings) are not experiment fields. They live on the voice: see `setting-writing-rules`.
+
 ## Optional but recommended: classify the channel
 
 Map the user's brief onto one of `web | app | email | social | ads | sms | push | other`.
@@ -42,15 +64,18 @@ defaults to manual-primary with the SDK still one click away.
 
 ## Tools
 
-- `xaiku_create_experiment(orgId, name, template, channel?, description?)` — returns the new experiment.
+- `xaiku_create_experiment(orgId, name, template, channel?, notes?, intent?, tone?, audience?, keywords?, statics?, variants?)` — returns the new experiment. See Fields.
+- `xaiku_update_experiment(orgId, id, patch)` — changes any field later, or archives an experiment with `patch.archived: true`.
 
 ## Flow
 
-1. Ask 2-3 short questions if the user's description is vague (what platform / where will this run / is there a character limit).
-2. Infer parts + limits from the answer. Platform hints are strong (Google Ads headline = 30 chars).
-3. Propose the experiment name + template back to the user in one line: *"I'll create an experiment called 'Summer sale Google Ads' with a single editable part 'headline' (30 char max), channel `ads`. OK?"*
-4. On approval, call `xaiku_create_experiment`.
-5. Hand off to `generating-variants`.
+1. If the user gave a page, URL, screenshot or pasted copy, read it with your own tools first. Build parts only from what is visible there, in page order. Never add a part that is not on the page (no invented button or badge). Put the current copy in `notes`.
+2. Ask **one short question at a time**, and only for what is still missing. Ask where it runs (the channel) first if you cannot tell. Do not ask about tone or voice until the structure is agreed.
+3. Infer parts and limits. Platform hints are strong (Google Ads headline = 30 characters).
+4. Propose the name and template in one message, with fixed parts marked as fixed: *"I'll create 'Summer sale Google Ads' with one part that gets rewritten, the headline (30 characters max). OK?"*
+5. On approval, call `xaiku_create_experiment`.
+6. If the user rejects the proposal, propose again with their correction applied. Don't only apologise, and don't ask which parts to keep.
+7. Hand off to `setting-writing-rules` (picks or creates the voice, settles casing and "we" or "I"), then `generating-variants`.
 
 ## Red flags
 
@@ -61,7 +86,10 @@ defaults to manual-primary with the SDK still one click away.
 | "Parts should be detailed (e.g., 'opening_hook', 'value_prop', 'cta_urgency')" | No — stay platform-accurate. If Google Ads says "Headline," the part is `headline`. |
 | "I'll send a `fields` array like the old docs showed" | Rejected by the server. The template shape is `parts`, and every part needs `role`, `kind` and `editable`. |
 | "Everything should be `editable: true`" | Only if variants really should rewrite it. Fixed surrounding copy belongs in the template as `editable: false`. |
+| "The fixed button labels go in `statics`" | No. `statics` forces those words into every version. Fixed labels are `editable: false` parts. |
+| "The plan limit stops me, so I'll archive an old experiment" | Only with the user's go-ahead. The limit counts experiments that have a template and are not archived, so archiving one the user names frees the slot (`xaiku_update_experiment` with `patch.archived: true`). |
+| "I'll ask everything up front" | No. One short question at a time, only for what is missing. |
 
 ## Next likely skill
 
-`generating-variants`
+`setting-writing-rules`, then `generating-variants`.
